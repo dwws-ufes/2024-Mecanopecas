@@ -6,6 +6,9 @@
 # Datasource local storage ignored files
 /dataSources/
 
+# Arquivo gerado
+/target/
+
 # Arquivos criado pelo IntelliJ
 /dataSources.local.xml
 /misc.xml
