@@ -1,4 +1,4 @@
-package br.com.mecanopecas.mecanopecas.entity;
+package br.com.mecanopecas.mecanopecas.model;
 
 
 import jakarta.persistence.*;
@@ -6,4 +6,6 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "vendedores")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Vendedor extends Funcionario {}
+public class Vendedor extends Funcionario {
+
+}
