@@ -1,8 +1,11 @@
-package br.com.mecanopecas.mecanopecas.entity;
+package br.com.mecanopecas.mecanopecas.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 
 @MappedSuperclass
 public abstract class Funcionario {
@@ -25,16 +28,17 @@ public abstract class Funcionario {
     @Column(nullable = false)
     private String password;
 
-//    @Temporal(TemporalType.DATE)
     @Column(name = "data_nascimento")
-    private LocalDateTime dataNascimento;
+    private LocalDate dataNascimento;
 
+    // Não mapeado no Modelo Entidade
     @Transient
     private Integer idade;
 
-    // Não mapeado no Modelo Entidade
-    @Column(name = "data_cadastro", nullable = false)
-    private LocalDateTime dataCadastro = LocalDateTime.now();
+
+    @CreationTimestamp
+    @Column(name = "data_cadastro", nullable = false, updatable = false)
+    private LocalDateTime dataCadastro;
 
     public Long getId() {
         return id;
@@ -80,11 +84,11 @@ public abstract class Funcionario {
         this.password = password;
     }
 
-    public LocalDateTime getDataNascimento() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(LocalDateTime dataNascimento) {
+    public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 

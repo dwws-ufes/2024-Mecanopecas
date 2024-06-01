@@ -1,4 +1,4 @@
-package br.com.mecanopecas.mecanopecas.entity;
+package br.com.mecanopecas.mecanopecas.model;
 
 import jakarta.persistence.*;
 
