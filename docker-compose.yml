@@ -1,7 +1,6 @@
 services:
   mecanopecas-db:
     image: mysql
-    restart: always
     volumes:
       - db-mecanopecas:/var/lib/mysql
     ports:
