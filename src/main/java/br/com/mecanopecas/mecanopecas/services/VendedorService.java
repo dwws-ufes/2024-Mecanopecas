@@ -1,14 +1,17 @@
 package br.com.mecanopecas.mecanopecas.services;
 
+import br.com.mecanopecas.mecanopecas.util.dtos.response.VendedorResponseDTO;
+import br.com.mecanopecas.mecanopecas.util.exceptions.ResourceNotFoundException;
+import br.com.mecanopecas.mecanopecas.util.mappers.VendedorMapper;
 import org.springframework.beans.BeanUtils;
 import br.com.mecanopecas.mecanopecas.model.Vendedor;
-import br.com.mecanopecas.mecanopecas.dtos.VendedorRecordDto;
+import br.com.mecanopecas.mecanopecas.util.dtos.request.VendedorRequestDTO;
 import br.com.mecanopecas.mecanopecas.persistence.VendedorRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class VendedorService {
@@ -20,42 +23,42 @@ public class VendedorService {
         this.vendedorRepository = vendedorRepository;
     }
 
-    public class ResourceNotFoundException extends RuntimeException {
-        public ResourceNotFoundException(String message) {
-            super(message);
-        }
-    }
-
-
-    public VendedorRecordDto create(VendedorRecordDto vendedorRecordDto) {
+    public VendedorResponseDTO create(VendedorRequestDTO vendedorRequestDTO) {
         var vendedor = new Vendedor();
-        BeanUtils.copyProperties(vendedorRecordDto, vendedor);
+
+        BeanUtils.copyProperties(vendedorRequestDTO, vendedor);
         Vendedor vendedorSaved = vendedorRepository.save(vendedor);
-        return new VendedorRecordDto(
-                vendedorSaved.getId(),
-                vendedorSaved.getNome()
-        );
+
+        return VendedorMapper.toDto(vendedorSaved);
     }
 
-    public VendedorRecordDto read(Long id) {
+    public VendedorResponseDTO read(Long id) {
         Vendedor vendedor = vendedorRepository.findById(id)
-                                                .orElseThrow(() -> new ResourceNotFoundException("Não encontrado"));
-        return new VendedorRecordDto(
-                vendedor.getId(),
-                vendedor.getNome()
-        );
+                .orElseThrow(() -> new ResourceNotFoundException("Vendedor não encontrado."));
+
+        return VendedorMapper.toDto(vendedor);
     }
 
-    public VendedorRecordDto atualiza(Long id, VendedorRecordDto vendedorRecordDto) {
-        Vendedor vendedorRecord = vendedorRepository.findById(id)
-                                                        .orElseThrow(() -> new ResourceNotFoundException("Não encontrado"));
-        BeanUtils.copyProperties(vendedorRecordDto, vendedorRecord);
-        Vendedor updatedVendedor = vendedorRepository.save(vendedorRecord);
-        return new VendedorRecordDto(
-                updatedVendedor.getId(),
-                updatedVendedor.getNome()
-        );
+    public List<VendedorResponseDTO> readAll() {
+        List<Vendedor> vendedores = vendedorRepository.findAll();
+
+        return VendedorMapper.toDtoList(vendedores);
     }
 
+    public VendedorResponseDTO update(Long id, VendedorRequestDTO vendedorRequestDTO) {
+        Vendedor vendedor = vendedorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Vendedor não encontrado."));
 
+        BeanUtils.copyProperties(vendedorRequestDTO, vendedor);
+        Vendedor vendedorUpdated = vendedorRepository.save(vendedor);
+
+        return VendedorMapper.toDto(vendedorUpdated);
+    }
+
+    public void delete(Long id) {
+        Vendedor vendedor = vendedorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Vendedor não encontrado."));
+
+        vendedorRepository.delete(vendedor);
+    }
 }

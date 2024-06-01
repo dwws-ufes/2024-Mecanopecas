@@ -1,7 +1,7 @@
 package br.com.mecanopecas.mecanopecas.services;
 
 import br.com.mecanopecas.mecanopecas.model.Endereco;
-import br.com.mecanopecas.mecanopecas.dtos.EnderecoRecordDto;
+import br.com.mecanopecas.mecanopecas.util.dtos.request.EnderecoRequestDTO;
 import br.com.mecanopecas.mecanopecas.persistence.EnderecoRepository;
 
 import org.springframework.beans.BeanUtils;
@@ -17,11 +17,11 @@ public class EnderecoService {
         this.enderecoRepository = enderecoRepository;
     }
 
-    public EnderecoRecordDto create(EnderecoRecordDto enderecoDto) {
+    public EnderecoRequestDTO create(EnderecoRequestDTO enderecoDto) {
         var endereco = new Endereco();
         BeanUtils.copyProperties(enderecoDto, endereco);
         Endereco enderecoSaved = enderecoRepository.save(endereco);
-        return new EnderecoRecordDto(
+        return new EnderecoRequestDTO(
                 enderecoSaved.getId(),
                 enderecoSaved.getCep(),
                 enderecoSaved.getBairro(),

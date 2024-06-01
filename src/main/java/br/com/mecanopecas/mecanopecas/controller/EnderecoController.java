@@ -1,6 +1,6 @@
 package br.com.mecanopecas.mecanopecas.controller;
 
-import br.com.mecanopecas.mecanopecas.dtos.EnderecoRecordDto;
+import br.com.mecanopecas.mecanopecas.util.dtos.request.EnderecoRequestDTO;
 import br.com.mecanopecas.mecanopecas.services.EnderecoService;
 
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ public class EnderecoController {
 
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<EnderecoRecordDto> cadastrar(@RequestBody EnderecoRecordDto enderecoDto) {
+    public ResponseEntity<EnderecoRequestDTO> cadastrar(@RequestBody EnderecoRequestDTO enderecoDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(enderecoService.create(enderecoDto));
     }
 
