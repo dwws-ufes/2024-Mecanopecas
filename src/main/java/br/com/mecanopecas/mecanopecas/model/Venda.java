@@ -1,7 +1,9 @@
 package br.com.mecanopecas.mecanopecas.model;
 
 import jakarta.persistence.*;
-import java.util.Date;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "vendas")
@@ -11,9 +13,9 @@ public class Venda {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Temporal(TemporalType.DATE)
+    @CreationTimestamp
     @Column(name = "data_venda")
-    private Date dataVenda;
+    private LocalDateTime dataVenda;
 
     @Column(name = "valor_final")
     private double valorFinal;
@@ -24,8 +26,7 @@ public class Venda {
 
     public Long getId() { return id; }
 
-    public Date getDataVenda() { return dataVenda; }
-    public void setDataVenda(Date dataVenda) { this.dataVenda = dataVenda; }
+    public LocalDateTime getDataVenda() { return dataVenda; }
 
     public double getValorFinal() { return valorFinal; }
     public void setValorFinal(double valorFinal) { this.valorFinal = valorFinal; }

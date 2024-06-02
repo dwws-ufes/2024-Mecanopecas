@@ -1,6 +1,9 @@
 package br.com.mecanopecas.mecanopecas.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -17,9 +20,12 @@ public class Orcamento {
     @Column(name = "percentual_desconto")
     private double percentualDesconto;
 
-    @Temporal(TemporalType.DATE)
+    @CreationTimestamp
+    @Column(name = "data_orcamento")
+    private LocalDateTime dataOrcamento;
+
     @Column(name = "data_expiracao")
-    private Date dataExpiracao;
+    private LocalDateTime dataExpiracao;
 
     @ManyToOne(optional = false)
     private Vendedor vendedor;
@@ -27,17 +33,11 @@ public class Orcamento {
     @ManyToOne(optional = false)
     private Cliente cliente;
 
-    @ManyToMany
-    @JoinTable(
-            name = "orcamento_peca",
-            joinColumns = @JoinColumn(name = "orcamento_id"),
-            inverseJoinColumns = @JoinColumn(name = "peca_id")
-    )
-    private List<Peca> pecas;
+    @OneToMany(mappedBy = "orcamento", cascade = CascadeType.ALL)
+    private List<OrcamentoPeca> orcamentoPecas;
 
     @OneToOne(mappedBy = "orcamento")
     private Venda venda;
-
 
     public Long getId() { return id; }
 
@@ -47,8 +47,10 @@ public class Orcamento {
     public double getPercentualDesconto() { return percentualDesconto; }
     public void setPercentualDesconto(double percentualDesconto) { this.percentualDesconto = percentualDesconto; }
 
-    public Date getDataExpiracao() { return dataExpiracao; }
-    public void setDataExpiracao(Date dataExpiracao) { this.dataExpiracao = dataExpiracao; }
+    public LocalDateTime getDataOrcamento() { return dataOrcamento; }
+
+    public LocalDateTime getDataExpiracao() { return dataExpiracao; }
+    public void setDataExpiracao(LocalDateTime dataExpiracao) { this.dataExpiracao = dataExpiracao; }
 
     public Vendedor getVendedor() { return vendedor; }
     public void setVendedor(Vendedor vendedor) { this.vendedor = vendedor; }
@@ -56,9 +58,31 @@ public class Orcamento {
     public Cliente getCliente() { return cliente; }
     public void setCliente(Cliente cliente) { this.cliente = cliente; }
 
-    public List<Peca> getPecas() { return pecas; }
-    public void setPecas(List<Peca> pecas) { this.pecas = pecas; }
+    public List<OrcamentoPeca> getOrcamentoPecas() { return orcamentoPecas; }
+    public void setOrcamentoPecas(List<OrcamentoPeca> orcamentoPecas) { this.orcamentoPecas = orcamentoPecas; }
 
     public Venda getVenda() { return venda; }
     public void setVenda(Venda venda) { this.venda = venda; }
+
+    public String getStatus() {
+        LocalDateTime now = LocalDateTime.now();
+        if (dataExpiracao != null && now.isAfter(dataExpiracao)) {
+            return "Expirado";
+        } else if (venda != null) {
+            return "Finalizado";
+        } else {
+            return "Aberto";
+        }
+    }
+
+    public double getValor() {
+        return orcamentoPecas.stream()
+                .mapToDouble(orcamentoPeca -> orcamentoPeca.getPeca().getPreco() * orcamentoPeca.getQuantidade())
+                .sum();
+    }
+
+    public double getValorTotal() {
+        double valor = getValor();
+        return valor - (valor * percentualDesconto / 100.0);
+    }
 }

@@ -5,7 +5,7 @@ import br.com.mecanopecas.mecanopecas.util.dtos.response.PecaResponseDTO;
 import br.com.mecanopecas.mecanopecas.model.Peca;
 import br.com.mecanopecas.mecanopecas.persistence.PecaRepository;
 import br.com.mecanopecas.mecanopecas.util.mappers.PecaMapper;
-import br.com.mecanopecas.mecanopecas.util.exceptions.ResourceNotFoundException;
+import br.com.mecanopecas.mecanopecas.util.exceptions.NotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,7 @@ public class PecaService {
 
     public PecaResponseDTO read(Long id) {
         Peca peca = pecaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Peca não encontrada."));
+                .orElseThrow(() -> new NotFoundException("Peca não encontrada."));
         return PecaMapper.toDto(peca);
     }
 
@@ -53,7 +53,7 @@ public class PecaService {
 
     public PecaResponseDTO update(Long id, PecaRequestDTO pecaRequestDTO) {
         Peca peca = pecaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Peca não encontrada."));
+                .orElseThrow(() -> new NotFoundException("Peca não encontrada."));
         BeanUtils.copyProperties(pecaRequestDTO, peca);
         Peca pecaUpdated = pecaRepository.save(peca);
         return PecaMapper.toDto(pecaUpdated);
@@ -61,7 +61,7 @@ public class PecaService {
 
     public void delete(Long id) {
         Peca peca = pecaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Peca não encontrada."));
+                .orElseThrow(() -> new NotFoundException("Peca não encontrada."));
 
         peca.setAtivo(false);
 

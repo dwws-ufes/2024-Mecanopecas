@@ -1,14 +1,11 @@
 package br.com.mecanopecas.mecanopecas.services;
 
-import br.com.mecanopecas.mecanopecas.model.Vendedor;
 import br.com.mecanopecas.mecanopecas.util.dtos.request.ClienteRequestDTO;
 import br.com.mecanopecas.mecanopecas.util.dtos.response.ClienteResponseDTO;
 import br.com.mecanopecas.mecanopecas.model.Cliente;
 import br.com.mecanopecas.mecanopecas.persistence.ClienteRepository;
-import br.com.mecanopecas.mecanopecas.util.dtos.response.VendedorResponseDTO;
 import br.com.mecanopecas.mecanopecas.util.mappers.ClienteMapper;
-import br.com.mecanopecas.mecanopecas.util.exceptions.ResourceNotFoundException;
-import br.com.mecanopecas.mecanopecas.util.mappers.VendedorMapper;
+import br.com.mecanopecas.mecanopecas.util.exceptions.NotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +34,7 @@ public class ClienteService {
 
     public ClienteResponseDTO read(Long id) {
         Cliente cliente = clienteRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado."));
+                .orElseThrow(() -> new NotFoundException("Cliente não encontrado."));
         return ClienteMapper.toDto(cliente);
     }
 
@@ -56,7 +53,7 @@ public class ClienteService {
 
     public ClienteResponseDTO update(Long id, ClienteRequestDTO clienteRequestDTO) {
         Cliente cliente = clienteRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado."));
+                .orElseThrow(() -> new NotFoundException("Cliente não encontrado."));
         BeanUtils.copyProperties(clienteRequestDTO, cliente);
         Cliente clienteUpdated = clienteRepository.save(cliente);
         return ClienteMapper.toDto(clienteUpdated);
@@ -64,7 +61,7 @@ public class ClienteService {
 
     public void delete(Long id) {
         Cliente cliente = clienteRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado."));
+                .orElseThrow(() -> new NotFoundException("Cliente não encontrado."));
 
         cliente.setAtivo(false);
 

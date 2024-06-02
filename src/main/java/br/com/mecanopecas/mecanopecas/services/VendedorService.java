@@ -1,8 +1,7 @@
 package br.com.mecanopecas.mecanopecas.services;
 
-import br.com.mecanopecas.mecanopecas.model.Peca;
 import br.com.mecanopecas.mecanopecas.util.dtos.response.VendedorResponseDTO;
-import br.com.mecanopecas.mecanopecas.util.exceptions.ResourceNotFoundException;
+import br.com.mecanopecas.mecanopecas.util.exceptions.NotFoundException;
 import br.com.mecanopecas.mecanopecas.util.mappers.VendedorMapper;
 import org.springframework.beans.BeanUtils;
 import br.com.mecanopecas.mecanopecas.model.Vendedor;
@@ -36,7 +35,7 @@ public class VendedorService {
 
     public VendedorResponseDTO read(Long id) {
         Vendedor vendedor = vendedorRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Vendedor não encontrado."));
+                .orElseThrow(() -> new NotFoundException("Vendedor não encontrado."));
 
         return VendedorMapper.toDto(vendedor);
     }
@@ -57,7 +56,7 @@ public class VendedorService {
 
     public VendedorResponseDTO update(Long id, VendedorRequestDTO vendedorRequestDTO) {
         Vendedor vendedor = vendedorRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Vendedor não encontrado."));
+                .orElseThrow(() -> new NotFoundException("Vendedor não encontrado."));
 
         BeanUtils.copyProperties(vendedorRequestDTO, vendedor);
         Vendedor vendedorUpdated = vendedorRepository.save(vendedor);
@@ -67,7 +66,7 @@ public class VendedorService {
 
     public void delete(Long id) {
         Vendedor vendedor = vendedorRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Vendedor não encontrado."));
+                .orElseThrow(() -> new NotFoundException("Vendedor não encontrado."));
 
         vendedor.setAtivo(false);
 

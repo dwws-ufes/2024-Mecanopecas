@@ -6,7 +6,7 @@ import br.com.mecanopecas.mecanopecas.util.dtos.response.GerenteResponseDTO;
 import br.com.mecanopecas.mecanopecas.util.dtos.request.GerenteRequestDTO;
 import br.com.mecanopecas.mecanopecas.model.Gerente;
 import br.com.mecanopecas.mecanopecas.persistence.GerenteRepository;
-import br.com.mecanopecas.mecanopecas.util.exceptions.ResourceNotFoundException;
+import br.com.mecanopecas.mecanopecas.util.exceptions.NotFoundException;
 import br.com.mecanopecas.mecanopecas.util.mappers.GerenteMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +30,12 @@ public class GerenteService {
 
     public GerenteResponseDTO create(Long vendedorId, GerenteRequestDTO gerenteRequestDTO) {
         Vendedor vendedor = vendedorRepository.findById(vendedorId)
-                .orElseThrow(() -> new ResourceNotFoundException("Vendedor não encontrado."));
+                .orElseThrow(() -> new NotFoundException("Vendedor não encontrado."));
 
         Gerente gerente = new Gerente();
 
         BeanUtils.copyProperties(vendedor, gerente);
         BeanUtils.copyProperties(gerenteRequestDTO, gerente);
-        gerente.setDataPromovido(LocalDate.now());
 
         Gerente gerenteSaved = gerenteRepository.save(gerente);
         return GerenteMapper.toDto(gerenteSaved);
@@ -44,7 +43,7 @@ public class GerenteService {
 
     public GerenteResponseDTO read(Long id) {
         Gerente gerente = gerenteRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Gerente não encontrado."));
+                .orElseThrow(() -> new NotFoundException("Gerente não encontrado."));
         return GerenteMapper.toDto(gerente);
     }
 
@@ -55,7 +54,7 @@ public class GerenteService {
 
     public GerenteResponseDTO update(Long id, GerenteRequestDTO gerenteRequestDTO) {
         Gerente gerente = gerenteRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Gerente não encontrado."));
+                .orElseThrow(() -> new NotFoundException("Gerente não encontrado."));
         BeanUtils.copyProperties(gerenteRequestDTO, gerente);
         Gerente gerenteUpdated = gerenteRepository.save(gerente);
         return GerenteMapper.toDto(gerenteUpdated);
@@ -63,7 +62,7 @@ public class GerenteService {
 
     public void delete(Long id) {
         Gerente gerente = gerenteRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Gerente não encontrado."));
+                .orElseThrow(() -> new NotFoundException("Gerente não encontrado."));
         gerenteRepository.delete(gerente);
     }
 }

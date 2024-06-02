@@ -1,11 +1,11 @@
 package br.com.mecanopecas.mecanopecas.util.dtos.response;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public record GerenteResponseDTO(Long id,
                                  String nome,
                                  String cpf,
                                  String emailInstituicional,
-                                 LocalDate dataPromocao,
+                                 LocalDateTime dataPromocao,
                                  Double percentualMaxDesconto) {
 }

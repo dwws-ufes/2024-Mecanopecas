@@ -2,32 +2,31 @@ package br.com.mecanopecas.mecanopecas.model;
 
 import jakarta.persistence.Column;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "gerentes")
 @PrimaryKeyJoinColumn(name = "vendedorId")
 public class Gerente extends Vendedor {
 
+    @CreationTimestamp
     @Column(nullable = false, name = "data_promovido")
-    private LocalDate dataPromovido;
+    private LocalDateTime dataPromovido;
 
     @Column(name = "percentual_maximo_desconto")
     private Double percentualMaxDesconto;
 
     public Gerente() {}
-    public Gerente(LocalDate dataPromocao, Double codigoDesconto, Double percentualMaxDesconto) {
+    public Gerente(LocalDateTime dataPromocao, Double codigoDesconto, Double percentualMaxDesconto) {
         this.dataPromovido = dataPromocao;
         this.percentualMaxDesconto = percentualMaxDesconto;
     }
 
-    public LocalDate getDataPromovido() {
+    public LocalDateTime getDataPromovido() {
         return dataPromovido;
-    }
-    public void setDataPromovido(LocalDate dataPromocao) {
-        this.dataPromovido = dataPromocao;
     }
 
     public Double getPercentualMaxDesconto() {
