@@ -21,10 +21,11 @@ public class GerenteController {
         this.gerenteService = gerenteService;
     }
 
-    @PostMapping("/")
-    public ResponseEntity<GerenteResponseDTO> createGerente(@RequestBody GerenteRequestDTO gerenteRequestDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(gerenteService.create(gerenteRequestDTO));
+    @PostMapping("/{vendedorId}")
+    public ResponseEntity<GerenteResponseDTO> createGerente(@PathVariable Long vendedorId, @RequestBody GerenteRequestDTO gerenteRequestDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(gerenteService.create(vendedorId, gerenteRequestDTO));
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<GerenteResponseDTO> readGerente(@PathVariable Long id) {

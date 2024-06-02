@@ -1,5 +1,7 @@
 package br.com.mecanopecas.mecanopecas.services;
 
+import br.com.mecanopecas.mecanopecas.model.Vendedor;
+import br.com.mecanopecas.mecanopecas.persistence.VendedorRepository;
 import br.com.mecanopecas.mecanopecas.util.dtos.response.GerenteResponseDTO;
 import br.com.mecanopecas.mecanopecas.util.dtos.request.GerenteRequestDTO;
 import br.com.mecanopecas.mecanopecas.model.Gerente;
@@ -16,15 +18,23 @@ import java.util.List;
 public class GerenteService {
 
     private final GerenteRepository gerenteRepository;
+    private final VendedorRepository vendedorRepository;
 
     @Autowired
-    public GerenteService(GerenteRepository gerenteRepository) {
+    public GerenteService(GerenteRepository gerenteRepository, VendedorRepository vendedorRepository) {
         this.gerenteRepository = gerenteRepository;
+        this.vendedorRepository = vendedorRepository;
     }
 
-    public GerenteResponseDTO create(GerenteRequestDTO gerenteRequestDTO) {
+
+    public GerenteResponseDTO create(Long vendedorId, GerenteRequestDTO gerenteRequestDTO) {
+        Vendedor vendedor = vendedorRepository.findById(vendedorId)
+                .orElseThrow(() -> new ResourceNotFoundException("Vendedor não encontrado."));
+
         Gerente gerente = new Gerente();
+        BeanUtils.copyProperties(vendedor, gerente);
         BeanUtils.copyProperties(gerenteRequestDTO, gerente);
+
         Gerente gerenteSaved = gerenteRepository.save(gerente);
         return GerenteMapper.toDto(gerenteSaved);
     }
