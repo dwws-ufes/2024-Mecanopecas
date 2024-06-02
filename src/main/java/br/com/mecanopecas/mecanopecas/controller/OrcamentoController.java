@@ -1,5 +1,6 @@
 package br.com.mecanopecas.mecanopecas.controller;
 
+import br.com.mecanopecas.mecanopecas.model.Roles;
 import br.com.mecanopecas.mecanopecas.services.OrcamentoService;
 import br.com.mecanopecas.mecanopecas.util.dtos.request.OrcamentoPecaRequestDTO;
 import br.com.mecanopecas.mecanopecas.util.dtos.request.OrcamentoRequestDTO;
@@ -7,9 +8,13 @@ import br.com.mecanopecas.mecanopecas.util.dtos.response.OrcamentoDetailResponse
 import br.com.mecanopecas.mecanopecas.util.dtos.response.OrcamentoResponseDTO;
 import br.com.mecanopecas.mecanopecas.util.dtos.response.VendaResponseDTO;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -18,9 +23,11 @@ import java.util.List;
 public class OrcamentoController {
 
     private final OrcamentoService orcamentoService;
+    private final JwtDecoder jwtDecoder;
 
-    public OrcamentoController(OrcamentoService orcamentoService) {
+    public OrcamentoController(OrcamentoService orcamentoService, @Qualifier("jwtDecoder") JwtDecoder jwtDecoder) {
         this.orcamentoService = orcamentoService;
+        this.jwtDecoder = jwtDecoder;
     }
 
     @GetMapping
@@ -34,10 +41,16 @@ public class OrcamentoController {
     }
 
     @PostMapping
-    public ResponseEntity<OrcamentoResponseDTO> createOrcamento(@Valid @RequestBody OrcamentoRequestDTO orcamentoRequestDTO) {
-        //obter vendedorId do token
-        Long vendedorId = 1L;
-        return ResponseEntity.status(HttpStatus.CREATED).body(orcamentoService.createOrcamento(vendedorId, orcamentoRequestDTO));
+    public ResponseEntity<OrcamentoResponseDTO> createOrcamento(@RequestHeader("Authorization") String auth, @Valid @RequestBody OrcamentoRequestDTO orcamentoRequestDTO) {
+
+        if (auth != null && auth.startsWith("Bearer ")) {
+            String token = auth.substring(7);
+            Jwt jwt = jwtDecoder.decode(token);
+            Long vendedorId = jwt.getClaim("vendedorId");
+            return ResponseEntity.status(HttpStatus.CREATED).body(orcamentoService.createOrcamento(vendedorId, orcamentoRequestDTO));
+        }
+
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token invalido");
     }
 
     @PostMapping("/{id}/venda")
@@ -56,9 +69,16 @@ public class OrcamentoController {
     }
 
     @PutMapping("/{id}/desconto")
-    public ResponseEntity<OrcamentoDetailResponseDTO> applyDescontoOrcamento(@PathVariable Long id, @RequestParam double descontoPercentual) {
+    public ResponseEntity<OrcamentoDetailResponseDTO> applyDescontoOrcamento(@RequestHeader("Authorization") String auth , @PathVariable Long id, @RequestParam double descontoPercentual) {
+        System.out.println("AQUIIIII: " + Roles.GERENTE.name());
+
         //obter gerenteId do token
-        Long gerenteId = 1L;
-        return ResponseEntity.ok(orcamentoService.applyDescontoOrcamento(id, gerenteId, descontoPercentual));
+        if (auth != null && auth.startsWith("Bearer ")) {
+            String token = auth.substring(7);
+            Jwt jwt = jwtDecoder.decode(token);
+            Long gerenteId = jwt.getClaim("gerenteId");
+            return ResponseEntity.ok(orcamentoService.applyDescontoOrcamento(id, gerenteId, descontoPercentual));
+        }
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token invalido");
     }
 }
