@@ -3,6 +3,7 @@ package br.com.mecanopecas.mecanopecas.controller;
 import br.com.mecanopecas.mecanopecas.util.dtos.response.GerenteResponseDTO;
 import br.com.mecanopecas.mecanopecas.util.dtos.request.GerenteRequestDTO;
 import br.com.mecanopecas.mecanopecas.services.GerenteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class GerenteController {
     }
 
     @PostMapping("/{vendedorId}")
-    public ResponseEntity<GerenteResponseDTO> createGerente(@PathVariable Long vendedorId, @RequestBody GerenteRequestDTO gerenteRequestDTO) {
+    public ResponseEntity<GerenteResponseDTO> createGerente(@PathVariable Long vendedorId, @Valid @RequestBody GerenteRequestDTO gerenteRequestDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(gerenteService.create(vendedorId, gerenteRequestDTO));
     }
 
@@ -38,7 +39,7 @@ public class GerenteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<GerenteResponseDTO> updateGerente(@PathVariable Long id, @RequestBody GerenteRequestDTO gerenteRequestDTO) {
+    public ResponseEntity<GerenteResponseDTO> updateGerente(@PathVariable Long id, @Valid @RequestBody GerenteRequestDTO gerenteRequestDTO) {
         return ResponseEntity.ok(gerenteService.update(id, gerenteRequestDTO));
     }
 

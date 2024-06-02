@@ -4,6 +4,7 @@ import br.com.mecanopecas.mecanopecas.util.dtos.request.ClienteRequestDTO;
 import br.com.mecanopecas.mecanopecas.util.dtos.response.ClienteResponseDTO;
 import br.com.mecanopecas.mecanopecas.services.ClienteService;
 import br.com.mecanopecas.mecanopecas.util.dtos.response.VendedorResponseDTO;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class ClienteController {
     }
 
     @PostMapping()
-    public ResponseEntity<ClienteResponseDTO> createCliente(@RequestBody ClienteRequestDTO clienteRequestDTO) {
+    public ResponseEntity<ClienteResponseDTO> createCliente(@Valid @RequestBody ClienteRequestDTO clienteRequestDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.create(clienteRequestDTO));
     }
 
@@ -43,7 +44,7 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClienteResponseDTO> updateCliente(@PathVariable Long id, @RequestBody ClienteRequestDTO clienteRequestDTO) {
+    public ResponseEntity<ClienteResponseDTO> updateCliente(@PathVariable Long id, @Valid @RequestBody ClienteRequestDTO clienteRequestDTO) {
         return ResponseEntity.ok(clienteService.update(id, clienteRequestDTO));
     }
 

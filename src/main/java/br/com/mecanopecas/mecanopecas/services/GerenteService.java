@@ -6,13 +6,13 @@ import br.com.mecanopecas.mecanopecas.util.dtos.response.GerenteResponseDTO;
 import br.com.mecanopecas.mecanopecas.util.dtos.request.GerenteRequestDTO;
 import br.com.mecanopecas.mecanopecas.model.Gerente;
 import br.com.mecanopecas.mecanopecas.persistence.GerenteRepository;
+import br.com.mecanopecas.mecanopecas.util.exceptions.BadRequestException;
 import br.com.mecanopecas.mecanopecas.util.exceptions.NotFoundException;
 import br.com.mecanopecas.mecanopecas.util.mappers.GerenteMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -27,15 +27,17 @@ public class GerenteService {
         this.vendedorRepository = vendedorRepository;
     }
 
-
     public GerenteResponseDTO create(Long vendedorId, GerenteRequestDTO gerenteRequestDTO) {
         Vendedor vendedor = vendedorRepository.findById(vendedorId)
                 .orElseThrow(() -> new NotFoundException("Vendedor não encontrado."));
 
-        Gerente gerente = new Gerente();
+        if (gerenteRepository.existsByVendedorId(vendedorId)) {
+            throw new BadRequestException("O vendedor já é um gerente.");
+        }
 
-        BeanUtils.copyProperties(vendedor, gerente);
-        BeanUtils.copyProperties(gerenteRequestDTO, gerente);
+        Gerente gerente = new Gerente();
+        gerente.setVendedor(vendedor);
+        gerente.setPercentualMaxDesconto(gerenteRequestDTO.percentualMaxDesconto());
 
         Gerente gerenteSaved = gerenteRepository.save(gerente);
         return GerenteMapper.toDto(gerenteSaved);

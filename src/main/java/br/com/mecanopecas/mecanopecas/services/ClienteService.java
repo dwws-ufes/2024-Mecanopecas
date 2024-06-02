@@ -4,6 +4,7 @@ import br.com.mecanopecas.mecanopecas.util.dtos.request.ClienteRequestDTO;
 import br.com.mecanopecas.mecanopecas.util.dtos.response.ClienteResponseDTO;
 import br.com.mecanopecas.mecanopecas.model.Cliente;
 import br.com.mecanopecas.mecanopecas.persistence.ClienteRepository;
+import br.com.mecanopecas.mecanopecas.util.exceptions.BadRequestException;
 import br.com.mecanopecas.mecanopecas.util.mappers.ClienteMapper;
 import br.com.mecanopecas.mecanopecas.util.exceptions.NotFoundException;
 import org.springframework.beans.BeanUtils;
@@ -23,6 +24,10 @@ public class ClienteService {
     }
 
     public ClienteResponseDTO create(ClienteRequestDTO clienteRequestDTO) {
+        if (clienteRepository.existsByCpfCnpj(clienteRequestDTO.cpfCnpj())) {
+            throw new BadRequestException("Já existe um cliente com o mesmo CPF/CNPJ");
+        }
+
         Cliente cliente = new Cliente();
 
         BeanUtils.copyProperties(clienteRequestDTO, cliente);
