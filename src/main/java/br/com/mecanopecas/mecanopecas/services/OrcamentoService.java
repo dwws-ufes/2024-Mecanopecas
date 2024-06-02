@@ -14,9 +14,11 @@ import br.com.mecanopecas.mecanopecas.util.mappers.VendaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class OrcamentoService {
@@ -204,5 +206,12 @@ public class OrcamentoService {
         vendaRepository.save(venda);
 
         return VendaMapper.toDto(venda);
+    }
+
+    public List<OrcamentoResponseDTO> getOrcamentosWithinDateRange(LocalDate dataInicio, LocalDate dataFim) {
+        List<Orcamento> orcamentos = orcamentoRepository.findAllByDataOrcamentoBetween(dataInicio.atStartOfDay(), dataFim.atStartOfDay().plusHours(23).plusMinutes(59).plusSeconds(59));
+        return orcamentos.stream()
+                .map(OrcamentoMapper::toDto)
+                .collect(Collectors.toList());
     }
 }
