@@ -3,6 +3,7 @@ package br.com.mecanopecas.mecanopecas.controller;
 import br.com.mecanopecas.mecanopecas.util.dtos.request.ClienteRequestDTO;
 import br.com.mecanopecas.mecanopecas.util.dtos.response.ClienteResponseDTO;
 import br.com.mecanopecas.mecanopecas.services.ClienteService;
+import br.com.mecanopecas.mecanopecas.util.dtos.response.VendedorResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,11 @@ public class ClienteController {
     @GetMapping("/")
     public ResponseEntity<List<ClienteResponseDTO>> readAllClientes() {
         return ResponseEntity.ok(clienteService.readAll());
+    }
+
+    @GetMapping("/ativos")
+    public ResponseEntity<List<ClienteResponseDTO>> readAllClientesAtivos() {
+        return ResponseEntity.ok(clienteService.readAllAtivos());
     }
 
     @PutMapping("/{id}")

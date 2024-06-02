@@ -28,6 +28,8 @@ public class Cliente {
     @Column(name = "data_nascimento")
     private Date dataNascimento;
 
+    private boolean ativo;
+
     public Long getId() {
         return id;
     }
@@ -46,4 +48,7 @@ public class Cliente {
 
     public Date getDataNascimento() { return dataNascimento; }
     public void setDataNascimento(Date dataNascimento) { this.dataNascimento = dataNascimento; }
+
+    public boolean isAtivo() { return ativo; }
+    public void setAtivo(boolean ativo) { this.ativo = ativo; }
 }

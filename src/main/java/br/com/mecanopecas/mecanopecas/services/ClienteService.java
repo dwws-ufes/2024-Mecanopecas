@@ -1,11 +1,14 @@
 package br.com.mecanopecas.mecanopecas.services;
 
+import br.com.mecanopecas.mecanopecas.model.Vendedor;
 import br.com.mecanopecas.mecanopecas.util.dtos.request.ClienteRequestDTO;
 import br.com.mecanopecas.mecanopecas.util.dtos.response.ClienteResponseDTO;
 import br.com.mecanopecas.mecanopecas.model.Cliente;
 import br.com.mecanopecas.mecanopecas.persistence.ClienteRepository;
+import br.com.mecanopecas.mecanopecas.util.dtos.response.VendedorResponseDTO;
 import br.com.mecanopecas.mecanopecas.util.mappers.ClienteMapper;
 import br.com.mecanopecas.mecanopecas.util.exceptions.ResourceNotFoundException;
+import br.com.mecanopecas.mecanopecas.util.mappers.VendedorMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,8 +27,11 @@ public class ClienteService {
 
     public ClienteResponseDTO create(ClienteRequestDTO clienteRequestDTO) {
         Cliente cliente = new Cliente();
+
         BeanUtils.copyProperties(clienteRequestDTO, cliente);
+        cliente.setAtivo(true);
         Cliente clienteSaved = clienteRepository.save(cliente);
+
         return ClienteMapper.toDto(clienteSaved);
     }
 
@@ -40,6 +46,14 @@ public class ClienteService {
         return ClienteMapper.toDtoList(clientes);
     }
 
+    public List<ClienteResponseDTO> readAllAtivos() {
+        List<Cliente> clientes = clienteRepository.findAll()
+                .stream().filter(Cliente::isAtivo)
+                .toList();
+
+        return ClienteMapper.toDtoList(clientes);
+    }
+
     public ClienteResponseDTO update(Long id, ClienteRequestDTO clienteRequestDTO) {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado."));
@@ -51,6 +65,9 @@ public class ClienteService {
     public void delete(Long id) {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado."));
-        clienteRepository.delete(cliente);
+
+        cliente.setAtivo(false);
+
+        clienteRepository.save(cliente);
     }
 }

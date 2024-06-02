@@ -6,7 +6,7 @@ import java.util.List;
 public record ClienteResponseDTO(Long id,
                                  String cpfCnpj,
                                  String nome,
-                                 //List<EnderecoResponseDTO> enderecos,
+                                 List<EnderecoResponseDTO> enderecos,
                                  //List<OrcamentoResponseDTO> orcamentos,
-                                 Date dataNascimento) {
-}
+                                 Date dataNascimento,
+                                 boolean ativo ) { }

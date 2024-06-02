@@ -4,5 +4,6 @@ import java.util.Date;
 
 public record ClienteRequestDTO(String cpfCnpj,
                                 String nome,
-                                Date dataNascimento) {
+                                Date dataNascimento,
+                                boolean ativo) {
 }
