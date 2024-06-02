@@ -16,6 +16,8 @@ public class Peca {
     @Column(name = "qtd_estoque")
     private int qtdEstoque;
 
+    private boolean ativo;
+
     public Long getId() { return id; }
 
     public String getNome() { return nome; }
@@ -26,4 +28,7 @@ public class Peca {
 
     public int getQtdEstoque() { return qtdEstoque; }
     public void setQtdEstoque(int qtdEstoque) { this.qtdEstoque = qtdEstoque; }
+
+    public boolean isAtivo() { return ativo; }
+    public void setAtivo(boolean ativo) { this.ativo = ativo; }
 }

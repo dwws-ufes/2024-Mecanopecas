@@ -40,6 +40,14 @@ public class PecaService {
         return PecaMapper.toDtoList(pecas);
     }
 
+    public List<PecaResponseDTO> readAllAtivas() {
+        List<Peca> pecas = pecaRepository.findAll()
+                .stream().filter(Peca::isAtivo)
+                .toList();
+
+        return PecaMapper.toDtoList(pecas);
+    }
+
     public PecaResponseDTO update(Long id, PecaRequestDTO pecaRequestDTO) {
         Peca peca = pecaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Peca não encontrada."));

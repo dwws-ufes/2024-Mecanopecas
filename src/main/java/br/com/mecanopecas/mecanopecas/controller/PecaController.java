@@ -36,6 +36,11 @@ public class PecaController {
         return ResponseEntity.ok(pecaService.readAll());
     }
 
+    @GetMapping("/ativas")
+    public ResponseEntity<List<PecaResponseDTO>> readAllPecasAtivas() {
+        return ResponseEntity.ok(pecaService.readAllAtivas());
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<PecaResponseDTO> updatePeca(@PathVariable Long id, @RequestBody PecaRequestDTO pecaRequestDTO) {
         return ResponseEntity.ok(pecaService.update(id, pecaRequestDTO));

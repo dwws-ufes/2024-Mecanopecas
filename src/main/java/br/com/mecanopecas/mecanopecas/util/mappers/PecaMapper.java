@@ -13,7 +13,8 @@ public class PecaMapper {
                 peca.getId(),
                 peca.getNome(),
                 peca.getPreco(),
-                peca.getQtdEstoque()
+                peca.getQtdEstoque(),
+                peca.isAtivo()
         );
     }
 
