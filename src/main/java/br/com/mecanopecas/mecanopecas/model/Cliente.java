@@ -17,10 +17,6 @@ public class Cliente {
 
     private String nome;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cliente_id")
-    private List<Endereco> enderecos;
-
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Orcamento> orcamentos;
 
@@ -39,9 +35,6 @@ public class Cliente {
 
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
-
-    public List<Endereco> getEnderecos() { return enderecos; }
-    public void setEnderecos(List<Endereco> enderecos) { this.enderecos = enderecos; }
 
     public List<Orcamento> getOrcamentos() { return orcamentos; }
     public void setOrcamentos(List<Orcamento> orcamentos) { this.orcamentos = orcamentos; }

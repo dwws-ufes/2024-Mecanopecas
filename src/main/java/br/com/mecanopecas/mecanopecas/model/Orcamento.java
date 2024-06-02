@@ -38,9 +38,6 @@ public class Orcamento {
     @OneToOne(mappedBy = "orcamento")
     private Venda venda;
 
-    @OneToOne(mappedBy = "orcamento")
-    private Entrega entrega;
-
 
     public Long getId() { return id; }
 
@@ -64,7 +61,4 @@ public class Orcamento {
 
     public Venda getVenda() { return venda; }
     public void setVenda(Venda venda) { this.venda = venda; }
-
-    public Entrega getEntrega() { return entrega; }
-    public void setEntrega(Entrega entrega) { this.entrega = entrega; }
 }

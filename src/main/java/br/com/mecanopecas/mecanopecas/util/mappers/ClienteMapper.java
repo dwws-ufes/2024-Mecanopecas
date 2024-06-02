@@ -13,7 +13,6 @@ public class ClienteMapper {
                 cliente.getId(),
                 cliente.getCpfCnpj(),
                 cliente.getNome(),
-                EnderecoMapper.toDtoList(cliente.getEnderecos()),
                 //OrcamentoMapper.toDtoList(cliente.getOrcamentos()),
                 cliente.getDataNascimento(),
                 cliente.isAtivo()
