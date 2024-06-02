@@ -9,6 +9,7 @@ import br.com.mecanopecas.mecanopecas.model.Vendedor;
 import br.com.mecanopecas.mecanopecas.util.dtos.request.VendedorRequestDTO;
 import br.com.mecanopecas.mecanopecas.persistence.VendedorRepository;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,10 +19,12 @@ import java.util.List;
 public class VendedorService {
 
     private final VendedorRepository vendedorRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public VendedorService(VendedorRepository vendedorRepository) {
+    public VendedorService(VendedorRepository vendedorRepository, PasswordEncoder passwordEncoder) {
         this.vendedorRepository = vendedorRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public VendedorResponseDTO create(VendedorRequestDTO vendedorRequestDTO) {
@@ -37,6 +40,7 @@ public class VendedorService {
 
         BeanUtils.copyProperties(vendedorRequestDTO, vendedor);
         vendedor.setAtivo(true);
+        vendedor.setPassword(passwordEncoder.encode(vendedorRequestDTO.password()));
         Vendedor vendedorSaved = vendedorRepository.save(vendedor);
 
         return VendedorMapper.toDto(vendedorSaved);
