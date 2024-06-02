@@ -12,7 +12,7 @@ public class GerenteMapper {
         return new GerenteResponseDTO(
                 gerente.getId(),
                 gerente.getNome(),
-                gerente.getDataPromocao(),
+                gerente.getDataPromovido(),
                 gerente.getCodigoDesconto(),
                 gerente.getPercentualMaxDesconto()
         );

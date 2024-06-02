@@ -12,33 +12,22 @@ import jakarta.persistence.*;
 public class Gerente extends Vendedor {
 
     @Column(nullable = false, name = "data_promovido")
-    private LocalDate dataPromocao;
-
-    @Column(name = "codigo_desconto")
-    private Double codigoDesconto;
+    private LocalDate dataPromovido;
 
     @Column(name = "percentual_maximo_desconto")
     private Double percentualMaxDesconto;
 
     public Gerente() {}
     public Gerente(LocalDate dataPromocao, Double codigoDesconto, Double percentualMaxDesconto) {
-        this.dataPromocao = dataPromocao;
-        this.codigoDesconto = codigoDesconto;
+        this.dataPromovido = dataPromocao;
         this.percentualMaxDesconto = percentualMaxDesconto;
     }
 
-    public LocalDate getDataPromocao() {
-        return dataPromocao;
+    public LocalDate getDataPromovido() {
+        return dataPromovido;
     }
-    public void setDataPromocao(LocalDate dataPromocao) {
-        this.dataPromocao = dataPromocao;
-    }
-
-    public Double getCodigoDesconto() {
-        return codigoDesconto;
-    }
-    public void setCodigoDesconto(Double codigoDesconto) {
-        this.codigoDesconto = codigoDesconto;
+    public void setDataPromovido(LocalDate dataPromocao) {
+        this.dataPromovido = dataPromocao;
     }
 
     public Double getPercentualMaxDesconto() {
