@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -44,39 +46,48 @@ public class AuthenticationService {
 //    }
 
     public String authenticate(AuthenticateRequestDTO authenticateRequestDTO){
+        Map<String, Long> roleIds = new HashMap<>();
+
         Optional<Admin> admin = adminRepository.findByEmailInstitucional(authenticateRequestDTO.email());
         if (admin.isPresent()) {
             if (admin.get().getPassword().equals(authenticateRequestDTO.password()) ) {
-                return generateToken(admin.get().getId(), Role.ADMIN);
+                roleIds.put("adminId", admin.get().getId());
+                return generateToken(Role.ADMIN, roleIds);
             }
         }
 
         Optional<Vendedor> vendedor = vendedorRepository.findByEmailInstitucional(authenticateRequestDTO.email());
         if (vendedor.isPresent()) {
             if (vendedor.get().getPassword().equals(authenticateRequestDTO.password()) ) {
+                roleIds.put("vendedorId", vendedor.get().getId());
+
                 Optional<Gerente> gerente = gerenteRepository.findByVendedorId(vendedor.get().getId());
                 if (gerente.isPresent()) {
-                    return generateToken(gerente.get().getId(), Role.GERENTE);
+                    roleIds.put("gerenteId", gerente.get().getId());
+                    return generateToken(Role.GERENTE, roleIds);
                 }
-                return generateToken(vendedor.get().getId(), Role.VENDEDOR);
+                return generateToken(Role.VENDEDOR, roleIds);
             }
         }
         throw new BadRequestException("Invalid email or password");
     }
 
-    public String generateToken(Long id, Role role) {
+    public String generateToken(Role role, Map<String, Long> roleIds) {
         Instant now = Instant.now();
         long expiry = 3600L;
 
-        JwtClaimsSet claims = JwtClaimsSet.builder()
+        JwtClaimsSet.Builder claimsBuilder = JwtClaimsSet.builder()
                 .issuer("Mecanopecas")
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(expiry))
                 .subject("Mecanopecas")
-                .claim("role", role)
-                .claim("id", id)
-                .build();
+                .claim("role", role);
 
+        roleIds.forEach((roleName, id) -> {
+            claimsBuilder.claim(roleName, id);
+        });
+
+        JwtClaimsSet claims = claimsBuilder.build();
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 

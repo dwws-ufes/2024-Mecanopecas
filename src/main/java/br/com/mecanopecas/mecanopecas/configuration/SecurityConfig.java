@@ -34,7 +34,7 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/authenticate", "/api/vendedores/**", "/private/public").permitAll()
+                        auth -> auth.requestMatchers("/authenticate", "/api/vendedores/**", "/private/public", "/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
