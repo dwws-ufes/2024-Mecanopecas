@@ -12,9 +12,9 @@ public class GerenteMapper {
     public static GerenteResponseDTO toDto(Gerente gerente) {
         return new GerenteResponseDTO(
                 gerente.getId(),
-                gerente.getNome(),
-                gerente.getCpf(),
-                gerente.getEmailInstitucional(),
+                gerente.getVendedor().getNome(),
+                gerente.getVendedor().getCpf(),
+                gerente.getVendedor().getEmailInstitucional(),
                 gerente.getDataPromovido(),
                 gerente.getPercentualMaxDesconto()
         );

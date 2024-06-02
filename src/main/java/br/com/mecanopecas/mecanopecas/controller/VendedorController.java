@@ -2,6 +2,7 @@ package br.com.mecanopecas.mecanopecas.controller;
 
 import br.com.mecanopecas.mecanopecas.util.dtos.response.PecaResponseDTO;
 import br.com.mecanopecas.mecanopecas.util.dtos.response.VendedorResponseDTO;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class VendedorController {
     }
 
     @PostMapping()
-    public ResponseEntity<VendedorResponseDTO> createVendedor(@RequestBody VendedorRequestDTO vendedorRequestDTO){
+    public ResponseEntity<VendedorResponseDTO> createVendedor(@Valid @RequestBody VendedorRequestDTO vendedorRequestDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(vendedorService.create(vendedorRequestDTO));
     }
 
@@ -43,7 +44,7 @@ public class VendedorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<VendedorResponseDTO> updateVendedor(@PathVariable Long id, @RequestBody VendedorRequestDTO vendedorRequestDTO){
+    public ResponseEntity<VendedorResponseDTO> updateVendedor(@PathVariable Long id, @Valid @RequestBody VendedorRequestDTO vendedorRequestDTO){
         return ResponseEntity.ok(vendedorService.update(id, vendedorRequestDTO));
     }
 

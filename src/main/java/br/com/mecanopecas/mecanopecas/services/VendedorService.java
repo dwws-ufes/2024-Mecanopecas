@@ -1,6 +1,7 @@
 package br.com.mecanopecas.mecanopecas.services;
 
 import br.com.mecanopecas.mecanopecas.util.dtos.response.VendedorResponseDTO;
+import br.com.mecanopecas.mecanopecas.util.exceptions.BadRequestException;
 import br.com.mecanopecas.mecanopecas.util.exceptions.NotFoundException;
 import br.com.mecanopecas.mecanopecas.util.mappers.VendedorMapper;
 import org.springframework.beans.BeanUtils;
@@ -24,6 +25,14 @@ public class VendedorService {
     }
 
     public VendedorResponseDTO create(VendedorRequestDTO vendedorRequestDTO) {
+        if (vendedorRepository.existsByCpf(vendedorRequestDTO.cpf())) {
+            throw new BadRequestException("Já existe um vendedor com o mesmo CPF");
+        }
+
+        if (vendedorRepository.existsByEmailInstitucional(vendedorRequestDTO.emailInstitucional())) {
+            throw new BadRequestException("Já existe um vendedor com o mesmo email institucional");
+        }
+
         var vendedor = new Vendedor();
 
         BeanUtils.copyProperties(vendedorRequestDTO, vendedor);

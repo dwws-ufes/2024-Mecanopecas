@@ -3,6 +3,7 @@ package br.com.mecanopecas.mecanopecas.controller;
 import br.com.mecanopecas.mecanopecas.util.dtos.request.PecaRequestDTO;
 import br.com.mecanopecas.mecanopecas.util.dtos.response.PecaResponseDTO;
 import br.com.mecanopecas.mecanopecas.services.PecaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class PecaController {
     }
 
     @PostMapping()
-    public ResponseEntity<PecaResponseDTO> createPeca(@RequestBody PecaRequestDTO pecaRequestDTO) {
+    public ResponseEntity<PecaResponseDTO> createPeca(@Valid @RequestBody PecaRequestDTO pecaRequestDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(pecaService.create(pecaRequestDTO));
     }
 
@@ -42,7 +43,7 @@ public class PecaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PecaResponseDTO> updatePeca(@PathVariable Long id, @RequestBody PecaRequestDTO pecaRequestDTO) {
+    public ResponseEntity<PecaResponseDTO> updatePeca(@PathVariable Long id, @Valid @RequestBody PecaRequestDTO pecaRequestDTO) {
         return ResponseEntity.ok(pecaService.update(id, pecaRequestDTO));
     }
 
