@@ -13,18 +13,15 @@ public class Entrega {
 
     private String recebedor;
 
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Endereco endereco;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    private Frete frete;
-
     @Column(name = "responsavel_entrega")
     private String responsavelEntrega;
 
     @Column(name = "tipo_entrega")
     private int tipoEntrega;
+
+    @OneToOne
+    @JoinColumn(name = "orcamento_id")
+    private Orcamento orcamento;
 
     public Long getId() {
         return id;
@@ -33,31 +30,13 @@ public class Entrega {
     public String getRecebedor() {
         return recebedor;
     }
-
     public void setRecebedor(String recebedor) {
         this.recebedor = recebedor;
-    }
-
-    public Endereco getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
-    }
-
-    public Frete getFrete() {
-        return frete;
-    }
-
-    public void setFrete(Frete frete) {
-        this.frete = frete;
     }
 
     public String getResponsavelEntrega() {
         return responsavelEntrega;
     }
-
     public void setResponsavelEntrega(String responsavelEntrega) {
         this.responsavelEntrega = responsavelEntrega;
     }
@@ -65,7 +44,6 @@ public class Entrega {
     public int getTipoEntrega() {
         return tipoEntrega;
     }
-
     public void setTipoEntrega(int tipoEntrega) {
         this.tipoEntrega = tipoEntrega;
     }

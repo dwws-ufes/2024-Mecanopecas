@@ -30,7 +30,6 @@ public class Gerente extends Vendedor {
     public LocalDate getDataPromocao() {
         return dataPromocao;
     }
-
     public void setDataPromocao(LocalDate dataPromocao) {
         this.dataPromocao = dataPromocao;
     }
@@ -38,7 +37,6 @@ public class Gerente extends Vendedor {
     public Double getCodigoDesconto() {
         return codigoDesconto;
     }
-
     public void setCodigoDesconto(Double codigoDesconto) {
         this.codigoDesconto = codigoDesconto;
     }
@@ -46,7 +44,6 @@ public class Gerente extends Vendedor {
     public Double getPercentualMaxDesconto() {
         return percentualMaxDesconto;
     }
-
     public void setPercentualMaxDesconto(Double percentualMaxDesconto) {
         this.percentualMaxDesconto = percentualMaxDesconto;
     }

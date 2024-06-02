@@ -1,12 +1,13 @@
-package br.com.mecanopecas.mecanopecas.model;
+package br.com.mecanopecas.mecanopecas.model.enums;
 
-public enum EntregaEnum {
-    RETIRADA(1, "retirada"), DELIVERY(2, "delivery");
+public enum TipoEntregaEnum {
+    RETIRADA(1, "Retirada"),
+    DELIVERY(2, "Delivery");
 
     private int codigo;
     private String descricao;
 
-    private EntregaEnum(int codigo, String descricao) {
+    private TipoEntregaEnum(int codigo, String descricao) {
         this.codigo = codigo;
         this.descricao = descricao;
     }

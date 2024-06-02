@@ -16,7 +16,6 @@ public class Admin extends Funcionario {
     public String getEmailPessoal() {
         return emailPessoal;
     }
-
     public void setEmailPessoal(String emailPessoal) {
         this.emailPessoal = emailPessoal;
     }

@@ -19,7 +19,12 @@ public class Frete {
     @Column(nullable = false, name = "valor_base")
     private BigDecimal valorBase;
 
-    private int veiculo;
+    @Column(name = "tipo_frete")
+    private int tipoFrete;
+
+    @OneToOne
+    @JoinColumn(name = "entrega_id")
+    private Entrega entrega;
 
     public Long getId() {
         return id;
@@ -28,7 +33,6 @@ public class Frete {
     public BigDecimal getValorSeguro() {
         return valorSeguro;
     }
-
     public void setValorSeguro(BigDecimal valorSeguro) {
         this.valorSeguro = valorSeguro;
     }
@@ -36,16 +40,14 @@ public class Frete {
     public BigDecimal getValorBase() {
         return valorBase;
     }
-
     public void setValorBase(BigDecimal valorBase) {
         this.valorBase = valorBase;
     }
 
-    public int getVeiculo() {
-        return veiculo;
+    public int getTipoFrete() {
+        return tipoFrete;
     }
-
-    public void setVeiculo(int veiculo) {
-        this.veiculo = veiculo;
+    public void setTipoFrete(int tipoFrete) {
+        this.tipoFrete = tipoFrete;
     }
 }
