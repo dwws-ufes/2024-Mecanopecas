@@ -4,7 +4,8 @@ import java.time.LocalDate;
 
 public record GerenteResponseDTO(Long id,
                                  String nome,
+                                 String cpf,
+                                 String emailInstituicional,
                                  LocalDate dataPromocao,
-                                 Double codigoDesconto,
                                  Double percentualMaxDesconto) {
 }

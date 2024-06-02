@@ -12,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -32,8 +33,10 @@ public class GerenteService {
                 .orElseThrow(() -> new ResourceNotFoundException("Vendedor não encontrado."));
 
         Gerente gerente = new Gerente();
+
         BeanUtils.copyProperties(vendedor, gerente);
         BeanUtils.copyProperties(gerenteRequestDTO, gerente);
+        gerente.setDataPromovido(LocalDate.now());
 
         Gerente gerenteSaved = gerenteRepository.save(gerente);
         return GerenteMapper.toDto(gerenteSaved);
