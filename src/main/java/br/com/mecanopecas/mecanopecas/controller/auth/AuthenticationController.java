@@ -20,7 +20,7 @@ public class AuthenticationController {
     private AuthenticationService authenticationService;
 
 
-    @PostMapping("authenticate")
+    @PostMapping("/authenticate")
     public ResponseEntity<String> authenticate(@RequestBody AuthenticateRequestDTO authenticateRequestDTO){
         return ResponseEntity.ok(authenticationService.authenticate(authenticateRequestDTO));
     }

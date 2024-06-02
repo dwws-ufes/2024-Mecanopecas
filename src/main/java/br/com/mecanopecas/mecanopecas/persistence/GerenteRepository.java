@@ -10,11 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface GerenteRepository extends JpaRepository<Gerente, Long>
-{
+public interface GerenteRepository extends JpaRepository<Gerente, Long> {
     @Query("SELECT COUNT(g) > 0 FROM Gerente g WHERE g.vendedor.id = :vendedorId")
     boolean existsByVendedorId(@Param("vendedorId") Long vendedorId);
-    Optional<Gerente> findByVendedor(Vendedor vendedor);
-}
-public interface GerenteRepository extends JpaRepository<Gerente, Long> {
+
+    Optional<Gerente> findByVendedorId(Long id);
 }

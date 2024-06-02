@@ -53,11 +53,12 @@ public class AuthenticationService {
 
         Optional<Vendedor> vendedor = vendedorRepository.findByEmailInstitucional(authenticateRequestDTO.email());
         if (vendedor.isPresent()) {
-            Optional<Gerente> gerente = gerenteRepository.findByVendedor(vendedor.get());
             if (vendedor.get().getPassword().equals(authenticateRequestDTO.password()) ) {
+                Optional<Gerente> gerente = gerenteRepository.findByVendedorId(vendedor.get().getId());
+                if (gerente.isPresent()) {
+                    return generateToken(gerente.get().getId(), Role.GERENTE);
+                }
                 return generateToken(vendedor.get().getId(), Role.VENDEDOR);
-            } else if (gerente.isPresent()) {
-                return generateToken(gerente.get().getId(), Role.GERENTE);
             }
         }
         throw new BadRequestException("Invalid email or password");
