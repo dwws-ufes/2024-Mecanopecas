@@ -1,7 +1,6 @@
 package br.com.mecanopecas.mecanopecas.model;
 
 import jakarta.persistence.*;
-import br.com.mecanopecas.mecanopecas.model.Endereco;
 
 @Entity
 @Table(name = "entregas")
@@ -19,8 +18,11 @@ public class Entrega {
     @Column(name = "tipo_entrega")
     private int tipoEntrega;
 
+    @ManyToOne
+    @JoinColumn(name = "endereco_id")
+    private Endereco endereco;
+
     @OneToOne
-    @JoinColumn(name = "orcamento_id")
     private Orcamento orcamento;
 
     public Long getId() {
@@ -46,5 +48,19 @@ public class Entrega {
     }
     public void setTipoEntrega(int tipoEntrega) {
         this.tipoEntrega = tipoEntrega;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public Orcamento getOrcamento() {
+        return orcamento;
+    }
+    public void setOrcamento(Orcamento orcamento) {
+        this.orcamento = orcamento;
     }
 }

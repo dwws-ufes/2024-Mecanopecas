@@ -12,42 +12,37 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String cpf;
+    @Column(unique = true, nullable = false)
+    private String cpfCnpj;
 
     private String nome;
 
-    @Column(name = "tipo_cliente")
-    private int tipoCliente;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cliente_id")
+    private List<Endereco> enderecos;
 
-    @ManyToOne
-    private Empresa empresa;
-
-    @OneToOne
-    private Endereco endereco;
-
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Orcamento> orcamentos;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "data_nascimento")
     private Date dataNascimento;
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getCpf() { return cpf; }
-    public void setCpf(String cpf) { this.cpf = cpf; }
+    public String getCpfCnpj() { return cpfCnpj;}
+    public void setCpfCnpj(String cpfCnpj) { this.cpfCnpj = cpfCnpj; }
 
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
 
-    public int getTipoCliente() { return tipoCliente; }
-    public void setTipoCliente(int tipoCliente) { this.tipoCliente = tipoCliente; }
+    public List<Endereco> getEnderecos() { return enderecos; }
+    public void setEnderecos(List<Endereco> enderecos) { this.enderecos = enderecos; }
 
-    public Empresa getEmpresa() { return empresa; }
-    public void setEmpresa(Empresa empresa) { this.empresa = empresa; }
-
-    public Endereco getEndereco() { return endereco; }
-    public void setEndereco(Endereco endereco) { this.endereco = endereco; }
+    public List<Orcamento> getOrcamentos() { return orcamentos; }
+    public void setOrcamentos(List<Orcamento> orcamentos) { this.orcamentos = orcamentos; }
 
     public Date getDataNascimento() { return dataNascimento; }
     public void setDataNascimento(Date dataNascimento) { this.dataNascimento = dataNascimento; }
