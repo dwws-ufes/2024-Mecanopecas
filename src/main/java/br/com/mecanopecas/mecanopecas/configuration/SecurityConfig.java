@@ -1,11 +1,13 @@
 package br.com.mecanopecas.mecanopecas.configuration;
 
+import br.com.mecanopecas.mecanopecas.model.Roles;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -34,7 +36,16 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/authenticate", "/api/vendedores/**", "/private/public", "/**").permitAll()
+                        auth -> auth
+                                .requestMatchers("/authenticate").permitAll() // Permitir tudo
+                                .requestMatchers("/api/**").permitAll() // Permitir tudo
+                                .requestMatchers(HttpMethod.PUT, "/orcamentos/*/desconto").hasAnyRole(Roles.GERENTE.name(), Roles.ADMIN.name())
+                                .requestMatchers("/orcamentos").permitAll() // Permitir tudo
+//                                .requestMatchers(HttpMethod.POST, "/api/vendedores").hasRole(Role.ADMIN.name())
+//                                .requestMatchers("/api/vendedores/**").hasAnyRole(Role.VENDEDOR.name(), Role.GERENTE.name(), Role.ADMIN.name())
+//                                .requestMatchers("/admin/**").hasRole(Role.ADMIN.name())
+//                                .requestMatchers("/api/gerentes**").hasAnyRole(Role.ADMIN.name(), Role.VENDEDOR.name())
+//                                .requestMatchers("/api/pecas**").hasAnyRole(Role.VENDEDOR.name(), Role.GERENTE.name(), Role.ADMIN.name())
                                 .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
