@@ -24,8 +24,11 @@ public class PecaService {
 
     public PecaResponseDTO create(PecaRequestDTO pecaRequestDTO) {
         Peca peca = new Peca();
+
         BeanUtils.copyProperties(pecaRequestDTO, peca);
+        peca.setAtivo(true);
         Peca pecaSaved = pecaRepository.save(peca);
+
         return PecaMapper.toDto(pecaSaved);
     }
 
@@ -59,6 +62,9 @@ public class PecaService {
     public void delete(Long id) {
         Peca peca = pecaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Peca não encontrada."));
-        pecaRepository.delete(peca);
+
+        peca.setAtivo(false);
+
+        pecaRepository.save(peca);
     }
 }
