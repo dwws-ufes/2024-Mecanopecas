@@ -1,5 +1,6 @@
 package br.com.mecanopecas.mecanopecas.services;
 
+import br.com.mecanopecas.mecanopecas.model.Peca;
 import br.com.mecanopecas.mecanopecas.util.dtos.response.VendedorResponseDTO;
 import br.com.mecanopecas.mecanopecas.util.exceptions.ResourceNotFoundException;
 import br.com.mecanopecas.mecanopecas.util.mappers.VendedorMapper;
@@ -27,6 +28,7 @@ public class VendedorService {
         var vendedor = new Vendedor();
 
         BeanUtils.copyProperties(vendedorRequestDTO, vendedor);
+        vendedor.setAtivo(true);
         Vendedor vendedorSaved = vendedorRepository.save(vendedor);
 
         return VendedorMapper.toDto(vendedorSaved);
@@ -45,6 +47,14 @@ public class VendedorService {
         return VendedorMapper.toDtoList(vendedores);
     }
 
+    public List<VendedorResponseDTO> readAllAtivos() {
+        List<Vendedor> vendedores = vendedorRepository.findAll()
+                .stream().filter(Vendedor::isAtivo)
+                .toList();
+
+        return VendedorMapper.toDtoList(vendedores);
+    }
+
     public VendedorResponseDTO update(Long id, VendedorRequestDTO vendedorRequestDTO) {
         Vendedor vendedor = vendedorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Vendedor não encontrado."));
@@ -59,6 +69,8 @@ public class VendedorService {
         Vendedor vendedor = vendedorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Vendedor não encontrado."));
 
-        vendedorRepository.delete(vendedor);
+        vendedor.setAtivo(false);
+
+        vendedorRepository.save(vendedor);
     }
 }

@@ -11,7 +11,13 @@ public class VendedorMapper {
     public static VendedorResponseDTO toDto(Vendedor vendedor) {
         return new VendedorResponseDTO(
                 vendedor.getId(),
-                vendedor.getNome()
+                vendedor.getNome(),
+                vendedor.getCpf(),
+                vendedor.getTelefone(),
+                vendedor.getEmailInstitucional(),
+                vendedor.getDataNascimento(),
+                vendedor.isAtivo()
+
         );
     }
 

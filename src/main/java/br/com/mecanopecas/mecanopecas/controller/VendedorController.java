@@ -1,5 +1,6 @@
 package br.com.mecanopecas.mecanopecas.controller;
 
+import br.com.mecanopecas.mecanopecas.util.dtos.response.PecaResponseDTO;
 import br.com.mecanopecas.mecanopecas.util.dtos.response.VendedorResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +33,13 @@ public class VendedorController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<VendedorResponseDTO>> readAllVendedor() {
+    public ResponseEntity<List<VendedorResponseDTO>> readAllVendedores() {
         return ResponseEntity.ok(vendedorService.readAll());
+    }
+
+    @GetMapping("/ativos")
+    public ResponseEntity<List<VendedorResponseDTO>> readAllVendedoresAtivos() {
+        return ResponseEntity.ok(vendedorService.readAllAtivos());
     }
 
     @PutMapping("/{id}")

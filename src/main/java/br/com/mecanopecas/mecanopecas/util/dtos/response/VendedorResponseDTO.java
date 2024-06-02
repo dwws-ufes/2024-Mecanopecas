@@ -1,11 +1,12 @@
 package br.com.mecanopecas.mecanopecas.util.dtos.response;
-    public record VendedorResponseDTO(Long id,
-                                     String nome
-    ) {
 
-        public VendedorResponseDTO(Long id, String nome) {
-            this.id = id;
-            this.nome = nome;
-        }
-    }
+import java.time.LocalDate;
+
+public record VendedorResponseDTO(Long id,
+                                  String nome,
+                                  String cpf,
+                                  String telefone,
+                                  String emailInstitucional,
+                                  LocalDate dataNascimento,
+                                  boolean ativo) {  }
 
