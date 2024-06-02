@@ -22,7 +22,7 @@ public class VendedorController {
         this.vendedorService = vendedorService;
     }
 
-    @PostMapping("/")
+    @PostMapping()
     public ResponseEntity<VendedorResponseDTO> createVendedor(@RequestBody VendedorRequestDTO vendedorRequestDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(vendedorService.create(vendedorRequestDTO));
     }
@@ -32,7 +32,7 @@ public class VendedorController {
         return ResponseEntity.ok(vendedorService.read(id));
     }
 
-    @GetMapping("/")
+    @GetMapping()
     public ResponseEntity<List<VendedorResponseDTO>> readAllVendedores() {
         return ResponseEntity.ok(vendedorService.readAll());
     }

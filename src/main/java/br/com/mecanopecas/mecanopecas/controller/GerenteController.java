@@ -32,7 +32,7 @@ public class GerenteController {
         return ResponseEntity.ok(gerenteService.read(id));
     }
 
-    @GetMapping("/")
+    @GetMapping()
     public ResponseEntity<List<GerenteResponseDTO>> readAllGerentes() {
         return ResponseEntity.ok(gerenteService.readAll());
     }

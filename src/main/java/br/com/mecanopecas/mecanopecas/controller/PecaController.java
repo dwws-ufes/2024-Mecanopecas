@@ -21,7 +21,7 @@ public class PecaController {
         this.pecaService = pecaService;
     }
 
-    @PostMapping("/")
+    @PostMapping()
     public ResponseEntity<PecaResponseDTO> createPeca(@RequestBody PecaRequestDTO pecaRequestDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(pecaService.create(pecaRequestDTO));
     }
@@ -31,7 +31,7 @@ public class PecaController {
         return ResponseEntity.ok(pecaService.read(id));
     }
 
-    @GetMapping("/")
+    @GetMapping()
     public ResponseEntity<List<PecaResponseDTO>> readAllPecas() {
         return ResponseEntity.ok(pecaService.readAll());
     }

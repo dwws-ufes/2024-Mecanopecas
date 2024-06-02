@@ -4,6 +4,7 @@ import br.com.mecanopecas.mecanopecas.model.Orcamento;
 import br.com.mecanopecas.mecanopecas.util.dtos.response.OrcamentoDetailResponseDTO;
 import br.com.mecanopecas.mecanopecas.util.dtos.response.OrcamentoResponseDTO;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,8 +20,12 @@ public class OrcamentoMapper {
                 orcamento.getStatus()
         );
     }
-    public static List<OrcamentoResponseDTO> toDtoList(List<Orcamento> orcamento) {
-        return orcamento.stream()
+    public static List<OrcamentoResponseDTO> toDtoList(List<Orcamento> orcamentos) {
+        if (orcamentos == null) {
+            return Collections.emptyList();
+        }
+
+        return orcamentos.stream()
                 .map(OrcamentoMapper::toDto)
                 .collect(Collectors.toList());
     }

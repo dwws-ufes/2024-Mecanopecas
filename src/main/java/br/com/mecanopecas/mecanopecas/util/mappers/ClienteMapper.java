@@ -3,6 +3,7 @@ package br.com.mecanopecas.mecanopecas.util.mappers;
 import br.com.mecanopecas.mecanopecas.model.Cliente;
 import br.com.mecanopecas.mecanopecas.util.dtos.response.ClienteResponseDTO;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +21,10 @@ public class ClienteMapper {
     }
 
     public static List<ClienteResponseDTO> toDtoList(List<Cliente> clientes) {
+        if (clientes == null) {
+            return Collections.emptyList();
+        }
+
         return clientes.stream()
                 .map(ClienteMapper::toDto)
                 .collect(Collectors.toList());

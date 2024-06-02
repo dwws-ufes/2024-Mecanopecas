@@ -22,7 +22,7 @@ public class ClienteController {
         this.clienteService = clienteService;
     }
 
-    @PostMapping("/")
+    @PostMapping()
     public ResponseEntity<ClienteResponseDTO> createCliente(@RequestBody ClienteRequestDTO clienteRequestDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.create(clienteRequestDTO));
     }
@@ -32,7 +32,7 @@ public class ClienteController {
         return ResponseEntity.ok(clienteService.read(id));
     }
 
-    @GetMapping("/")
+    @GetMapping()
     public ResponseEntity<List<ClienteResponseDTO>> readAllClientes() {
         return ResponseEntity.ok(clienteService.readAll());
     }
