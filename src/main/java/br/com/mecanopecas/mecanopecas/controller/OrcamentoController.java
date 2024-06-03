@@ -42,7 +42,7 @@ public class OrcamentoController {
 
     @PostMapping
     public ResponseEntity<OrcamentoResponseDTO> createOrcamento(@RequestHeader("Authorization") String auth, @Valid @RequestBody OrcamentoRequestDTO orcamentoRequestDTO) {
-
+        // obter gerenteId do token
         if (auth != null && auth.startsWith("Bearer ")) {
             String token = auth.substring(7);
             Jwt jwt = jwtDecoder.decode(token);
@@ -70,8 +70,6 @@ public class OrcamentoController {
 
     @PutMapping("/{id}/desconto")
     public ResponseEntity<OrcamentoDetailResponseDTO> applyDescontoOrcamento(@RequestHeader("Authorization") String auth , @PathVariable Long id, @RequestParam double descontoPercentual) {
-        System.out.println("AQUIIIII: " + Roles.GERENTE.name());
-
         //obter gerenteId do token
         if (auth != null && auth.startsWith("Bearer ")) {
             String token = auth.substring(7);
