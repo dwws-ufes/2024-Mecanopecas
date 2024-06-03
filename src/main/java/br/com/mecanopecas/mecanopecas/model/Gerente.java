@@ -1,53 +1,36 @@
 package br.com.mecanopecas.mecanopecas.model;
 
-import jakarta.persistence.Column;
-
-import java.time.LocalDate;
-
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "gerentes")
-@PrimaryKeyJoinColumn(name = "vendedorId")
-public class Gerente extends Vendedor {
+public class Gerente {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "vendedor_id", referencedColumnName = "id", nullable = false)
+    private Vendedor vendedor;
+
+    @CreationTimestamp
     @Column(nullable = false, name = "data_promovido")
-    private LocalDate dataPromocao;
-
-    @Column(name = "codigo_desconto")
-    private Double codigoDesconto;
+    private LocalDateTime dataPromovido;
 
     @Column(name = "percentual_maximo_desconto")
     private Double percentualMaxDesconto;
 
-    public Gerente() {}
-    public Gerente(LocalDate dataPromocao, Double codigoDesconto, Double percentualMaxDesconto) {
-        this.dataPromocao = dataPromocao;
-        this.codigoDesconto = codigoDesconto;
-        this.percentualMaxDesconto = percentualMaxDesconto;
-    }
+    public Long getId() { return id; }
 
-    public LocalDate getDataPromocao() {
-        return dataPromocao;
-    }
+    public Vendedor getVendedor() { return vendedor; }
+    public void setVendedor(Vendedor vendedor) { this.vendedor = vendedor; }
 
-    public void setDataPromocao(LocalDate dataPromocao) {
-        this.dataPromocao = dataPromocao;
-    }
+    public LocalDateTime getDataPromovido() { return dataPromovido; }
 
-    public Double getCodigoDesconto() {
-        return codigoDesconto;
-    }
-
-    public void setCodigoDesconto(Double codigoDesconto) {
-        this.codigoDesconto = codigoDesconto;
-    }
-
-    public Double getPercentualMaxDesconto() {
-        return percentualMaxDesconto;
-    }
-
-    public void setPercentualMaxDesconto(Double percentualMaxDesconto) {
-        this.percentualMaxDesconto = percentualMaxDesconto;
-    }
+    public Double getPercentualMaxDesconto() { return percentualMaxDesconto; }
+    public void setPercentualMaxDesconto(Double percentualMaxDesconto) { this.percentualMaxDesconto = percentualMaxDesconto; }
 }
