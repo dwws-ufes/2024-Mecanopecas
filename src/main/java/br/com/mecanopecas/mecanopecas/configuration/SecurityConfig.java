@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         auth -> auth
                                 .requestMatchers("/authenticate").permitAll() // Permitir tudo
-//                                .requestMatchers("/api/**").permitAll() // Permitir tudo
+                                .requestMatchers("/**").permitAll() // Permitir tudo
 //                                .requestMatchers(HttpMethod.PUT, "/orcamentos/*/desconto").hasAnyRole(Roles.GERENTE.name(), Roles.ADMIN.name())
                                 .requestMatchers("/orcamentos").permitAll() // Permitir tudo
 //                                .requestMatchers(HttpMethod.POST, "/api/vendedores").hasRole(Role.ADMIN.name())
