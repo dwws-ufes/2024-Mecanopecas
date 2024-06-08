@@ -56,3 +56,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+node_modules
+node_modules/
+node_modules/*
+front-mecanopecas/node_modules

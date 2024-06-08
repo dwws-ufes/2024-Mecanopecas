@@ -1,22 +1,18 @@
 import './App.css';
 import React from 'react';
-
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import Orcamento from "./pages/Orcamento";
-import Cliente from "./pages/Cliente";
+import Login from './pages/Login';
+import Home from "./pages/Home";
 
-// function App() {
-//   return <AppRoutes />
-// }
 
-const App: React.FC = () => {
+function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path='/orcamento' element={<Orcamento />} />
-        <Route path='/cliente' element={<Cliente />} />
-      </Routes>
+        <Routes>
+            <Route exact path="/" element={<Home />} />
+            <Route path="/login"  element={<Login />} />
+        </Routes>
     </BrowserRouter>
   )
 }
