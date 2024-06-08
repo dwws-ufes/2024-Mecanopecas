@@ -1,10 +1,9 @@
-
 import api from '../repositories/api';
 import {AxiosPromise} from "axios";
 import {useQuery} from "@tanstack/react-query";
-import {orcamentoDTO} from "../repositories/testeDTO.ts";
+import {orcamentoDTO} from "../dtos/orcamentosDTO.ts";
 
-const fetchData = async (): AxiosPromise<orcamentoDTO> => {
+const fetchData = async (): AxiosPromise<orcamentoDTO[]> => {
     return await api.get('/orcamentos');
 }
 
