@@ -65,9 +65,9 @@ const Orcamentos = () => {
                                     {orcamentosData?.map((orcamento, index) => (
                                         <CardOrcamento
                                             key={index}
-                                            id={orcamento}
+                                            id={orcamento.id}
                                             codigo={orcamento.codigo}
-                                            nomeCliente={orcamento.nomeCliente}
+                                            nomeCliente={orcamento.clienteNome}
                                             dataOrcamento={orcamento.dataOrcamento}
                                             dataExpiracao={orcamento.dataExpiracao}
                                             status={orcamento.status} />
