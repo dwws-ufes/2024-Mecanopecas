@@ -2,10 +2,14 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Login from './view/pages/Login';
 import Home from "./view/pages/Home";
-import VendedorListPage from "./view/pages/Vendedores/vendedorListPage";
-import VendedorUpdatePage from "./view/pages/Vendedores/vendedorUpdatePage";
-import VendedorCreatePage from "./view/pages/Vendedores/vendedorCreatePage";
 
+import VendedorListPage from "./view/pages/vendedores/vendedorListPage";
+import VendedorUpdatePage from "./view/pages/vendedores/vendedorUpdatePage";
+import VendedorCreatePage from "./view/pages/vendedores/vendedorCreatePage";
+
+import PecaListPage from "./view/pages/pecas/pecaListPage";
+import PecaUpdatePage from "./view/pages/pecas/pecaUpdatePage";
+import PecaCreatePage from "./view/pages/pecas/pecaCreatePage";
 
 function App() {
   return (
@@ -13,10 +17,15 @@ function App() {
         <Routes>
             <Route exact path="/" element={<Home />} />
             <Route path="/login"  element={<Login />} />
-            {/* <Route path="/orcamentos"  element={<Orcamentos />} /> */}
+            
             <Route path="/vendedores" element={<VendedorListPage />} />
             <Route path="/vendedores/:id" element={<VendedorUpdatePage />} />
             <Route path="/vendedores/create" element={<VendedorCreatePage />} />
+
+            <Route path="/pecas" element={<PecaListPage />} />
+            <Route path="/pecas/:id" element={<PecaUpdatePage />} />
+            <Route path="/pecas/create" element={<PecaCreatePage />} />
+            
         </Routes>
     </BrowserRouter>
   )

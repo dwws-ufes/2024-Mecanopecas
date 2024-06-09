@@ -26,7 +26,7 @@ function VendedorCreatePage() {
 
         try {
             await createVendedor.mutateAsync({
-                nome: nome.replace(/[^a-zA-Z ]/g, ''),
+                nome: nome,
                 cpf: cpf.replace(/[^0-9]/g, ''),
                 telefone: telefone.replace(/[^0-9]/g, ''),
                 emailInstitucional,
