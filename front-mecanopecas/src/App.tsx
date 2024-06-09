@@ -15,6 +15,10 @@ import ClienteListPage from "./view/pages/clientes/clienteListPage";
 import ClienteUpdatePage from "./view/pages/clientes/clienteUpdatePage";
 import ClienteCreatePage from "./view/pages/clientes/clienteCreatePage";
 
+import GerenteListPage from './view/pages/gerentes/gerenteListPage';
+import GerenteUpdatePage from './view/pages/gerentes/gerenteUpdatePage';
+import GerenteCreatePage from './view/pages/gerentes/gerenteCreatePage';
+
 function App() {
   return (
     <BrowserRouter>
@@ -33,6 +37,11 @@ function App() {
             <Route path="/clientes" element={<ClienteListPage />} />
             <Route path="/clientes/:id" element={<ClienteUpdatePage />} />
             <Route path="/clientes/create" element={<ClienteCreatePage />} />
+
+            <Route path="/gerentes" element={<GerenteListPage />} />
+            <Route path="/gerentes/:id" element={<GerenteUpdatePage />} />
+            <Route path="/gerentes/create" element={<GerenteCreatePage />} />
+
             
         </Routes>
     </BrowserRouter>
