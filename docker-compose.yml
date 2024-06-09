@@ -11,6 +11,14 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: mecanopecas
 
+  npm:
+    image: node:latest
+    working_dir: /usr/src/app
+    volumes:
+      - ./front-mecanopecas:/usr/src/app
+    command: tail -f /dev/null
+    ports:
+      - "5173:5173"
 
 volumes:
   db-mecanopecas:
