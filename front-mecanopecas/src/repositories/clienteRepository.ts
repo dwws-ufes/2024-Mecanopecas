@@ -3,16 +3,16 @@ import { AxiosPromise } from "axios";
 import { ClienteResponseDTO } from "../dtos/response/clienteResponseDTO.ts";
 import { ClienteRequestDTO } from "../dtos/request/clienteRequestDTO.ts";
 
-export async function readAllClientes(): AxiosPromise<ClienteResponseDTO[]> {
+export async function getAllClientes(): AxiosPromise<ClienteResponseDTO[]> {
     return await api.get('/api/clientes');
 }
 
-export async function readCliente(id: bigint): AxiosPromise<ClienteResponseDTO> {
-    return await api.get(`/api/clientes/${id}`);
+export async function getAllClientesAtivos(): AxiosPromise<ClienteResponseDTO[]> {
+    return await api.get('/api/clientes/ativos');
 }
 
-export async function readAllClientesAtivos(): AxiosPromise<ClienteResponseDTO[]> {
-    return await api.get('/api/clientes/ativos');
+export async function getCliente(id: bigint): AxiosPromise<ClienteResponseDTO> {
+    return await api.get(`/api/clientes/${id}`);
 }
 
 export async function createCliente(clienteRequestDTO: ClienteRequestDTO): AxiosPromise<ClienteResponseDTO> {

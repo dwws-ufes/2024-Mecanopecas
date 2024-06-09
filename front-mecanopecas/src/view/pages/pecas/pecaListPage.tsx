@@ -2,14 +2,7 @@ import React from 'react';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 import { Container, Content, HeaderContainer, FooterContainer, GridContainer, Card, PecaInfo, PecaName, PecaDetails, PecaActions, AddButton } from './pecaListPage.styles';
 import { usePecas, useDeletePeca } from '../../../hooks/pecaHooks';
-
-interface Peca {
-    id: bigint;
-    nome: string;
-    qtdEstoque: number;
-    preco: number;
-    ativo: boolean;
-}
+import { PecaResponseDTO } from '../../../dtos/response/pecaResponseDTO';
 
 function PecaListPage() {
     const { pecasData, pecasLoading, pecasError } = usePecas();
@@ -57,7 +50,7 @@ function PecaListPage() {
                     <p>Nenhuma peça encontrada</p>
                 ) : (
                     <GridContainer>
-                        {pecasData?.map((peca: Peca) => (
+                        {pecasData?.map((peca: PecaResponseDTO) => (
                             <Card key={peca.id.toString()} isActive={peca.ativo}>
                                 <PecaInfo>
                                     <PecaName>{peca.nome}</PecaName>
