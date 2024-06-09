@@ -16,14 +16,6 @@ export function getVendedor(id: bigint): AxiosPromise<VendedorResponseDTO> {
 }
 
 export function createVendedor(vendedorRequestDTO: VendedorRequestDTO): AxiosPromise<VendedorResponseDTO> {
-
-        //Delay and then reject with an error
-    // return new Promise((resolve, reject) => {
-    //     setTimeout(() => {
-    //         reject(new Error('Error deleting vendedor'));
-    //     }, 5000);
-    // });
-
     return api.post('/api/vendedores', vendedorRequestDTO);
 }
 
@@ -32,14 +24,5 @@ export function updateVendedor(id: bigint, vendedorRequestDTO: VendedorRequestDT
 }
 
 export function deleteVendedor(id: bigint): AxiosPromise<void> {
-
-    // Delay and then reject with an error
-    // return new Promise((resolve, reject) => {
-    //     setTimeout(() => {
-    //         reject(new Error('Error deleting vendedor'));
-    //     }, 5000);
-    // });
-     
-    
     return api.delete(`/api/vendedores/${id}`);
 }

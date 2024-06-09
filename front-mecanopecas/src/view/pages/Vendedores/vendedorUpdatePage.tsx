@@ -1,21 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import InputMask from 'react-input-mask';
+import ToggleSwitch from '../../components/ToogleSwitch';
 import { AxiosError } from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Container, Content, HeaderContainer, FooterContainer, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from './vendedorCreateUpdatePage.styles';
-import { useCreateVendedor } from '../../../hooks/vendedorHooks';
+import { useVendedor, useUpdateVendedor } from '../../../hooks/vendedorHooks';
 
-function VendedorCreatePage() {
+function VendedorUpdatePage() {
+    const { id } = useParams<{ id: string }>();
+    const parsedId = BigInt(id ?? '0');
     const [nome, setNome] = useState('');
     const [cpf, setCpf] = useState('');
     const [telefone, setTelefone] = useState('');
     const [emailInstitucional, setEmailInstitucional] = useState('');
     const [password, setPassword] = useState('');
-    const [dataNascimento, setDataNascimento] = useState<Date | null>(new Date());
+    const [dataNascimento, setDataNascimento] = useState<Date | null>(null);
+    const [ativo, setAtivo] = useState(true);
     const [errors, setErrors] = useState<any>({});
     const [submitError, setSubmitError] = useState<string | null>(null);
     const navigate = useNavigate();
-    const createVendedor = useCreateVendedor();
+    const { vendedorData, vendedorLoading, vendedorError } = useVendedor(id ?? '0');
+    const updateVendedor= useUpdateVendedor();
+
+    useEffect(() => {
+        if (vendedorData) {
+            setNome(vendedorData.nome);
+            setCpf(vendedorData.cpf);
+            setTelefone(vendedorData.telefone);
+            setEmailInstitucional(vendedorData.emailInstitucional);
+            setPassword('');
+            setDataNascimento(new Date(vendedorData.dataNascimento));
+            setAtivo(vendedorData.ativo);
+        }
+    }, [vendedorData]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -25,19 +42,23 @@ function VendedorCreatePage() {
         }
 
         try {
-            await createVendedor.mutateAsync({
-                nome: nome.replace(/[^a-zA-Z ]/g, ''),
-                cpf: cpf.replace(/[^0-9]/g, ''),
-                telefone: telefone.replace(/[^0-9]/g, ''),
-                emailInstitucional,
-                password,
-                dataNascimento: dataNascimento ?? new Date(),
-                ativo: true
+            await updateVendedor.mutateAsync({
+                id: parsedId,
+                vendedorRequestDTO: {
+                    nome: nome,
+                    cpf,
+                    telefone: telefone.replace(/[^0-9]/g, ''),
+                    emailInstitucional,
+                    password: password,
+                    dataNascimento: dataNascimento ?? new Date(),
+                    ativo: ativo
+                }
             });
+            
             navigate('/vendedores');
         } catch (error) {
             const axiosError = error as AxiosError;
-            const errorMessage = axiosError.response?.data || 'Erro ao adicionar vendedor';
+            const errorMessage = axiosError.response?.data || 'Erro ao editar vendedor';
             setSubmitError(errorMessage as string);
         }
     };
@@ -48,14 +69,6 @@ function VendedorCreatePage() {
 
         if (!nome) {
             newErrors.nome = 'Nome é obrigatório';
-            valid = false;
-        }
-
-        if (!cpf) {
-            newErrors.cpf = 'CPF é obrigatório';
-            valid = false;
-        } else if (!isValidCPF(cpf)) {
-            newErrors.cpf = 'CPF no formato incorreto';
             valid = false;
         }
 
@@ -97,21 +110,40 @@ function VendedorCreatePage() {
         return emailRegex.test(email);
     };
 
-    const isValidCPF = (cpf: string) => {
-        const cpfRegex = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/;
-        return cpfRegex.test(cpf);
-    };
-
     const isValidTelefone = (telefone: string) => {
         const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
         return telefoneRegex.test(telefone);
     };
 
+    if (vendedorLoading) {
+        return (
+            <Container>
+                <Header />
+                <Content>
+                    <h1>Carregando...</h1>
+                </Content>
+                <Footer />
+            </Container>
+        );
+    }
+
+    if (vendedorError) {
+        return (
+            <Container>
+                <Header />
+                <Content>
+                    <h1>Erro ao consultar vendedor</h1>
+                </Content>
+                <Footer />
+            </Container>
+        );
+    }
+
     return (
         <Container>
             <Header />
             <Content>
-                <h1>Adicionar Vendedor</h1>
+                <h1>Editar Vendedor</h1>
                 <Form onSubmit={handleSubmit}>
                 {submitError && <ErrorMsg>{submitError}</ErrorMsg>}
                     <FormField>
@@ -130,7 +162,8 @@ function VendedorCreatePage() {
                             mask="999.999.999-99"
                             value={cpf}
                             onChange={(e) => setCpf(e.target.value)}
-                            required
+                            readOnly
+                            readonlystyle
                         >
                             {(inputProps: any) => <FormInput {...inputProps} />}
                         </InputMask>
@@ -154,7 +187,8 @@ function VendedorCreatePage() {
                             type="email"
                             value={emailInstitucional}
                             onChange={(e) => setEmailInstitucional(e.target.value)}
-                            required
+                            readOnly
+                            readonlystyle
                         />
                         {errors.emailInstitucional && <ErrorMsg>{errors.emailInstitucional}</ErrorMsg>}
                     </FormField>
@@ -178,7 +212,14 @@ function VendedorCreatePage() {
                         />
                         {errors.dataNascimento && <ErrorMsg>{errors.dataNascimento}</ErrorMsg>}
                     </FormField>
-                    <FormButton type="submit">Adicionar</FormButton>
+                    <FormField>
+                        <FormLabel>Ativo</FormLabel>
+                        <ToggleSwitch
+                            checked={ativo}
+                            onChange={() => setAtivo(!ativo)}
+                        />
+                    </FormField>
+                    <FormButton type="submit">Salvar</FormButton>
                 </Form>
             </Content>
             <Footer />
@@ -198,4 +239,4 @@ const Footer = () => (
     </FooterContainer>
 );
 
-export default VendedorCreatePage;
+export default VendedorUpdatePage;
