@@ -10,22 +10,26 @@ export function getOrcamentos(): AxiosPromise<OrcamentoResponseDTO[]> {
     return api.get('/orcamentos');
 }
 
+export async function getOrcamento(id: bigint): AxiosPromise<OrcamentoDetailResponseDTO> {
+    return await api.post(`/orcamentos/${id}`);
+}
+
 export async function createOrcamento(orcamentoRequestDTO: OrcamentoRequestDTO): AxiosPromise<OrcamentoResponseDTO> {
     return await api.post('/orcamentos', orcamentoRequestDTO);
 }
 
-export async function createVendaForOrcamento(id: number): AxiosPromise<VendaResponseDTO> {
+export async function createVendaForOrcamento(id: bigint): AxiosPromise<VendaResponseDTO> {
     return await api.post(`/orcamentos/${id}/venda`);
 }
 
-export async function addPecaToOrcamento(id: number, orcamentoPecaRequestDTO: OrcamentoPecaRequestDTO): AxiosPromise<OrcamentoDetailResponseDTO> {
+export async function addPecaToOrcamento(id: bigint, orcamentoPecaRequestDTO: OrcamentoPecaRequestDTO): AxiosPromise<OrcamentoDetailResponseDTO> {
     return await api.post(`/orcamentos/${id}/pecas`, orcamentoPecaRequestDTO);
 }
 
-export async function removePecaFromOrcamento(id: number, orcamentoPecaId: number): AxiosPromise<OrcamentoDetailResponseDTO> {
+export async function removePecaFromOrcamento(id: bigint, orcamentoPecaId: bigint): AxiosPromise<OrcamentoDetailResponseDTO> {
     return await api.delete(`/orcamentos/${id}/pecas/${orcamentoPecaId}`);
 }
 
-export async function applyDescontoToOrcamento(id: number, descontoPercentual: number): AxiosPromise<OrcamentoDetailResponseDTO> {
+export async function applyDescontoToOrcamento(id: bigint, descontoPercentual: bigint): AxiosPromise<OrcamentoDetailResponseDTO> {
     return await api.put(`/orcamentos/${id}/desconto`, { descontoPercentual });
 }

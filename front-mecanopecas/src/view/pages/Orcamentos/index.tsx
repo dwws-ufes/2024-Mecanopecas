@@ -4,7 +4,7 @@ import {Container, Content, Section} from './styles.ts'
 
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import {useOrcamento} from "../../../hooks/useOrcamento.ts";
+import {useOrcamento} from "../../../repositories/useOrcamento.ts";
 
 import CardOrcamento from "../../components/CardOrcamento";
 

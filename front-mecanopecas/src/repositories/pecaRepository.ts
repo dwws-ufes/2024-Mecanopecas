@@ -11,7 +11,7 @@ export function getPecasAtivas(): AxiosPromise<PecaResponseDTO[]> {
     return api.get('/api/pecas/ativas');
 }
 
-export function getPeca(id: number): AxiosPromise<PecaResponseDTO> {
+export function getPeca(id: bigint): AxiosPromise<PecaResponseDTO> {
     return api.get(`/api/pecas/${id}`);
 }
 
@@ -19,10 +19,10 @@ export function createPeca(pecaRequestDTO: PecaRequestDTO): AxiosPromise<PecaRes
     return api.post('/api/pecas', pecaRequestDTO);
 }
 
-export function updatePeca(id: number, pecaRequestDTO: PecaRequestDTO): AxiosPromise<PecaResponseDTO> {
+export function updatePeca(id: bigint, pecaRequestDTO: PecaRequestDTO): AxiosPromise<PecaResponseDTO> {
     return api.put(`/api/pecas/${id}`, pecaRequestDTO);
 }
 
-export function deletePeca(id: number): AxiosPromise<void> {
+export function deletePeca(id: bigint): AxiosPromise<void> {
     return api.delete(`/api/pecas/${id}`);
 }
