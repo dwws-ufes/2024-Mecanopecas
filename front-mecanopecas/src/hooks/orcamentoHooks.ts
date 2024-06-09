@@ -5,12 +5,12 @@ import { OrcamentoRequestDTO } from "../dtos/request/orcamentoRequestDTO";
 import { OrcamentoDetailResponseDTO } from "../dtos/response/orcamentoDetailResponseDTO";
 import { VendaResponseDTO } from "../dtos/response/vendaResponseDTO";
 import { OrcamentoPecaRequestDTO } from "../dtos/request/orcamentoPecaRequestDTO";
-import { getOrcamentos, getOrcamento, createOrcamento, createVendaForOrcamento, addPecaToOrcamento, removePecaFromOrcamento, applyDescontoToOrcamento } from "../repositories/orcamentoRepository";
+import { getAllOrcamentos, getOrcamento, createOrcamento, createVendaForOrcamento, addPecaToOrcamento, removePecaFromOrcamento, applyDescontoToOrcamento } from "../repositories/orcamentoRepository";
 
-export function useOrcamentos() {
+export function useAllOrcamentos() {
     const { data, isLoading, isError } = useQuery<AxiosResponse<OrcamentoResponseDTO[]>>({
         queryKey: ['orcamentos'],
-        queryFn: getOrcamentos,
+        queryFn: getAllOrcamentos,
         retry: 2
     });
 

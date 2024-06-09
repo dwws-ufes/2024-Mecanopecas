@@ -6,7 +6,7 @@ import { OrcamentoDetailResponseDTO } from "../dtos/response/orcamentoDetailResp
 import { VendaResponseDTO } from "../dtos/response/vendaResponseDTO.ts";
 import { OrcamentoPecaRequestDTO } from "../dtos/request/orcamentoPecaRequestDTO.ts";
 
-export function getOrcamentos(): AxiosPromise<OrcamentoResponseDTO[]> {
+export function getAllOrcamentos(): AxiosPromise<OrcamentoResponseDTO[]> {
     return api.get('/orcamentos');
 }
 

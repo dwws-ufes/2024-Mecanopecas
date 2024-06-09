@@ -1,7 +1,10 @@
 import React from 'react';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
-import { Container, Content, HeaderContainer, FooterContainer, GridContainer, Card, VendedorInfo, VendedorName, VendedorDetails, VendedorActions, AddButton } from './vendedorListPage.styles';
+import { Container, Content, GridContainer, Card, VendedorInfo, VendedorName, VendedorDetails, VendedorActions, AddButton } from './vendedorListPage.styles';
 import { useVendedores, useDeleteVendedor } from '../../../hooks/vendedorHooks';
+
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 interface Vendedor {
     id: bigint;
@@ -83,17 +86,5 @@ function VendedoresListPage() {
         </Container>
     );
 }
-
-const Header = () => (
-    <HeaderContainer>
-        <h1>Gestão de Vendedores</h1>
-    </HeaderContainer>
-);
-
-const Footer = () => (
-    <FooterContainer>
-        <p>&copy; 2024 Minha Empresa</p>
-    </FooterContainer>
-);
 
 export default VendedoresListPage;

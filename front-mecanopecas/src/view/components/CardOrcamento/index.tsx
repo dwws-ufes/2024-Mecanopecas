@@ -1,33 +1,37 @@
 import React from 'react';
-import {Container, Card, Button, BlueButton, ButtonWrapper, CardDetails, Redirect} from './styles.ts';
+import {Card, CardInfo, CardName, CardDetails, CardActions} from '../../../styles/global.ts'
+import {FaPencilAlt, FaTrash} from "react-icons/fa";
 
 interface orcamentoProps {
     id: bigint,
-    title: string,
-    status: string
+    codigo: string,
+    nomeCliente: string,
+    dataOrcamento: string,
+    dataExpiracao: string,
+    status: string,
 }
 
-const CardOrcamento = ({ id, title, status }: orcamentoProps) => {
-
-
+const CardOrcamento = ({ id, codigo, nomeCliente, dataOrcamento, dataExpiracao, status }: orcamentoProps) => {
     return (
-        <Container>
-            <Card>
-                <CardDetails>
-                    <h3>{id}</h3>
-                    <h4>{title}</h4>
-                    <p>{status}</p>
-                </CardDetails>
-                <ButtonWrapper>
-                    <Redirect to={`/orcamentos/${id}`} >
-                        <BlueButton>Consultar Detalhes</BlueButton>
-                    </Redirect>
-                    <Redirect to={`/orcamentos/${id}/venda`}>
-                        <Button>Transformar em Venda</Button>
-                    </Redirect>
-                </ButtonWrapper>
-            </Card>
-        </Container>
+        <Card key={id.toString()} isActive={status === "Finalizado" ? false : true}>
+            <CardInfo>
+                <CardName>{codigo}</CardName>
+                <CardDetails><strong>Nome Cliente: </strong>{nomeCliente}</CardDetails>
+                <CardDetails><strong>Data Orcamento: </strong>{dataOrcamento}</CardDetails>
+                <CardDetails><strong>Data Expiração: </strong>{dataExpiracao}</CardDetails>
+                <CardDetails><strong>Status: </strong>{status}</CardDetails>
+            </CardInfo>
+            <CardActions>
+                <a href={`/orcamentos/${id}`}>
+                    <FaPencilAlt /> visualizar
+                </a>
+                {/*{orcamento.ativo && (*/}
+                {/*    <button className="delete"> onClick={() => console.log(orcamento.id)}>*/}
+                {/*        <FaTrash /> Transformar em Venda*/}
+                {/*    </button>*/}
+                {/*)}*/}
+            </CardActions>
+        </Card>
     )
 }
 
