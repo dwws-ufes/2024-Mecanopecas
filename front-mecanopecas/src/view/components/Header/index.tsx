@@ -5,7 +5,7 @@ import { Container } from './styles.ts';
 import SideMenu from '../SideMenu';
 
 const Header = () => {
-    const [isSideMenuOpen, setSideMenuOpen] = useState(true);
+    const [isSideMenuOpen, setSideMenuOpen] = useState(false);
     const showSideMenu = () => setSideMenuOpen(!isSideMenuOpen);
 
     return  (

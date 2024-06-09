@@ -9,7 +9,7 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
-    margin-left: 300px; /* Considerando a largura do side menu + espaçamento */
+    //margin-left: 300px; /* Considerando a largura do side menu + espaçamento */
     padding: 20px;
 `;
 
@@ -20,5 +20,3 @@ export const Section = styled.section`
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
-
-

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Card, Button, BlueButton} from './styles.ts';
+import {Container, Card, Button, BlueButton, ButtonWrapper, CardDetails, Redirect} from './styles.ts';
 
 interface orcamentoProps {
     id: bigint,
@@ -8,15 +8,24 @@ interface orcamentoProps {
 }
 
 const CardOrcamento = ({ id, title, status }: orcamentoProps) => {
+
+
     return (
         <Container>
             <Card>
-                <h3>{id}</h3>
-                <h4>{title}</h4>
-                <p>{status}</p>
-                <BlueButton>Consultar</BlueButton>
-                <Button>Transformar em Venda</Button>
-
+                <CardDetails>
+                    <h3>{id}</h3>
+                    <h4>{title}</h4>
+                    <p>{status}</p>
+                </CardDetails>
+                <ButtonWrapper>
+                    <Redirect to={`/orcamentos/${id}`} >
+                        <BlueButton>Consultar Detalhes</BlueButton>
+                    </Redirect>
+                    <Redirect to={`/orcamentos/${id}/venda`}>
+                        <Button>Transformar em Venda</Button>
+                    </Redirect>
+                </ButtonWrapper>
             </Card>
         </Container>
     )

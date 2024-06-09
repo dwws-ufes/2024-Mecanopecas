@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Container, Content, Section} from './styles.ts'
+import { Container, Content, Section } from './styles.ts'
 
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
@@ -10,7 +10,6 @@ import CardOrcamento from "../../components/CardOrcamento";
 
 
 const Orcamentos = () => {
-
     const { data } = useOrcamento()
 
     console.log(data);
