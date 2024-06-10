@@ -11,82 +11,82 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/orcamentos")
-public class OrcamentoController {
+@RequestMapping("/api/orcamentos")
+public class OrcamentoController extends BaseController {
 
     private final OrcamentoService orcamentoService;
-    private final JwtDecoder jwtDecoder;
 
     public OrcamentoController(OrcamentoService orcamentoService, @Qualifier("jwtDecoder") JwtDecoder jwtDecoder) {
+        super(jwtDecoder);
         this.orcamentoService = orcamentoService;
-        this.jwtDecoder = jwtDecoder;
     }
 
     @GetMapping
-    public ResponseEntity<List<OrcamentoResponseDTO>> readAllOrcamentos() {
-        return ResponseEntity.ok(orcamentoService.getAllOrcamentos());
+    public ResponseEntity<List<OrcamentoResponseDTO>> readAllOrcamentos(@RequestHeader("Authorization") String auth) {
+        if (userInRoles(auth, List.of(Roles.VENDEDOR, Roles.GERENTE))) {
+            return ResponseEntity.ok(orcamentoService.getAllOrcamentos());
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrcamentoDetailResponseDTO> readOrcamento(@PathVariable Long id) {
-        return ResponseEntity.ok(orcamentoService.getOrcamentoById(id));
+    public ResponseEntity<OrcamentoDetailResponseDTO> readOrcamento(@RequestHeader("Authorization") String auth, @PathVariable Long id) {
+        if (userInRoles(auth, List.of(Roles.VENDEDOR, Roles.GERENTE))) {
+            return ResponseEntity.ok(orcamentoService.getOrcamentoById(id));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
-//    @PostMapping
-//    public ResponseEntity<OrcamentoResponseDTO> createOrcamento(@RequestHeader("Authorization") String auth, @Valid @RequestBody OrcamentoRequestDTO orcamentoRequestDTO) {
-//        // obter gerenteId do token
-//        if (auth != null && auth.startsWith("Bearer ")) {
-//            String token = auth.substring(7);
-//            Jwt jwt = jwtDecoder.decode(token);
-//            Long vendedorId = jwt.getClaim("vendedorId");
-//            return ResponseEntity.status(HttpStatus.CREATED).body(orcamentoService.createOrcamento(vendedorId, orcamentoRequestDTO));
-//        }
-//
-//        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token invalido");
-//    }
-
     @PostMapping
-    public ResponseEntity<OrcamentoResponseDTO> createOrcamento(@Valid @RequestBody OrcamentoRequestDTO orcamentoRequestDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(orcamentoService.createOrcamento((long)1, orcamentoRequestDTO));
+    public ResponseEntity<OrcamentoResponseDTO> createOrcamento(@RequestHeader("Authorization") String auth, @Valid @RequestBody OrcamentoRequestDTO orcamentoRequestDTO) {
+        if (userInRoles(auth, List.of(Roles.VENDEDOR, Roles.GERENTE))) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(orcamentoService.createOrcamento(getVendedorId(auth), orcamentoRequestDTO));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
     @PostMapping("/{id}/venda")
-    public ResponseEntity<VendaResponseDTO> createVenda(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(orcamentoService.createVenda(id));
+    public ResponseEntity<VendaResponseDTO> createVenda(@RequestHeader("Authorization") String auth, @PathVariable Long id) {
+        if (userInRoles(auth, List.of(Roles.VENDEDOR, Roles.GERENTE))) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(orcamentoService.createVenda(id));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
     @PostMapping("{id}/pecas")
-    public ResponseEntity<OrcamentoDetailResponseDTO> createOrcamentoPeca(@PathVariable Long id, @Valid @RequestBody OrcamentoPecaRequestDTO orcamentoPecaRequestDTO) {
-        return ResponseEntity.ok(orcamentoService.addOrcamentoPeca(id, orcamentoPecaRequestDTO));
+    public ResponseEntity<OrcamentoDetailResponseDTO> createOrcamentoPeca(@RequestHeader("Authorization") String auth, @PathVariable Long id, @Valid @RequestBody OrcamentoPecaRequestDTO orcamentoPecaRequestDTO) {
+        if (userInRoles(auth, List.of(Roles.VENDEDOR, Roles.GERENTE))) {
+            return ResponseEntity.ok(orcamentoService.addOrcamentoPeca(id, orcamentoPecaRequestDTO));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
     @DeleteMapping("{id}/pecas/{orcamentoPecaId}")
-    public ResponseEntity<OrcamentoDetailResponseDTO> removeOrcamentoPeca(@PathVariable Long id, @PathVariable Long orcamentoPecaId) {
-        return ResponseEntity.ok(orcamentoService.removeOrcamentoPeca(id, orcamentoPecaId));
+    public ResponseEntity<OrcamentoDetailResponseDTO> removeOrcamentoPeca(@RequestHeader("Authorization") String auth, @PathVariable Long id, @PathVariable Long orcamentoPecaId) {
+        if (userInRoles(auth, List.of(Roles.VENDEDOR, Roles.GERENTE))) {
+            return ResponseEntity.ok(orcamentoService.removeOrcamentoPeca(id, orcamentoPecaId));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
-//    @PutMapping("/{id}/desconto")
-//    public ResponseEntity<OrcamentoDetailResponseDTO> applyDescontoOrcamento(@RequestHeader("Authorization") String auth , @PathVariable Long id, @RequestParam double descontoPercentual) {
-//        //obter gerenteId do token
-//        if (auth != null && auth.startsWith("Bearer ")) {
-//            String token = auth.substring(7);
-//            Jwt jwt = jwtDecoder.decode(token);
-//            Long gerenteId = jwt.getClaim("gerenteId");
-//            return ResponseEntity.ok(orcamentoService.applyDescontoOrcamento(id, gerenteId, descontoPercentual));
-//        }
-//        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token invalido");
-//    }
-
     @PutMapping("/{id}/desconto")
-    public ResponseEntity<OrcamentoDetailResponseDTO> applyDescontoOrcamento(@PathVariable Long id, @RequestParam double descontoPercentual) {
-        return ResponseEntity.ok(orcamentoService.applyDescontoOrcamento(id, (long)1, descontoPercentual));
+    public ResponseEntity<OrcamentoDetailResponseDTO> applyDescontoOrcamento(@RequestHeader("Authorization") String auth, @PathVariable Long id, @RequestParam double descontoPercentual) {
+        if (userInRoles(auth, List.of(Roles.GERENTE))) {
+            return ResponseEntity.ok(orcamentoService.applyDescontoOrcamento(id, getGerenteId(auth), descontoPercentual));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 }

@@ -71,14 +71,6 @@ public class VendedorService {
         Vendedor vendedor = vendedorRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Vendedor não encontrado."));
 
-        if (vendedorRepository.existsByCpf(vendedorRequestDTO.cpf())) {
-            throw new BadRequestException("Já existe um vendedor com o mesmo CPF");
-        }
-
-        if (vendedorRepository.existsByEmailInstitucional(vendedorRequestDTO.emailInstitucional())) {
-            throw new BadRequestException("Já existe um vendedor com o mesmo email institucional");
-        }
-
         BeanUtils.copyProperties(vendedorRequestDTO, vendedor);
         Vendedor vendedorUpdated = vendedorRepository.save(vendedor);
 

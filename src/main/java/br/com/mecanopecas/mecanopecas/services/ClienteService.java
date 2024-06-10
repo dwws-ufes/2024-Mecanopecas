@@ -60,10 +60,6 @@ public class ClienteService {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Cliente não encontrado."));
 
-        if (clienteRepository.existsByCpfCnpj(clienteRequestDTO.cpfCnpj())) {
-            throw new BadRequestException("Já existe um cliente com o mesmo CPF/CNPJ");
-        }
-
         BeanUtils.copyProperties(clienteRequestDTO, cliente);
 
         Cliente clienteUpdated = clienteRepository.save(cliente);

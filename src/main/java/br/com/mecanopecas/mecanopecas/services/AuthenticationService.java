@@ -42,7 +42,7 @@ public class AuthenticationService {
     public String authenticate(AuthenticateRequestDTO authenticateRequestDTO){
         Map<String, Long> roleIds = new HashMap<>();
 
-        Optional<Admin> admin = adminRepository.findByEmailPessoal(authenticateRequestDTO.email());
+        Optional<Admin> admin = adminRepository.findByEmailInstitucional(authenticateRequestDTO.email());
         if (admin.isPresent()) {
             if (passwordEncoder.matches(authenticateRequestDTO.password(), admin.get().getPassword())) {
                 roleIds.put("adminId", admin.get().getId());
@@ -63,7 +63,7 @@ public class AuthenticationService {
                 return generateToken(Roles.VENDEDOR, roleIds);
             }
         }
-        throw new BadRequestException("Invalid email or password");
+        throw new BadRequestException("Email ou senha inválidas");
     }
 
     public String generateToken(Roles roles, Map<String, Long> roleIds) {
@@ -84,5 +84,4 @@ public class AuthenticationService {
         JwtClaimsSet claims = claimsBuilder.build();
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
-
 }

@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import Login from './view/pages/Login';
+import LoginComponent from './view/pages/Login';
 import Home from "./view/pages/Home";
 
 import VendedorListPage from "./view/pages/vendedores/vendedorListPage";
@@ -19,11 +19,10 @@ import GerenteListPage from './view/pages/gerentes/gerenteListPage';
 import GerenteUpdatePage from './view/pages/gerentes/gerenteUpdatePage';
 import GerenteCreatePage from './view/pages/gerentes/gerenteCreatePage';
 
-import OrcamentoListPage from './view/pages/orcamentos/orcamentoListPage';
+// import OrcamentoListPage from './view/pages/orcamentos/orcamentoListPage';
 // import OrcamentoUpdatePage from './view/pages/orcamentos/orcamentoUpdatePage';
-import OrcamentoCreatePage from './view/pages/orcamentos/orcamentoCreatePage';
+// import OrcamentoCreatePage from './view/pages/orcamentos/orcamentoCreatePage';
 
-import api from './repositories/axiosClient.ts';
 import { setAuthToken } from "./repositories/authenticationRepository.ts";
 
 function App() {
@@ -39,7 +38,7 @@ function App() {
             { localStorage.getItem('jwtToken') ?
                 <Routes>
             <Route exact path="/" element={<Home />} />
-            <Route path="/login"  element={<Login />} />
+            <Route path="/login"  element={<LoginComponent />} />
 
             <Route path="/vendedores" element={<VendedorListPage />} />
             <Route path="/vendedores/:id" element={<VendedorUpdatePage />} />
@@ -57,9 +56,9 @@ function App() {
             <Route path="/gerentes/:id" element={<GerenteUpdatePage />} />
             <Route path="/gerentes/create" element={<GerenteCreatePage />} />
 
-            <Route path="/orcamentos" element={<OrcamentoListPage />} />
+            {/* <Route path="/orcamentos" element={<OrcamentoListPage />} /> */}
             {/* <Route path="/orcamentos/:id" element={<OrcamentoUpdatePage />} /> */}
-            <Route path="/orcamentos/create" element={<OrcamentoCreatePage />} />
+            {/* <Route path="/orcamentos/create" element={<OrcamentoCreatePage />} /> */}
 
                 </Routes>
                 :
