@@ -1,16 +1,16 @@
-import { useQuery, useMutation, UseMutationResult, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, UseMutationResult } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { OrcamentoResponseDTO } from "../dtos/response/orcamentoResponseDTO";
 import { OrcamentoRequestDTO } from "../dtos/request/orcamentoRequestDTO";
 import { OrcamentoDetailResponseDTO } from "../dtos/response/orcamentoDetailResponseDTO";
 import { VendaResponseDTO } from "../dtos/response/vendaResponseDTO";
 import { OrcamentoPecaRequestDTO } from "../dtos/request/orcamentoPecaRequestDTO";
-import { getAllOrcamentos, getOrcamento, createOrcamento, createVendaForOrcamento, addPecaToOrcamento, removePecaFromOrcamento, applyDescontoToOrcamento } from "../repositories/orcamentoRepository";
+import { getOrcamentos, getOrcamento, createOrcamento, createVendaForOrcamento, addPecaToOrcamento, removePecaFromOrcamento, applyDescontoToOrcamento } from "../repositories/orcamentoRepository";
 
-export function useAllOrcamentos() {
+export function useOrcamentos() {
     const { data, isLoading, isError } = useQuery<AxiosResponse<OrcamentoResponseDTO[]>>({
         queryKey: ['orcamentos'],
-        queryFn: getAllOrcamentos,
+        queryFn: getOrcamentos,
         retry: 2
     });
 
@@ -21,10 +21,10 @@ export function useAllOrcamentos() {
     };
 }
 
-export function useOrcamento(id: bigint) {
+export function useOrcamento(id: string) {
     const { data, isLoading, isError } = useQuery<AxiosResponse<OrcamentoDetailResponseDTO>>({
         queryKey: ['orcamento', id],
-        queryFn: () => getOrcamento(id),
+        queryFn: () => getOrcamento(BigInt(id)),
         retry: 2
     });
 
@@ -36,34 +36,14 @@ export function useOrcamento(id: bigint) {
 }
 
 export function useCreateOrcamento(): UseMutationResult<AxiosResponse<OrcamentoResponseDTO>, unknown, OrcamentoRequestDTO> {
-    const queryClient = useQueryClient();
     return useMutation<AxiosResponse<OrcamentoResponseDTO>, unknown, OrcamentoRequestDTO>({
         mutationFn: createOrcamento,
-        retry: 2,
-        onMutate: (orcamentoRequestDTO) => {
-            // Add your code here
-        },
-        onError: (error, variables, context) => {
-            // Add your code here
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries(['orcamentos'])
-        }
     });
 }
 
 export function useCreateVendaForOrcamento(): UseMutationResult<AxiosResponse<VendaResponseDTO>, unknown, bigint> {
     return useMutation<AxiosResponse<VendaResponseDTO>, unknown, bigint>({
         mutationFn: createVendaForOrcamento,
-        onMutate: (id) => {
-            // Add your code here
-        },
-        onError: (error, variables, context) => {
-            // Add your code here
-        },
-        onSuccess: (data, variables, context) => {
-            // Add your code here
-        },
     });
 }
 

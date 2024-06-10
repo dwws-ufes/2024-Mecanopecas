@@ -1,4 +1,4 @@
-import { useQuery, useMutation, UseMutationResult } from "@tanstack/react-query";
+import { useQuery, useQueryClient, useMutation, UseMutationResult } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { PecaResponseDTO } from "../dtos/response/pecaResponseDTO";
 import { PecaRequestDTO } from "../dtos/request/pecaRequestDTO";
@@ -32,10 +32,10 @@ export function usePecasAtivas() {
     };
 }
 
-export function usePeca(id: bigint) {
+export function usePeca(id: string) {
     const { data, isLoading, isError } = useQuery<AxiosResponse<PecaResponseDTO>>({
         queryKey: ['peca', id],
-        queryFn: () => getPeca(id),
+        queryFn: () => getPeca(BigInt(id)),
         retry: 2
     });
 
@@ -49,44 +49,46 @@ export function usePeca(id: bigint) {
 export function useCreatePeca(): UseMutationResult<AxiosResponse<PecaResponseDTO>, unknown, PecaRequestDTO> {
     return useMutation<AxiosResponse<PecaResponseDTO>, unknown, PecaRequestDTO>({
         mutationFn: createPeca,
-        onMutate: (variables) => {
-            // Add your code here
-        },
-        onError: (error, variables, context) => {
-            // Add your code here
-        },
-        onSuccess: (data, variables, context) => {
-            // Add your code here
-        },
     });
 }
 
 export function useUpdatePeca(): UseMutationResult<AxiosResponse<PecaResponseDTO>, unknown, { id: bigint, pecaRequestDTO: PecaRequestDTO }> {
     return useMutation<AxiosResponse<PecaResponseDTO>, unknown, { id: bigint, pecaRequestDTO: PecaRequestDTO }>({
         mutationFn: ({ id, pecaRequestDTO }) => updatePeca(id, pecaRequestDTO),
-        onMutate: (variables) => {
-            // Add your code here
-        },
-        onError: (error, variables, context) => {
-            // Add your code here
-        },
-        onSuccess: (data, variables, context) => {
-            // Add your code here
-        },
     });
 }
 
 export function useDeletePeca(): UseMutationResult<AxiosResponse<void>, unknown, bigint> {
+    const queryClient = useQueryClient()
+
     return useMutation<AxiosResponse<void>, unknown, bigint>({
         mutationFn: (id) => deletePeca(id),
-        onMutate: (id) => {
-            // Add your code here
+        onMutate: async (id) => {
+            // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+            await queryClient.cancelQueries({ queryKey: ['pecas'] })
+
+            // Snapshot the previous value
+            const oldPecas: AxiosResponse<PecaResponseDTO[]> = queryClient.getQueryData(['pecas'])!;
+
+            // Get the peca from the list
+            const updatedPeca = oldPecas.data.find(peca => peca.id === id)
+
+            // Set the peca as inactive
+            updatedPeca!.ativo = false
+
+            // Optimistically update to the new value
+            queryClient.setQueryData(['pecas', updatedPeca?.id], updatedPeca)
+
+            return { oldPecas: oldPecas }
         },
-        onError: (error, variables, context) => {
-            // Add your code here
+        onError: (context) => {
+            // If the mutation fails, use the context to roll back
+            const typedContext = context as { oldPecas: AxiosResponse<PecaResponseDTO[]> };
+            queryClient.setQueryData(['pecas'], typedContext.oldPecas);
         },
-        onSuccess: (data, variables, context) => {
-            // Add your code here
+        onSettled: () => {
+            // If the mutation is successful, invalidate the query
+            queryClient.invalidateQueries({ queryKey: ['pecas'] })
         },
-    });
+    })
 }

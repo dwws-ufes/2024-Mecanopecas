@@ -33,10 +33,10 @@ export function useVendedoresAtivos() {
     };
 }
 
-export function useVendedor(id: bigint) {
+export function useVendedor(id: string) {
     const { data, isLoading, isError } = useQuery<AxiosResponse<VendedorResponseDTO>>({
         queryKey: ['vendedor', id],
-        queryFn: () => getVendedor(id),
+        queryFn: () => getVendedor(BigInt(id)),
         retry: 2
     });
 
@@ -48,71 +48,14 @@ export function useVendedor(id: bigint) {
 }
 
 export function useCreateVendedor(): UseMutationResult<AxiosResponse<VendedorResponseDTO>, unknown, VendedorRequestDTO> {
-
-    const queryClient = useQueryClient()
-
     return useMutation<AxiosResponse<VendedorResponseDTO>, unknown, VendedorRequestDTO>({
-        mutationFn: createVendedor,
-        onMutate: async (newVendedor) => {
-            // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
-            await queryClient.cancelQueries({queryKey: ['vendedores']})
-
-            // Snapshot the previous value
-            const oldVendedores: AxiosResponse<VendedorResponseDTO[]> = queryClient.getQueryData(['vendedores'])!;
-
-            //Transform the new VendedorRequest into a VendedorResponse to push into the list
-            const newVendedorResponseDTO: VendedorResponseDTO = {
-                id: BigInt(0),
-                ...newVendedor,
-                ativo: true
-            }
-
-            // Optimistically update to the new value
-            queryClient.setQueryData(['vendedores'], [...oldVendedores.data, newVendedorResponseDTO])
-
-            return { oldVendedores }
-        },
-        onError: (context) => {
-            // If the mutation fails, use the context to roll back
-            const typedContext = context as { oldVendedores: AxiosResponse<VendedorResponseDTO[]> };
-            queryClient.setQueryData(['vendedores'], typedContext.oldVendedores);
-        },
-        onSuccess: () => {
-            // If the mutation is successful, invalidate the query
-            queryClient.invalidateQueries({queryKey:['vendedores']})
-        },
-    });
+        mutationFn: createVendedor
+    })
 }
 
 export function useUpdateVendedor(): UseMutationResult<AxiosResponse<VendedorResponseDTO>, unknown, { id: bigint, vendedorRequestDTO: VendedorRequestDTO }> {
-
-    const queryClient = useQueryClient()
-
     return useMutation<AxiosResponse<VendedorResponseDTO>, unknown, { id: bigint, vendedorRequestDTO: VendedorRequestDTO }>({
-        mutationFn: ({ id, vendedorRequestDTO }) => updateVendedor(id, vendedorRequestDTO),
-        onMutate: async (variables: { id: bigint; vendedorRequestDTO: VendedorRequestDTO }) => {
-            const { id, vendedorRequestDTO: updatedVendedor } = variables;
-
-            // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
-            await queryClient.cancelQueries({ queryKey: ['vendedores'] })
-
-            // Snapshot the previous value
-            const oldVendedores = queryClient.getQueryData(['vendedores'])!;
-
-            // Optimistically update to the new value
-            queryClient.setQueryData(['vendedores', id], updatedVendedor)
-
-            return { oldVendedores }
-        },
-        onError: (context) => {
-            // If the mutation fails, use the context to roll back
-            const typedContext = context as { oldVendedores: AxiosResponse<VendedorResponseDTO[]> };
-            queryClient.setQueryData(['vendedores'], typedContext.oldVendedores);
-        },
-        onSettled: () => {
-            // If the mutation is successful, invalidate the query
-            queryClient.invalidateQueries({ queryKey: ['vendedores'] })
-        },
+        mutationFn: ({ id, vendedorRequestDTO }) => updateVendedor(id, vendedorRequestDTO)
     });
 }
 
@@ -149,5 +92,5 @@ export function useDeleteVendedor(): UseMutationResult<AxiosResponse<void>, unkn
             // If the mutation is successful, invalidate the query
             queryClient.invalidateQueries({ queryKey: ['vendedores'] })
         },
-    });
+    })
 }

@@ -1,4 +1,8 @@
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
+
+interface FormInputProps {
+    readonlystyle?: boolean;
+}
 
 export const Container = styled.div`
     display: flex;
@@ -58,13 +62,21 @@ export const FormLabel = styled.label`
     align-self: flex-start;
 `;
 
-export const FormInput = styled.input`
+export const FormInput  = styled.input<FormInputProps>`
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 1rem;
     width: 100%;
     box-sizing: border-box;
+
+    ${({ readonlystyle }) =>
+        readonlystyle &&
+        css`
+            background-color: #f2f2f2;
+            color: #999;
+            cursor: not-allowed;
+        `}
 `;
 
 export const FormButton = styled.button`

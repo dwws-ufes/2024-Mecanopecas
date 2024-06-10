@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatCPF } from '../../../helpers/formatters';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 import { Container, Content, GridContainer, Card, VendedorInfo, VendedorName, VendedorDetails, VendedorActions, AddButton } from './vendedorListPage.styles';
 import { useVendedores, useDeleteVendedor } from '../../../hooks/vendedorHooks';
@@ -64,7 +65,7 @@ function VendedoresListPage() {
                             <Card key={vendedor.id.toString()} isactive={vendedor.ativo}>
                                 <VendedorInfo>
                                     <VendedorName>{vendedor.nome}</VendedorName>
-                                    <VendedorDetails><strong>CPF:</strong> {vendedor.cpf}</VendedorDetails>
+                                    <VendedorDetails><strong>CPF:</strong> {formatCPF(vendedor.cpf)}</VendedorDetails>
                                     <VendedorDetails><strong>Email:</strong> {vendedor.emailInstitucional}</VendedorDetails>
                                 </VendedorInfo>
                                 <VendedorActions>

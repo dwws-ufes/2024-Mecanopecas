@@ -40,16 +40,22 @@ public class OrcamentoController {
         return ResponseEntity.ok(orcamentoService.getOrcamentoById(id));
     }
 
+//    @PostMapping
+//    public ResponseEntity<OrcamentoResponseDTO> createOrcamento(@RequestHeader("Authorization") String auth, @Valid @RequestBody OrcamentoRequestDTO orcamentoRequestDTO) {
+//        // obter gerenteId do token
+//        if (auth != null && auth.startsWith("Bearer ")) {
+//            String token = auth.substring(7);
+//            Jwt jwt = jwtDecoder.decode(token);
+//            Long vendedorId = jwt.getClaim("vendedorId");
+//            return ResponseEntity.status(HttpStatus.CREATED).body(orcamentoService.createOrcamento(vendedorId, orcamentoRequestDTO));
+//        }
+//
+//        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token invalido");
+//    }
+
     @PostMapping
-    public ResponseEntity<OrcamentoResponseDTO> createOrcamento(@RequestHeader("Authorization") String auth, @Valid @RequestBody OrcamentoRequestDTO orcamentoRequestDTO) {
-        // obter gerenteId do token
-        if (auth != null && auth.startsWith("Bearer ")) {
-            String token = auth.substring(7);
-            Jwt jwt = jwtDecoder.decode(token);
-            Long vendedorId = jwt.getClaim("vendedorId");
-            return ResponseEntity.status(HttpStatus.CREATED).body(orcamentoService.createOrcamento(1L, orcamentoRequestDTO));
-        }
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token invalido");
+    public ResponseEntity<OrcamentoResponseDTO> createOrcamento(@Valid @RequestBody OrcamentoRequestDTO orcamentoRequestDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(orcamentoService.createOrcamento((long)1, orcamentoRequestDTO));
     }
 
     @PostMapping("/{id}/venda")
@@ -67,15 +73,20 @@ public class OrcamentoController {
         return ResponseEntity.ok(orcamentoService.removeOrcamentoPeca(id, orcamentoPecaId));
     }
 
+//    @PutMapping("/{id}/desconto")
+//    public ResponseEntity<OrcamentoDetailResponseDTO> applyDescontoOrcamento(@RequestHeader("Authorization") String auth , @PathVariable Long id, @RequestParam double descontoPercentual) {
+//        //obter gerenteId do token
+//        if (auth != null && auth.startsWith("Bearer ")) {
+//            String token = auth.substring(7);
+//            Jwt jwt = jwtDecoder.decode(token);
+//            Long gerenteId = jwt.getClaim("gerenteId");
+//            return ResponseEntity.ok(orcamentoService.applyDescontoOrcamento(id, gerenteId, descontoPercentual));
+//        }
+//        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token invalido");
+//    }
+
     @PutMapping("/{id}/desconto")
-    public ResponseEntity<OrcamentoDetailResponseDTO> applyDescontoOrcamento(@RequestHeader("Authorization") String auth , @PathVariable Long id, @RequestParam double descontoPercentual) {
-        //obter gerenteId do token
-        if (auth != null && auth.startsWith("Bearer ")) {
-            String token = auth.substring(7);
-            Jwt jwt = jwtDecoder.decode(token);
-            Long gerenteId = jwt.getClaim("gerenteId");
-            return ResponseEntity.ok(orcamentoService.applyDescontoOrcamento(id, gerenteId, descontoPercentual));
-        }
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token invalido");
+    public ResponseEntity<OrcamentoDetailResponseDTO> applyDescontoOrcamento(@PathVariable Long id, @RequestParam double descontoPercentual) {
+        return ResponseEntity.ok(orcamentoService.applyDescontoOrcamento(id, (long)1, descontoPercentual));
     }
 }
