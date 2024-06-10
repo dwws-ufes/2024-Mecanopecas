@@ -40,7 +40,7 @@ public class SecurityConfig {
                                 .requestMatchers("/authenticate").permitAll() // Permitir tudo
                                 .requestMatchers("/**").permitAll() // Permitir tudo
 //                                .requestMatchers(HttpMethod.PUT, "/orcamentos/*/desconto").hasAnyRole(Roles.GERENTE.name(), Roles.ADMIN.name())
-                                .requestMatchers("/orcamentos").permitAll() // Permitir tudo
+//                                .requestMatchers("/orcamentos").permitAll() // Permitir tudo
 //                                .requestMatchers(HttpMethod.POST, "/api/vendedores").hasRole(Role.ADMIN.name())
 //                                .requestMatchers("/api/vendedores/**").hasAnyRole(Role.VENDEDOR.name(), Role.GERENTE.name(), Role.ADMIN.name())
 //                                .requestMatchers("/admin/**").hasRole(Role.ADMIN.name())

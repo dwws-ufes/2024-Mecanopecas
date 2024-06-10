@@ -19,6 +19,10 @@ import GerenteListPage from './view/pages/gerentes/gerenteListPage';
 import GerenteUpdatePage from './view/pages/gerentes/gerenteUpdatePage';
 import GerenteCreatePage from './view/pages/gerentes/gerenteCreatePage';
 
+import OrcamentoListPage from './view/pages/orcamentos/orcamentoListPage';
+// import OrcamentoUpdatePage from './view/pages/orcamentos/orcamentoUpdatePage';
+import OrcamentoCreatePage from './view/pages/orcamentos/orcamentoCreatePage';
+
 function App() {
   return (
     <BrowserRouter>
@@ -41,6 +45,10 @@ function App() {
             <Route path="/gerentes" element={<GerenteListPage />} />
             <Route path="/gerentes/:id" element={<GerenteUpdatePage />} />
             <Route path="/gerentes/create" element={<GerenteCreatePage />} />
+
+            <Route path="/orcamentos" element={<OrcamentoListPage />} />
+            {/* <Route path="/orcamentos/:id" element={<OrcamentoUpdatePage />} /> */}
+            <Route path="/orcamentos/create" element={<OrcamentoCreatePage />} />
 
             
         </Routes>
