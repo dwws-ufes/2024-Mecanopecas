@@ -14,49 +14,36 @@ import VendedorCreatePage from "./view/pages/Vendedores/vendedorCreatePage";
 import api from './repositories/axiosClient.ts';
 import { setAuthToken } from "./repositories/authenticationRepository.ts";
 
-import { useQueryClient } from "@tanstack/react-query";
+
 import {useEffect} from "react";
-
-// const fetchToken = async () => {
-//     const token = localStorage.getItem('jwtToken');
-//     if (token){
-//
-//     }
-// }
-
-// const useUser = () =>{
-//     return useQueryClient('user', fetchUser, {
-//         enabled: !!localStorage.getItem('jwtToken'),
-//     });
-// };
 
 function App() {
 
-    // const { data: user, isLoading } = useUser();
-
     useEffect(() => {
-        const token = localStorage.getItem('jwtToken');
+        var token = localStorage.getItem('jwtToken');
         if (token){
-            setAuthToken(token);
+            api.defaults.headers.common['Authorization'] = `Bearer ${token.toString()}`;
         }
     }, []);
 
     return (
         <BrowserRouter>
-            {/*{ user ?*/}
+            { localStorage.getItem('jwtToken') ?
                 <Routes>
                         <Route path="/orcamentos"  element={<Orcamentos />} />
                         <Route path="/orcamentos/:id" element={<OrcamentoDetails />} />
                         <Route path="/vendedores" element={<VendedorListPage />} />
                         <Route path="/vendedores/:id" element={<VendedorDetailPage />} />
                         <Route path="/vendedores/create" element={<VendedorCreatePage />} />
-            {/*    </Routes>*/}
-            {/*:*/}
-            {/*    <Routes>*/}
+                        <Route exact={true} path="/" element={<Home />} />
+                        <Route path="/login"  element={<LoginComponent />} />
+                </Routes>
+            :
+                <Routes>
                     <Route exact={true} path="/" element={<Home />} />
                     <Route path="/login"  element={<LoginComponent />} />
                 </Routes>
-            {/*}*/}
+            }
         </BrowserRouter>
     )
 }
