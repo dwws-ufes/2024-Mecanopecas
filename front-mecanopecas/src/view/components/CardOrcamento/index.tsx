@@ -13,7 +13,7 @@ interface orcamentoProps {
 
 const CardOrcamento = ({ id, codigo, nomeCliente, dataOrcamento, dataExpiracao, status }: orcamentoProps) => {
     return (
-        <Card key={id.toString()} isActive={status === "Finalizado" ? false : true}>
+        <Card key={id.toString()} isactive={status === "Finalizado" ? false : true}>
             <CardInfo>
                 <CardName>{codigo}</CardName>
                 <CardDetails><strong>Nome Cliente: </strong>{nomeCliente}</CardDetails>

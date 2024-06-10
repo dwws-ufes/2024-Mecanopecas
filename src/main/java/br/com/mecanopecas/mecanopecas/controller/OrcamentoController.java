@@ -47,9 +47,8 @@ public class OrcamentoController {
             String token = auth.substring(7);
             Jwt jwt = jwtDecoder.decode(token);
             Long vendedorId = jwt.getClaim("vendedorId");
-            return ResponseEntity.status(HttpStatus.CREATED).body(orcamentoService.createOrcamento(vendedorId, orcamentoRequestDTO));
+            return ResponseEntity.status(HttpStatus.CREATED).body(orcamentoService.createOrcamento(1L, orcamentoRequestDTO));
         }
-
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token invalido");
     }
 

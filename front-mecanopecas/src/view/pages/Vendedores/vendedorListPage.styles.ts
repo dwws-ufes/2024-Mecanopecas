@@ -36,15 +36,15 @@ export const GridContainer = styled.div`
     gap: 20px;
 `;
 
-export const Card = styled.div<{ isActive: boolean }>`
-    background: ${({ isActive }) => (isActive ? 'white' : '#e0e0e0')};
+export const Card = styled.div<{ isactive: boolean }>`
+    background: ${({ isactive }) => (isactive ? 'white' : '#e0e0e0')};
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    opacity: ${({ isActive }) => (isActive ? 1 : 0.6)};
+    opacity: ${({ isactive }) => (isactive ? 1 : 0.6)};
 `;
 
 export const VendedorInfo = styled.div`

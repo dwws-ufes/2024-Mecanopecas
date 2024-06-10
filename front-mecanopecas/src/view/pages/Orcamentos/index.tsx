@@ -8,10 +8,12 @@ import Footer from "../../components/Footer";
 import {FaPencilAlt, FaTrash} from "react-icons/fa";
 import { useAllOrcamentos} from "../../../hooks/orcamentoHooks.ts";
 import CardOrcamento from "../../components/CardOrcamento";
+import OrcamentoCreateModal from "./orcamentoCreateModal.tsx";
 
 
 const Orcamentos = () => {
     const { orcamentosData, orcamentosError, orcamentosLoading } = useAllOrcamentos();
+    const [ isModalOpen, setModalOpen ] = React.useState(false);
 
     // TODO: Transformar em Venda
     // const deleteVendedor = useDeleteVendedor();
@@ -49,13 +51,18 @@ const Orcamentos = () => {
         );
     }
 
+    const handleOpenModal = () => {
+        setModalOpen((prevState) => !prevState);
+    }
+
     return (
         <>
             <Header />
             <Container>
                 <Content>
                     <h1>Orçamentos</h1>
-                    <AddButton href="/orcamento/create">Adicionar Orcamento</AddButton>
+                    {/*<AddButton href="/orcamento/create">Adicionar Orcamento</AddButton>*/}
+                    <button onClick={handleOpenModal}>Adicionar Orçamento</button>
                     {
                         orcamentosData.length === 0 ?
                             (
@@ -75,6 +82,7 @@ const Orcamentos = () => {
                                 </GridContainer>
                             )}
                 </Content>
+                { isModalOpen && <OrcamentoCreateModal/>}
             </Container>
             <Footer />
         </>

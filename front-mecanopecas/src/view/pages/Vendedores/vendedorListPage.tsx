@@ -61,7 +61,7 @@ function VendedoresListPage() {
                 ) : (
                     <GridContainer>
                         {vendedoresData?.map((vendedor: Vendedor) => (
-                            <Card key={vendedor.id.toString()} isActive={vendedor.ativo}>
+                            <Card key={vendedor.id.toString()} isactive={vendedor.ativo}>
                                 <VendedorInfo>
                                     <VendedorName>{vendedor.nome}</VendedorName>
                                     <VendedorDetails><strong>CPF:</strong> {vendedor.cpf}</VendedorDetails>

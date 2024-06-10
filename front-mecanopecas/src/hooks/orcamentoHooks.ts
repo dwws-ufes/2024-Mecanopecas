@@ -1,4 +1,4 @@
-import { useQuery, useMutation, UseMutationResult } from "@tanstack/react-query";
+import { useQuery, useMutation, UseMutationResult, useQueryClient } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { OrcamentoResponseDTO } from "../dtos/response/orcamentoResponseDTO";
 import { OrcamentoRequestDTO } from "../dtos/request/orcamentoRequestDTO";
@@ -36,17 +36,19 @@ export function useOrcamento(id: bigint) {
 }
 
 export function useCreateOrcamento(): UseMutationResult<AxiosResponse<OrcamentoResponseDTO>, unknown, OrcamentoRequestDTO> {
+    const queryClient = useQueryClient();
     return useMutation<AxiosResponse<OrcamentoResponseDTO>, unknown, OrcamentoRequestDTO>({
         mutationFn: createOrcamento,
+        retry: 2,
         onMutate: (orcamentoRequestDTO) => {
             // Add your code here
         },
         onError: (error, variables, context) => {
             // Add your code here
         },
-        onSuccess: (data, variables, context) => {
-            // Add your code here
-        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(['orcamentos'])
+        }
     });
 }
 
