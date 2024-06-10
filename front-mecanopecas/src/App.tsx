@@ -14,17 +14,14 @@ import VendedorCreatePage from "./view/pages/Vendedores/vendedorCreatePage";
 import api from './repositories/axiosClient.ts';
 import { setAuthToken } from "./repositories/authenticationRepository.ts";
 
-
-import {useEffect} from "react";
-
 function App() {
+    var token = localStorage.getItem('jwtToken');
+    if (token){
+        setAuthToken(token);
+    } else {
+        setAuthToken(null);
+    }
 
-    useEffect(() => {
-        var token = localStorage.getItem('jwtToken');
-        if (token){
-            api.defaults.headers.common['Authorization'] = `Bearer ${token.toString()}`;
-        }
-    }, []);
 
     return (
         <BrowserRouter>
