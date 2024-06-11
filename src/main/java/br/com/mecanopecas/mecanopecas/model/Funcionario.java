@@ -31,11 +31,6 @@ public abstract class Funcionario {
     @Column(name = "data_nascimento")
     private LocalDate dataNascimento;
 
-    // Não mapeado no Modelo Entidade
-    @Transient
-    private Integer idade;
-
-
     @CreationTimestamp
     @Column(name = "data_cadastro", nullable = false, updatable = false)
     private LocalDateTime dataCadastro;
@@ -47,7 +42,6 @@ public abstract class Funcionario {
     public String getNome() {
         return nome;
     }
-
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -55,7 +49,6 @@ public abstract class Funcionario {
     public String getCpf() {
         return cpf;
     }
-
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
@@ -63,7 +56,6 @@ public abstract class Funcionario {
     public String getTelefone() {
         return telefone;
     }
-
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
@@ -71,15 +63,11 @@ public abstract class Funcionario {
     public String getEmailInstitucional() {
         return emailInstitucional;
     }
-
     public void setEmailInstitucional(String emailInstitucional) {
         this.emailInstitucional = emailInstitucional;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
+    public String getPassword() { return password; }
     public void setPassword(String password) {
         this.password = password;
     }
@@ -87,7 +75,6 @@ public abstract class Funcionario {
     public LocalDate getDataNascimento() {
         return dataNascimento;
     }
-
     public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
