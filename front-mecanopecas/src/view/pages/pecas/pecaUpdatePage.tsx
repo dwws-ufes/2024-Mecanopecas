@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react';
 import ToggleSwitch from '../../components/ToogleSwitch';
 import { AxiosError } from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Container, Content, HeaderContainer, FooterContainer, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from './pecaCreateUpdatePage.styles';
+import { Container, ContentColumn, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from '../../styles/global';;
 import { usePeca, useUpdatePeca } from '../../../hooks/pecaHooks';
+
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 function PecaUpdatePage() {
     const { id } = useParams<{ id: string }>();
@@ -44,7 +47,7 @@ function PecaUpdatePage() {
                     ativo: ativo
                 }
             });
-            
+
             navigate('/pecas');
         } catch (error) {
             const axiosError = error as AxiosError;
@@ -92,9 +95,9 @@ function PecaUpdatePage() {
         return (
             <Container>
                 <Header />
-                <Content>
+                <ContentColumn>
                     <h1>Carregando...</h1>
-                </Content>
+                </ContentColumn>
                 <Footer />
             </Container>
         );
@@ -104,9 +107,9 @@ function PecaUpdatePage() {
         return (
             <Container>
                 <Header />
-                <Content>
+                <ContentColumn>
                     <h1>Erro ao consultar peça</h1>
-                </Content>
+                </ContentColumn>
                 <Footer />
             </Container>
         );
@@ -115,10 +118,10 @@ function PecaUpdatePage() {
     return (
         <Container>
             <Header />
-            <Content>
-                <h1>Editar Peça</h1>
+            <ContentColumn>
                 <Form onSubmit={handleSubmit}>
                     {submitError && <ErrorMsg>{submitError}</ErrorMsg>}
+                    <h1>Editar Peça</h1>
                     <FormField>
                         <FormLabel>Nome</FormLabel>
                         <FormInput
@@ -158,22 +161,10 @@ function PecaUpdatePage() {
                     </FormField>
                     <FormButton type="submit">Salvar</FormButton>
                 </Form>
-            </Content>
+            </ContentColumn>
             <Footer />
         </Container>
     );
 }
-
-const Header = () => (
-    <HeaderContainer>
-        <h1>Gestão de Peças</h1>
-    </HeaderContainer>
-);
-
-const Footer = () => (
-    <FooterContainer>
-        <p>&copy; 2024 Minha Empresa</p>
-    </FooterContainer>
-);
 
 export default PecaUpdatePage;

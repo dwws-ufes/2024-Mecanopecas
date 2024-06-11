@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { AxiosError } from 'axios';
-import { Container, Content, HeaderContainer, FooterContainer, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from './pecaCreateUpdatePage.styles';
+import { Container, ContentColumn, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from '../../styles/global';
 import { useCreatePeca } from '../../../hooks/pecaHooks';
 import { useNavigate } from 'react-router-dom';
+
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 function PecaCreatePage() {
     const [nome, setNome] = useState('');
@@ -74,10 +77,10 @@ function PecaCreatePage() {
     return (
         <Container>
             <Header />
-            <Content>
-                <h1>Adicionar Peça</h1>
+            <ContentColumn>
                 <Form onSubmit={handleSubmit}>
                     {submitError && <ErrorMsg>{submitError}</ErrorMsg>}
+                    <h1>Adicionar Peça</h1>
                     <FormField>
                         <FormLabel>Nome</FormLabel>
                         <FormInput
@@ -110,22 +113,10 @@ function PecaCreatePage() {
                     </FormField>
                     <FormButton type="submit">Adicionar</FormButton>
                 </Form>
-            </Content>
+            </ContentColumn>
             <Footer />
         </Container>
     );
 }
-
-const Header = () => (
-    <HeaderContainer>
-        <h1>Gestão de Peças</h1>
-    </HeaderContainer>
-);
-
-const Footer = () => (
-    <FooterContainer>
-        <p>&copy; 2024 Minha Empresa</p>
-    </FooterContainer>
-);
 
 export default PecaCreatePage;

@@ -3,8 +3,11 @@ import InputMask from 'react-input-mask';
 import ToggleSwitch from '../../components/ToogleSwitch';
 import { AxiosError } from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Container, Content, HeaderContainer, FooterContainer, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from './vendedorCreateUpdatePage.styles';
+import { Container, ContentColumn, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from '../../styles/global';
 import { useVendedor, useUpdateVendedor } from '../../../hooks/vendedorHooks';
+
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 function VendedorUpdatePage() {
     const { id } = useParams<{ id: string }>();
@@ -119,9 +122,9 @@ function VendedorUpdatePage() {
         return (
             <Container>
                 <Header />
-                <Content>
+                <ContentColumn>
                     <h1>Carregando...</h1>
-                </Content>
+                </ContentColumn>
                 <Footer />
             </Container>
         );
@@ -131,9 +134,9 @@ function VendedorUpdatePage() {
         return (
             <Container>
                 <Header />
-                <Content>
+                <ContentColumn>
                     <h1>Erro ao consultar vendedor</h1>
-                </Content>
+                </ContentColumn>
                 <Footer />
             </Container>
         );
@@ -142,10 +145,10 @@ function VendedorUpdatePage() {
     return (
         <Container>
             <Header />
-            <Content>
-                <h1>Editar Vendedor</h1>
+            <ContentColumn>
                 <Form onSubmit={handleSubmit}>
                 {submitError && <ErrorMsg>{submitError}</ErrorMsg>}
+                <h1>Editar Vendedor</h1>
                     <FormField>
                         <FormLabel>Nome</FormLabel>
                         <FormInput
@@ -221,22 +224,10 @@ function VendedorUpdatePage() {
                     </FormField>
                     <FormButton type="submit">Salvar</FormButton>
                 </Form>
-            </Content>
+            </ContentColumn>
             <Footer />
         </Container>
     );
 }
-
-const Header = () => (
-    <HeaderContainer>
-        <h1>Gestão de Vendedores</h1>
-    </HeaderContainer>
-);
-
-const Footer = () => (
-    <FooterContainer>
-        <p>&copy; 2024 Minha Empresa</p>
-    </FooterContainer>
-);
 
 export default VendedorUpdatePage;

@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react';
 import ToggleSwitch from '../../components/ToogleSwitch';
 import { AxiosError } from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Container, Content, HeaderContainer, FooterContainer, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from './gerenteCreateUpdatePage.styles';
+import { Container, ContentColumn, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from '../../styles/global';
 import { useGerente, useUpdateGerente } from '../../../hooks/gerenteHooks';
+
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 function GerenteUpdatePage() {
     const { id } = useParams<{ id: string }>();
@@ -38,7 +41,7 @@ function GerenteUpdatePage() {
                     percentualMaxDesconto: parseFloat(percentualMaxDesconto),
                 }
             });
-            
+
             navigate('/gerentes');
         } catch (error) {
             const axiosError = error as AxiosError;
@@ -70,9 +73,9 @@ function GerenteUpdatePage() {
         return (
             <Container>
                 <Header />
-                <Content>
+                <ContentColumn>
                     <h1>Carregando...</h1>
-                </Content>
+                </ContentColumn>
                 <Footer />
             </Container>
         );
@@ -82,9 +85,9 @@ function GerenteUpdatePage() {
         return (
             <Container>
                 <Header />
-                <Content>
+                <ContentColumn>
                     <h1>Erro ao consultar gerente</h1>
-                </Content>
+                </ContentColumn>
                 <Footer />
             </Container>
         );
@@ -93,10 +96,10 @@ function GerenteUpdatePage() {
     return (
         <Container>
             <Header />
-            <Content>
-                <h1>Editar Gerente</h1>
+            <ContentColumn>
                 <Form onSubmit={handleSubmit}>
                     {submitError && <ErrorMsg>{submitError}</ErrorMsg>}
+                    <h1>Editar Gerente</h1>
                     <FormField>
                         <FormLabel>Vendedor</FormLabel>
                         <FormInput
@@ -125,22 +128,10 @@ function GerenteUpdatePage() {
                     </FormField>
                     <FormButton type="submit">Salvar</FormButton>
                 </Form>
-            </Content>
+            </ContentColumn>
             <Footer />
         </Container>
     );
 }
-
-const Header = () => (
-    <HeaderContainer>
-        <h1>Gestão de Gerentes</h1>
-    </HeaderContainer>
-);
-
-const Footer = () => (
-    <FooterContainer>
-        <p>&copy; 2024 Minha Empresa</p>
-    </FooterContainer>
-);
 
 export default GerenteUpdatePage;

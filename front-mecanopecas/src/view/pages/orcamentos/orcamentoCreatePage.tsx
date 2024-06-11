@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import InputMask from 'react-input-mask';
 import { AxiosError } from 'axios';
-import { Container, Content, HeaderContainer, FooterContainer, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from './orcamentoCreateUpdatePage.styles';
+import { Container, ContentColumn, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from '../../styles/global';
 import { useCreateOrcamento } from '../../../hooks/orcamentoHooks';
 import { useClientesAtivos } from '../../../hooks/clienteHooks';
 import { useNavigate } from 'react-router-dom';
+
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 function OrcamentoCreatePage() {
     const [clienteId, setClienteId] = useState('');
@@ -79,15 +82,15 @@ function OrcamentoCreatePage() {
     return (
         <Container>
             <Header />
-            <Content>
+            <ContentColumn>
                 {clientesAtivosLoading ? (
                     <p>Carregando...</p>
                 ) : clientesAtivosError ? (
                     <ErrorMsg>Erro ao carregar clientes ativos</ErrorMsg>
                 ) : (
                     <Form onSubmit={handleSubmit}>
-                        <h1>Adicionar Orçamento</h1>
                         {submitError && <ErrorMsg>{submitError}</ErrorMsg>}
+                        <h1>Adicionar Orçamento</h1>
                         <FormField>
                             <FormLabel>Cliente</FormLabel>
                             <select value={clienteId} onChange={(e) => setClienteId(e.target.value)} required>
@@ -125,22 +128,10 @@ function OrcamentoCreatePage() {
                         <FormButton type="submit">Adicionar</FormButton>
                     </Form>
                 )}
-            </Content>
+            </ContentColumn>
             <Footer />
         </Container>
     );
 }
-
-const Header = () => (
-    <HeaderContainer>
-        <h1>Gestão de Orçamentos</h1>
-    </HeaderContainer>
-);
-
-const Footer = () => (
-    <FooterContainer>
-        <p>&copy; 2024 Minha Empresa</p>
-    </FooterContainer>
-);
 
 export default OrcamentoCreatePage;

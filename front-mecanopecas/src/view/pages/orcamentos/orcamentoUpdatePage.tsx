@@ -3,11 +3,14 @@ import InputMask from 'react-input-mask';
 import { AxiosError } from 'axios';
 import ToggleSwitch from '../../components/ToogleSwitch';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Content, Container, FormContainer, PanelContainer, HeaderContainer, FooterContainer, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from './orcamentoCreateUpdatePage.styles';
+import { Content, ContentColumn, Container, FormContainer, PanelContainer, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from '../../styles/global';;
 import OrcamentoListPanel from "../../components/OrcamentoListPanel/orcamentoListPanel";
 import { useCliente, useUpdateCliente } from '../../../hooks/clienteHooks';
 
-function ClienteUpdatePage() {
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
+
+function OrcamentoUpdatePage() {
     const { id } = useParams<{ id: string }>();
     const [nome, setNome] = useState('');
     const [cpfCnpj, setCpfCnpj] = useState('');
@@ -173,16 +176,4 @@ function ClienteUpdatePage() {
     );
 }
 
-const Header = () => (
-    <HeaderContainer>
-        <h1>Gestão de Clientes</h1>
-    </HeaderContainer>
-);
-
-const Footer = () => (
-    <FooterContainer>
-        <p>&copy; 2024 Minha Empresa</p>
-    </FooterContainer>
-);
-
-export default ClienteUpdatePage;
+export default OrcamentoUpdatePage;

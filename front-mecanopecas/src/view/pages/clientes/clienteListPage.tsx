@@ -1,9 +1,11 @@
-import React from 'react';
 import { formatCPF, formatCNPJ } from '../../../helpers/formatters';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
-import { Container, Content, HeaderContainer, FooterContainer, GridContainer, Card, ClienteInfo, ClienteName, ClienteDetails, ClienteActions, AddButton } from './clienteListPage.styles';
+import { Container, Content, ContentColumn, GridContainer, Card, CardInfo, CardName, CardDetails, CardActions, AddButton } from '../../styles/global';
 import { useClientes, useDeleteCliente } from '../../../hooks/clienteHooks';
 import { ClienteResponseDTO } from '../../../dtos/response/clienteResponseDTO';
+
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 function ClienteListPage() {
     const { clientesData, clientesLoading, clientesError } = useClientes();
@@ -44,7 +46,7 @@ function ClienteListPage() {
     return (
         <Container>
             <Header />
-            <Content>
+            <ContentColumn>
                 <h1>Clientes</h1>
                 <AddButton href="/clientes/create">Adicionar Cliente</AddButton>
                 {clientesData?.length === 0 ? (
@@ -52,15 +54,15 @@ function ClienteListPage() {
                 ) : (
                     <GridContainer>
                         {clientesData?.map((cliente: ClienteResponseDTO) => (
-                            <Card key={cliente.id.toString()} isActive={cliente.ativo}>
-                                <ClienteInfo>
-                                    <ClienteName>{cliente.nome}</ClienteName>
+                            <Card key={cliente.id.toString()} isactive={cliente.ativo}>
+                                <CardInfo>
+                                    <CardName>{cliente.nome}</CardName>
 
-                                    <ClienteDetails><strong>{cliente.cpfCnpj.length === 11 ? 'CPF' : 'CNPJ'}:</strong> {cliente.cpfCnpj.length === 11 ? formatCPF(cliente.cpfCnpj) : formatCNPJ(cliente.cpfCnpj)}</ClienteDetails>
-                                    <ClienteDetails><strong>{cliente.cpfCnpj.length === 11 ? 'Data de Nascimento' : 'Data de Fundação'}:</strong> {new Date(cliente.dataNascimento).toLocaleDateString()}</ClienteDetails>
-                                    <ClienteDetails><strong>Orçamentos:</strong> {cliente.orcamentos.length}</ClienteDetails>
-                                </ClienteInfo>
-                                <ClienteActions>
+                                    <CardDetails><strong>{cliente.cpfCnpj.length === 11 ? 'CPF' : 'CNPJ'}:</strong> {cliente.cpfCnpj.length === 11 ? formatCPF(cliente.cpfCnpj) : formatCNPJ(cliente.cpfCnpj)}</CardDetails>
+                                    <CardDetails><strong>{cliente.cpfCnpj.length === 11 ? 'Data de Nascimento' : 'Data de Fundação'}:</strong> {new Date(cliente.dataNascimento).toLocaleDateString()}</CardDetails>
+                                    <CardDetails><strong>Orçamentos:</strong> {cliente.orcamentos.length}</CardDetails>
+                                </CardInfo>
+                                <CardActions>
                                     <a href={`/clientes/${cliente.id}`}>
                                         <FaPencilAlt /> Editar
                                     </a>
@@ -69,27 +71,15 @@ function ClienteListPage() {
                                             <FaTrash /> Deletar
                                         </button>
                                     )}
-                                </ClienteActions>
+                                </CardActions>
                             </Card>
                         ))}
                     </GridContainer>
                 )}
-            </Content>
+            </ContentColumn>
             <Footer />
         </Container>
     );
 }
-
-const Header = () => (
-    <HeaderContainer>
-        <h1>Gestão de Clientes</h1>
-    </HeaderContainer>
-);
-
-const Footer = () => (
-    <FooterContainer>
-        <p>&copy; 2024 Minha Empresa</p>
-    </FooterContainer>
-);
 
 export default ClienteListPage;

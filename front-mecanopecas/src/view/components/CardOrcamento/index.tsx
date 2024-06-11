@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, CardInfo, CardName, CardDetails, CardActions} from '../../../styles/global.ts'
+import {Card, CardInfo, CardName, CardDetails, CardActions} from '../../styles/global.ts'
 import {FaPencilAlt, FaTrash} from "react-icons/fa";
 
 interface orcamentoProps {

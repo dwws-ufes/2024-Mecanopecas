@@ -3,9 +3,12 @@ import InputMask from 'react-input-mask';
 import { AxiosError } from 'axios';
 import ToggleSwitch from '../../components/ToogleSwitch';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Content, Container, FormContainer, PanelContainer, HeaderContainer, FooterContainer, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from './clienteCreateUpdatePage.styles';
+import { Content, ContentColumn, Container, FormContainer, PanelContainer, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from '../../styles/global';
 import OrcamentoListPanel from "../../components/OrcamentoListPanel/orcamentoListPanel";
 import { useCliente, useUpdateCliente } from '../../../hooks/clienteHooks';
+
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 function ClienteUpdatePage() {
     const { id } = useParams<{ id: string }>();
@@ -94,9 +97,9 @@ function ClienteUpdatePage() {
         return (
             <Container>
                 <Header />
-                <Content>
+                <ContentColumn>
                     <h1>Carregando...</h1>
-                </Content>
+                </ContentColumn>
                 <Footer />
             </Container>
         );
@@ -106,9 +109,9 @@ function ClienteUpdatePage() {
         return (
             <Container>
                 <Header />
-                <Content>
+                <ContentColumn>
                     <h1>Erro ao carregar dados do cliente</h1>
-                </Content>
+                </ContentColumn>
                 <Footer />
             </Container>
         );
@@ -119,9 +122,9 @@ function ClienteUpdatePage() {
             <Header />
             <Content>
                 <FormContainer>
-                    <h1>Atualizar Cliente</h1>
                     <Form onSubmit={handleSubmit}>
                         {submitError && <ErrorMsg>{submitError}</ErrorMsg>}
+                        <h1>Atualizar Cliente</h1>
                         <FormField>
                             <FormLabel>Nome</FormLabel>
                             <FormInput
@@ -172,17 +175,5 @@ function ClienteUpdatePage() {
         </Container>
     );
 }
-
-const Header = () => (
-    <HeaderContainer>
-        <h1>Gestão de Clientes</h1>
-    </HeaderContainer>
-);
-
-const Footer = () => (
-    <FooterContainer>
-        <p>&copy; 2024 Minha Empresa</p>
-    </FooterContainer>
-);
 
 export default ClienteUpdatePage;

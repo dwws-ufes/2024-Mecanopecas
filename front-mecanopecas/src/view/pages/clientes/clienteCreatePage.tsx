@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import InputMask from 'react-input-mask';
 import { AxiosError } from 'axios';
-import { Container, Content, HeaderContainer, FooterContainer, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from './clienteCreateUpdatePage.styles';
+import { Container, ContentColumn, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from '../../styles/global';
 import { useCreateCliente } from '../../../hooks/clienteHooks';
 import { useNavigate } from 'react-router-dom';
+
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 function ClienteCreatePage() {
     const [nome, setNome] = useState('');
@@ -83,10 +86,10 @@ function ClienteCreatePage() {
     return (
         <Container>
             <Header />
-            <Content>
+            <ContentColumn>
                 <Form onSubmit={handleSubmit}>
-                <h1>Adicionar Cliente</h1>
                     {submitError && <ErrorMsg>{submitError}</ErrorMsg>}
+                    <h1>Adicionar Cliente</h1>
                     <FormField>
                         <FormLabel>Nome</FormLabel>
                         <FormInput
@@ -142,22 +145,10 @@ function ClienteCreatePage() {
                     </FormField>
                     <FormButton type="submit">Adicionar</FormButton>
                 </Form>
-            </Content>
+            </ContentColumn>
             <Footer />
         </Container>
     );
 }
-
-const Header = () => (
-    <HeaderContainer>
-        <h1>Gestão de Clientes</h1>
-    </HeaderContainer>
-);
-
-const Footer = () => (
-    <FooterContainer>
-        <p>&copy; 2024 Minha Empresa</p>
-    </FooterContainer>
-);
 
 export default ClienteCreatePage;

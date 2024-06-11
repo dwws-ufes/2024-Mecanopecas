@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { AxiosError } from 'axios';
-import { Container, Content, HeaderContainer, FooterContainer, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from './gerenteCreateUpdatePage.styles';
+import { Container, ContentColumn, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from '../../styles/global';
 import { useCreateGerente } from '../../../hooks/gerenteHooks';
 import { useVendedoresAtivos } from '../../../hooks/vendedorHooks';
 import { useNavigate } from 'react-router-dom';
+
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 function GerenteCreatePage() {
     const [vendedorId, setVendedorId] = useState('');
@@ -70,8 +73,7 @@ function GerenteCreatePage() {
     return (
         <Container>
             <Header />
-            <Content>
-                <h1>Adicionar Gerente</h1>
+            <ContentColumn>
                 {vendedoresAtivosLoading ? (
                     <p>Carregando...</p>
                 ) : vendedoresAtivosError ? (
@@ -79,6 +81,7 @@ function GerenteCreatePage() {
                 ) : (
                     <Form onSubmit={handleSubmit}>
                         {submitError && <ErrorMsg>{submitError}</ErrorMsg>}
+                        <h1>Adicionar Gerente</h1>
                         <FormField>
                             <FormLabel>Vendedor</FormLabel>
                             <select value={vendedorId} onChange={(e) => setVendedorId(e.target.value)} required>
@@ -103,22 +106,10 @@ function GerenteCreatePage() {
                         <FormButton type="submit">Adicionar</FormButton>
                     </Form>
                 )}
-            </Content>
+            </ContentColumn>
             <Footer />
         </Container>
     );
 }
-
-const Header = () => (
-    <HeaderContainer>
-        <h1>Gestão de Gerentes</h1>
-    </HeaderContainer>
-);
-
-const Footer = () => (
-    <FooterContainer>
-        <p>&copy; 2024 Minha Empresa</p>
-    </FooterContainer>
-);
 
 export default GerenteCreatePage;

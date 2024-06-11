@@ -1,12 +1,11 @@
 import React from 'react';
 
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import Header from '../../components/Header/index.tsx';
+import Footer from '../../components/Footer/index.tsx';
 
 import {Container, Content, Section} from './styles.ts';
 
-
-const Home = () => {
+const HomePage = () => {
     return (
         <>
             <Header />
@@ -41,4 +40,4 @@ const Home = () => {
 );
 }
 
-export default Home;
+export default HomePage;

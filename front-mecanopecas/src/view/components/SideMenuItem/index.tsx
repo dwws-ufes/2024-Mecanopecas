@@ -2,10 +2,16 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Container } from './styles.ts'
 
-const SideMenuItem = ({ Icon, Text, Path }) => {
+interface SideMenuItemProps {
+    Icon: React.ElementType;
+    Text: string;
+    Path: string;
+}
+
+const SideMenuItem: React.FC<SideMenuItemProps> = ({ Icon, Text, Path }) => {
     return (
         <Container>
-            <Link exact to={`/`+Path.toLowerCase()} style={{textDecoration: 'none'}}>
+            <Link to={Path.toLowerCase()} style={{textDecoration: 'none'}}>
                 <Icon />
                 {Text}
             </Link>

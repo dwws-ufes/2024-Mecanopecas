@@ -1,8 +1,10 @@
-import React from 'react';
 import { FaPencilAlt, FaSearch } from 'react-icons/fa';
-import { Container, Content, HeaderContainer, FooterContainer, GridContainer, Card, OrcamentoName, OrcamentoInfo, OrcamentoDetails, OrcamentoActions, AddButton } from './orcamentoListPage.styles';
+import { Container, ContentColumn, GridContainer, Card, CardName, CardInfo, CardDetails, CardActions, AddButton } from '../../styles/global';;
 import { useOrcamentos } from '../../../hooks/orcamentoHooks';
 import { OrcamentoResponseDTO } from '../../../dtos/response/orcamentoResponseDTO';
+
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 function OrcamentoListPage() {
     const { orcamentosData, orcamentosLoading, orcamentosError } = useOrcamentos();
@@ -11,9 +13,9 @@ function OrcamentoListPage() {
         return (
             <Container>
                 <Header />
-                <Content>
+                <ContentColumn>
                     <h1>Carregando...</h1>
-                </Content>
+                </ContentColumn>
                 <Footer />
             </Container>
         );
@@ -23,9 +25,9 @@ function OrcamentoListPage() {
         return (
             <Container>
                 <Header />
-                <Content>
+                <ContentColumn>
                     <h1>Erro ao consultar lista de orçamentos</h1>
-                </Content>
+                </ContentColumn>
                 <Footer />
             </Container>
         );
@@ -34,7 +36,7 @@ function OrcamentoListPage() {
     return (
         <Container>
             <Header />
-            <Content>
+            <ContentColumn>
                 <h1>Orçamentos</h1>
                 <AddButton href="/orcamentos/create">Adicionar Orçamento</AddButton>
                 {orcamentosData?.length === 0 ? (
@@ -42,17 +44,17 @@ function OrcamentoListPage() {
                 ) : (
                     <GridContainer>
                         {orcamentosData?.map((orcamento: OrcamentoResponseDTO) => (
-                            <Card key={orcamento.id.toString()} isActive = {true}>
-                                <OrcamentoName>{orcamento.codigo}</OrcamentoName>
-                                <OrcamentoInfo>
-                                    <OrcamentoDetails><strong>Cliente:</strong> {orcamento.clienteNome}</OrcamentoDetails>
-                                    <OrcamentoDetails><strong>Data do Orçamento:</strong> {new Date(orcamento.dataOrcamento).toLocaleDateString()}</OrcamentoDetails>
-                                    <OrcamentoDetails><strong>Data de Expiração:</strong> {new Date(orcamento.dataExpiracao).toLocaleDateString()}</OrcamentoDetails>
-                                    {orcamento.status === "Expirado" && <OrcamentoDetails><strong>Status: </strong><span style={{ color: "red" }}>{orcamento.status}</span></OrcamentoDetails>}
-                                    {orcamento.status === "Finalizado" && <OrcamentoDetails><strong>Status: </strong><span style={{ color: "green" }}>{orcamento.status}</span></OrcamentoDetails>}
-                                    {orcamento.status === "Aberto" && <OrcamentoDetails><strong>Status: </strong><span style={{ color: "blue" }}>{orcamento.status}</span></OrcamentoDetails>}
-                                </OrcamentoInfo>
-                                <OrcamentoActions>
+                            <Card key={orcamento.id.toString()} isactive = {true}>
+                                <CardName>{orcamento.codigo}</CardName>
+                                <CardInfo>
+                                    <CardDetails><strong>Cliente:</strong> {orcamento.clienteNome}</CardDetails>
+                                    <CardDetails><strong>Data do Orçamento:</strong> {new Date(orcamento.dataOrcamento).toLocaleDateString()}</CardDetails>
+                                    <CardDetails><strong>Data de Expiração:</strong> {new Date(orcamento.dataExpiracao).toLocaleDateString()}</CardDetails>
+                                    {orcamento.status === "Expirado" && <CardDetails><strong>Status: </strong><span style={{ color: "red" }}>{orcamento.status}</span></CardDetails>}
+                                    {orcamento.status === "Finalizado" && <CardDetails><strong>Status: </strong><span style={{ color: "green" }}>{orcamento.status}</span></CardDetails>}
+                                    {orcamento.status === "Aberto" && <CardDetails><strong>Status: </strong><span style={{ color: "blue" }}>{orcamento.status}</span></CardDetails>}
+                                </CardInfo>
+                                <CardActions>
                                     {orcamento.status === "Aberto" ? (
                                         <a href={`/orcamentos/${orcamento.id}`}>
                                             <FaPencilAlt /> Editar
@@ -62,27 +64,14 @@ function OrcamentoListPage() {
                                             <FaSearch /> Visualizar
                                         </a>
                                     )}
-                                </OrcamentoActions>
+                                </CardActions>
                             </Card>
                         ))}
                     </GridContainer>
                 )}
-            </Content>
+            </ContentColumn>
             <Footer />
         </Container>
     );
 }
-
-const Header = () => (
-    <HeaderContainer>
-        <h1>Gestão de Orçamentos</h1>
-    </HeaderContainer>
-);
-
-const Footer = () => (
-    <FooterContainer>
-        <p>&copy; 2024 Minha Empresa</p>
-    </FooterContainer>
-);
-
 export default OrcamentoListPage;

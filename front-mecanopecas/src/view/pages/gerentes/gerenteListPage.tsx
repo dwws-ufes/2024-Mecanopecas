@@ -1,8 +1,10 @@
-import React from 'react';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
-import { Container, Content, HeaderContainer, FooterContainer, GridContainer, Card, GerenteInfo, GerenteName, GerenteDetails, GerenteActions, AddButton } from './gerenteListPage.styles';
+import { Container, ContentColumn, GridContainer, Card, CardInfo, CardName, CardDetails, CardActions, AddButton } from '../../styles/global';
 import { useGerentes, useDeleteGerente } from '../../../hooks/gerenteHooks';
 import { GerenteResponseDTO } from '../../../dtos/response/gerenteResponseDTO';
+
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 function GerenteListPage() {
     const { gerentesData, gerentesLoading, gerentesError } = useGerentes();
@@ -20,9 +22,9 @@ function GerenteListPage() {
         return (
             <Container>
                 <Header />
-                <Content>
+                <ContentColumn>
                     <h1>Carregando...</h1>
-                </Content>
+                </ContentColumn>
                 <Footer />
             </Container>
         );
@@ -32,9 +34,9 @@ function GerenteListPage() {
         return (
             <Container>
                 <Header />
-                <Content>
+                <ContentColumn>
                     <h1>Erro ao consultar lista de gerentes</h1>
-                </Content>
+                </ContentColumn>
                 <Footer />
             </Container>
         );
@@ -43,7 +45,7 @@ function GerenteListPage() {
     return (
         <Container>
             <Header />
-            <Content>
+            <ContentColumn>
                 <h1>Gerentes</h1>
                 <AddButton href="/gerentes/create">Adicionar Gerente</AddButton>
                 {gerentesData?.length === 0 ? (
@@ -51,40 +53,28 @@ function GerenteListPage() {
                 ) : (
                     <GridContainer>
                         {gerentesData?.map((gerente: GerenteResponseDTO) => (
-                             <Card key={gerente.id.toString()} isActive={true}>
-                                <GerenteInfo>
-                                    <GerenteName>{gerente.nome}</GerenteName>
-                                    <GerenteDetails><strong>Percentual de Desconto max.: </strong>{gerente.percentualMaxDesconto}%</GerenteDetails>
-                                    <GerenteDetails><strong>Promovido em: </strong>{new Date(gerente.dataPromocao).toLocaleDateString()}</GerenteDetails>
-                                </GerenteInfo>
-                                <GerenteActions>
+                             <Card key={gerente.id.toString()} isactive={true}>
+                                <CardInfo>
+                                    <CardName>{gerente.nome}</CardName>
+                                    <CardDetails><strong>Percentual de Desconto max.: </strong>{gerente.percentualMaxDesconto}%</CardDetails>
+                                    <CardDetails><strong>Promovido em: </strong>{new Date(gerente.dataPromocao).toLocaleDateString()}</CardDetails>
+                                </CardInfo>
+                                <CardActions>
                                     <a href={`/gerentes/${gerente.id}`}>
                                         <FaPencilAlt /> Editar
                                     </a>
                                     <button className="delete" onClick={() => handleDelete(gerente.id)}>
                                         <FaTrash /> Deletar
                                     </button>
-                                </GerenteActions>
+                                </CardActions>
                             </Card>
                         ))}
                     </GridContainer>
                 )}
-            </Content>
+            </ContentColumn>
             <Footer />
         </Container>
     );
 }
-
-const Header = () => (
-    <HeaderContainer>
-        <h1>Gestão de Gerentes</h1>
-    </HeaderContainer>
-);
-
-const Footer = () => (
-    <FooterContainer>
-        <p>&copy; 2024 Minha Empresa</p>
-    </FooterContainer>
-);
 
 export default GerenteListPage;

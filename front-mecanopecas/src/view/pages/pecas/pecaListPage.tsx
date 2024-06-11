@@ -1,8 +1,10 @@
-import React from 'react';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
-import { Container, Content, HeaderContainer, FooterContainer, GridContainer, Card, PecaInfo, PecaName, PecaDetails, PecaActions, AddButton } from './pecaListPage.styles';
+import { Container, ContentColumn, GridContainer, Card, CardInfo, CardName, CardDetails, CardActions, AddButton } from '../../styles/global';;
 import { usePecas, useDeletePeca } from '../../../hooks/pecaHooks';
 import { PecaResponseDTO } from '../../../dtos/response/pecaResponseDTO';
+
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 function PecaListPage() {
     const { pecasData, pecasLoading, pecasError } = usePecas();
@@ -20,9 +22,9 @@ function PecaListPage() {
         return (
             <Container>
                 <Header />
-                <Content>
+                <ContentColumn>
                     <h1>Carregando...</h1>
-                </Content>
+                </ContentColumn>
                 <Footer />
             </Container>
         );
@@ -32,9 +34,9 @@ function PecaListPage() {
         return (
             <Container>
                 <Header />
-                <Content>
+                <ContentColumn>
                     <h1>Erro ao consultar lista de peças</h1>
-                </Content>
+                </ContentColumn>
                 <Footer />
             </Container>
         );
@@ -43,7 +45,7 @@ function PecaListPage() {
     return (
         <Container>
             <Header />
-            <Content>
+            <ContentColumn>
                 <h1>Peças</h1>
                 <AddButton href="/pecas/create">Adicionar Peça</AddButton>
                 {pecasData?.length === 0 ? (
@@ -51,13 +53,13 @@ function PecaListPage() {
                 ) : (
                     <GridContainer>
                         {pecasData?.map((peca: PecaResponseDTO) => (
-                            <Card key={peca.id.toString()} isActive={peca.ativo}>
-                                <PecaInfo>
-                                    <PecaName>{peca.nome}</PecaName>
-                                    <PecaDetails><strong>Estoque:</strong> {peca.qtdEstoque}</PecaDetails>
-                                    <PecaDetails><strong>Preço:</strong> R${peca.preco.toFixed(2)}</PecaDetails>
-                                </PecaInfo>
-                                <PecaActions>
+                            <Card key={peca.id.toString()} isactive={peca.ativo}>
+                                <CardInfo>
+                                    <CardName>{peca.nome}</CardName>
+                                    <CardDetails><strong>Estoque:</strong> {peca.qtdEstoque}</CardDetails>
+                                    <CardDetails><strong>Preço:</strong> R${peca.preco.toFixed(2)}</CardDetails>
+                                </CardInfo>
+                                <CardActions>
                                     <a href={`/pecas/${peca.id}`}>
                                         <FaPencilAlt /> Editar
                                     </a>
@@ -66,27 +68,15 @@ function PecaListPage() {
                                             <FaTrash /> Deletar
                                         </button>
                                     )}
-                                </PecaActions>
+                                </CardActions>
                             </Card>
                         ))}
                     </GridContainer>
                 )}
-            </Content>
+            </ContentColumn>
             <Footer />
         </Container>
     );
 }
-
-const Header = () => (
-    <HeaderContainer>
-        <h1>Gestão de Peças</h1>
-    </HeaderContainer>
-);
-
-const Footer = () => (
-    <FooterContainer>
-        <p>&copy; 2024 Minha Empresa</p>
-    </FooterContainer>
-);
 
 export default PecaListPage;

@@ -6,30 +6,30 @@ import { OrcamentoDetailResponseDTO } from "../dtos/response/orcamentoDetailResp
 import { VendaResponseDTO } from "../dtos/response/vendaResponseDTO.ts";
 import { OrcamentoPecaRequestDTO } from "../dtos/request/orcamentoPecaRequestDTO.ts";
 
-export function getAllOrcamentos(): AxiosPromise<OrcamentoResponseDTO[]> {
-    return api.get('/orcamentos');
+export function getOrcamentos(): AxiosPromise<OrcamentoResponseDTO[]> {
+    return api.get('/api/orcamentos');
 }
 
 export async function getOrcamento(id: bigint): AxiosPromise<OrcamentoDetailResponseDTO> {
-    return await api.post(`/orcamentos/${id}`);
+    return await api.post(`/api/orcamentos/${id}`);
 }
 
 export async function createOrcamento(orcamentoRequestDTO: OrcamentoRequestDTO): AxiosPromise<OrcamentoResponseDTO> {
-    return await api.post('/orcamentos', orcamentoRequestDTO);
+    return await api.post('/api/orcamentos', orcamentoRequestDTO);
 }
 
 export async function createVendaForOrcamento(id: bigint): AxiosPromise<VendaResponseDTO> {
-    return await api.post(`/orcamentos/${id}/venda`);
+    return await api.post(`/api/orcamentos/${id}/venda`);
 }
 
 export async function addPecaToOrcamento(id: bigint, orcamentoPecaRequestDTO: OrcamentoPecaRequestDTO): AxiosPromise<OrcamentoDetailResponseDTO> {
-    return await api.post(`/orcamentos/${id}/pecas`, orcamentoPecaRequestDTO);
+    return await api.post(`/api/orcamentos/${id}/pecas`, orcamentoPecaRequestDTO);
 }
 
 export async function removePecaFromOrcamento(id: bigint, orcamentoPecaId: bigint): AxiosPromise<OrcamentoDetailResponseDTO> {
-    return await api.delete(`/orcamentos/${id}/pecas/${orcamentoPecaId}`);
+    return await api.delete(`/api/orcamentos/${id}/pecas/${orcamentoPecaId}`);
 }
 
 export async function applyDescontoToOrcamento(id: bigint, descontoPercentual: bigint): AxiosPromise<OrcamentoDetailResponseDTO> {
-    return await api.put(`/orcamentos/${id}/desconto`, { descontoPercentual });
+    return await api.put(`/api/orcamentos/${id}/desconto`, { descontoPercentual });
 }

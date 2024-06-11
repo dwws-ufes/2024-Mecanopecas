@@ -1,7 +1,6 @@
-import React from 'react';
 import { formatCPF } from '../../../helpers/formatters';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
-import { Container, Content, GridContainer, Card, VendedorInfo, VendedorName, VendedorDetails, VendedorActions, AddButton } from './vendedorListPage.styles';
+import { Container, ContentColumn, GridContainer, Card, CardInfo, CardName, CardDetails, CardActions, AddButton } from '../../styles/global';
 import { useVendedores, useDeleteVendedor } from '../../../hooks/vendedorHooks';
 
 import Header from "../../components/Header";
@@ -31,9 +30,9 @@ function VendedoresListPage() {
         return (
             <Container>
                 <Header />
-                <Content>
+                <ContentColumn>
                     <h1>Carregando...</h1>
-                </Content>
+                </ContentColumn>
                 <Footer />
             </Container>
         );
@@ -43,9 +42,9 @@ function VendedoresListPage() {
         return (
             <Container>
                 <Header />
-                <Content>
+                <ContentColumn>
                     <h1>Erro ao consultar lista de vendedores</h1>
-                </Content>
+                </ContentColumn>
                 <Footer />
             </Container>
         );
@@ -54,7 +53,7 @@ function VendedoresListPage() {
     return (
         <Container>
             <Header />
-            <Content>
+            <ContentColumn>
                 <h1>Vendedores</h1>
                 <AddButton href="/vendedores/create">Adicionar Vendedor</AddButton>
                 {vendedoresData?.length === 0 ? (
@@ -63,12 +62,12 @@ function VendedoresListPage() {
                     <GridContainer>
                         {vendedoresData?.map((vendedor: Vendedor) => (
                             <Card key={vendedor.id.toString()} isactive={vendedor.ativo}>
-                                <VendedorInfo>
-                                    <VendedorName>{vendedor.nome}</VendedorName>
-                                    <VendedorDetails><strong>CPF:</strong> {formatCPF(vendedor.cpf)}</VendedorDetails>
-                                    <VendedorDetails><strong>Email:</strong> {vendedor.emailInstitucional}</VendedorDetails>
-                                </VendedorInfo>
-                                <VendedorActions>
+                                <CardInfo>
+                                    <CardName>{vendedor.nome}</CardName>
+                                    <CardDetails><strong>CPF:</strong> {formatCPF(vendedor.cpf)}</CardDetails>
+                                    <CardDetails><strong>Email:</strong> {vendedor.emailInstitucional}</CardDetails>
+                                </CardInfo>
+                                <CardActions>
                                     <a href={`/vendedores/${vendedor.id}`}>
                                         <FaPencilAlt /> Editar
                                     </a>
@@ -77,12 +76,12 @@ function VendedoresListPage() {
                                             <FaTrash /> Deletar
                                         </button>
                                     )}
-                                </VendedorActions>
+                                </CardActions>
                             </Card>
                         ))}
                     </GridContainer>
                 )}
-            </Content>
+            </ContentColumn>
             <Footer />
         </Container>
     );
