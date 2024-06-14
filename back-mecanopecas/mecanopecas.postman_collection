@@ -1,0 +1,907 @@
+{
+	"info": {
+		"_postman_id": "efaf2a13-10e6-409f-9fbd-2e62aeac0625",
+		"name": "Mecanopecas API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15468082"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var token = pm.response.text();\r",
+									"\r",
+									"pm.environment.set(\"bearerToken\", token);\r",
+									"\r",
+									"console.log(\"Bearer Token:\", token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"iury@mecanopecas.com.br\",\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{baseUrl}}/api/authentication/login",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"authentication",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Clientes",
+			"item": [
+				{
+					"name": "Create Cliente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"cpfCnpj\": \"12345678900\",\n\t\"nome\": \"Cliente Teste\",\n\t\"dataNascimento\": \"1990-01-01\",\n\t\"ativo\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{baseUrl}}/api/clientes",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read Cliente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/clientes/1",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"clientes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read All Clientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/clientes",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read All Clientes Ativos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/clientes/ativos",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"clientes",
+								"ativos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Cliente",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"cpfCnpj\": \"98765432100\",\n\t\"nome\": \"Cliente Atualizado\",\n\t\"dataNascimento\": \"1980-01-01\",\n\t\"ativo\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{baseUrl}}/api/clientes/1",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"clientes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Cliente",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/clientes/1",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"clientes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vendedores",
+			"item": [
+				{
+					"name": "Create Vendedor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nome\": \"Vendedor1\",\n\t\"cpf\": \"15987456321\",\n\t\"telefone\": \"(11) 1234-5678\",\n\t\"emailInstitucional\": \"vendedor10@example.com\",\n\t\"password\": \"password\",\n\t\"dataNascimento\": \"1990-01-01\",\n\t\"ativo\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{baseUrl}}/api/vendedores",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"vendedores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read Vendedor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/vendedores/1",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"vendedores",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read All Vendedores",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/vendedores",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"vendedores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Vendedor",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nome\": \"Vendedor1\",\n\t\"cpf\": \"12345678900\",\n\t\"telefone\": \"(11) 1234-5678\",\n\t\"emailInstitucional\": \"vendedor1@example.com\",\n\t\"password\": \"password\",\n\t\"dataNascimento\": \"1990-01-01\",\n\t\"ativo\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{baseUrl}}/api/vendedores/1",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"vendedores",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Vendedor",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/vendedores/1",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"vendedores",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Gerentes",
+			"item": [
+				{
+					"name": "Create Gerente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"percentualMaxDesconto\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{baseUrl}}/api/gerentes/1",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"gerentes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read Gerente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/gerentes/1",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"gerentes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read All Gerentes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/gerentes",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"gerentes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Gerente",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"percentualMaxDesconto\": 15\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{baseUrl}}/api/gerentes/1",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"gerentes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Gerente",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/gerentes/1",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"gerentes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pecas",
+			"item": [
+				{
+					"name": "Create Peca",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nome\": \"Peca1\",\n\t\"preco\": 100.0,\n\t\"qtdEstoque\": 10,\n\t\"ativo\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{baseUrl}}/api/pecas",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pecas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read Peca",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/pecas/1",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pecas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read All Pecas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/pecas",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pecas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read All Pecas Ativas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/pecas/ativas",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pecas",
+								"ativas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Peca",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nome\": \"Peca1\",\n\t\"preco\": 100.0,\n\t\"qtdEstoque\": 5,\n\t\"ativo\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{baseUrl}}/api/pecas/1",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pecas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Peca",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/pecas/1",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"pecas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orcamentos",
+			"item": [
+				{
+					"name": "Create Orcamento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"codigo\": \"ORC123\",\n\t\"dataExpiracao\": \"2024-06-30T00:00:00\",\n\t\"clienteId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{baseUrl}}/api/orcamentos",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"orcamentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read All Orcamentos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/orcamentos",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"orcamentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read Orcamento",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/orcamentos/3",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"orcamentos",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Peca to Orcamento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"pecaId\": 1,\n\t\"quantidade\": 9\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{baseUrl}}/orcamentos/1/pecas",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orcamentos",
+								"1",
+								"pecas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Peca from Orcamento",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{baseUrl}}/orcamentos/1/pecas/1",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orcamentos",
+								"1",
+								"pecas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Apply Desconto to Orcamento",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/orcamentos/1/desconto?descontoPercentual=5",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"orcamentos",
+								"1",
+								"desconto"
+							],
+							"query": [
+								{
+									"key": "descontoPercentual",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Venda",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/orcamentos/1/venda",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"orcamentos",
+								"1",
+								"venda"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Relatorios",
+			"item": [
+				{
+					"name": "Get Estoque Report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/relatorios/estoque",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"relatorios",
+								"estoque"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Orcamentos Report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/relatorios/orcamentos?dataInicio=2024-01-01&dataFim=2024-06-14",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"relatorios",
+								"orcamentos"
+							],
+							"query": [
+								{
+									"key": "dataInicio",
+									"value": "2024-01-01"
+								},
+								{
+									"key": "dataFim",
+									"value": "2024-06-14"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Vendas Report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{baseUrl}}/api/relatorios/vendas?dataInicio=2024-01-01&dataFim=2024-06-14",
+							"protocol": "http",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"relatorios",
+								"vendas"
+							],
+							"query": [
+								{
+									"key": "dataInicio",
+									"value": "2024-01-01"
+								},
+								{
+									"key": "dataFim",
+									"value": "2024-06-14"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{bearerToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
