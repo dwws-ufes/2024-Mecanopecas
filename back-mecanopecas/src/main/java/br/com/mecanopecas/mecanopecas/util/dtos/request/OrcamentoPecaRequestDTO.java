@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record OrcamentoPecaRequestDTO(
         @NotNull(message = "ID da Peça é obrigatório")
-        Long pecaId,
+        String pecaId,
 
         @Min(value = 1, message = "Quantidade deve ser pelo menos 1")
         int quantidade

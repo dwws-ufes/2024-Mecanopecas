@@ -33,16 +33,16 @@ function OrcamentoCreatePage() {
         }
 
         try {
-            await createOrcamento.mutateAsync({
-                clienteId: BigInt(clienteId),
+            const response = await createOrcamento.mutateAsync({
+                clienteId: clienteId,
                 codigo: codigo,
                 dataExpiracao: new Date(dataExpiracao as string)
             });
-
-            navigate('/orcamentos');
+            
+            navigate(`/orcamentos/${response.data.id}`);
         } catch (error) {
             const axiosError = error as AxiosError;
-            
+
             console.log(error);
 
             const errorMessage = axiosError.response?.data || 'Erro ao adicionar orçamento';

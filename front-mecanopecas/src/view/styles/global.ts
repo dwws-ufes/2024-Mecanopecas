@@ -4,6 +4,12 @@ interface FormInputProps {
     readonlystyle?: boolean;
 }
 
+
+export const Logo = styled.img`
+  height: 60px;
+  object-fit: contain;
+`;
+
 export const Container = styled.div`
     display: flex;
     flex-direction: column;

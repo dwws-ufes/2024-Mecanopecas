@@ -66,7 +66,7 @@ public class OrcamentoService {
         if(!vendedor.isAtivo())
             throw new NotFoundException("O vendedor informado está inativo.");
 
-        Cliente cliente = clienteRepository.findById(orcamentoRequestDTO.clienteId())
+        Cliente cliente = clienteRepository.findById(Long.parseLong(orcamentoRequestDTO.clienteId()))
                 .orElseThrow(() -> new NotFoundException("Cliente não encontrado."));
 
         if(!cliente.isAtivo())
@@ -96,7 +96,7 @@ public class OrcamentoService {
             throw new BadRequestException("Este orçamento está expirado e não pode ser modificado.");
         }
 
-        Peca peca = pecaRepository.findById(orcamentoPecaRequestDTO.pecaId())
+        Peca peca = pecaRepository.findById(Long.parseLong(orcamentoPecaRequestDTO.pecaId()))
                 .orElseThrow(() -> new NotFoundException("Peca não encontrada."));
 
         if(!peca.isAtivo())

@@ -15,5 +15,5 @@ public record OrcamentoRequestDTO(
         LocalDateTime dataExpiracao,
 
         @NotNull(message = "ID do Cliente é obrigatório")
-        Long clienteId
+        String clienteId
 ) {}

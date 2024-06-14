@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 export const Container = styled.div`
   display: flex;
   align-items: center;
-  background-color: #1A202C; 
+  background-color: #00ad31; 
   font-size: 20px;
   color: white;
   padding: 10px;

@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   mecanopecas-db:
     image: mysql
@@ -11,14 +13,25 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: mecanopecas
 
-  npm:
-    image: node:latest
-    working_dir: /usr/src/app
-    volumes:
-      - ./front-mecanopecas:/usr/src/app
-    command: tail -f /dev/null
+  frontend:
+    build:
+      context: ./front-mecanopecas
     ports:
       - "5173:5173"
+    environment:
+      NODE_ENV: development
+
+  backend:
+    build:
+      context: ./back-mecanopecas
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mecanopecas-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mecanopecas-db:3306/mecanopecas
+      SPRING_DATASOURCE_USERNAME: mecanopecas
+      SPRING_DATASOURCE_PASSWORD: root
 
 volumes:
   db-mecanopecas:

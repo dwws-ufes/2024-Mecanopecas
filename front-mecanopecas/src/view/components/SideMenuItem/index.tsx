@@ -10,12 +10,12 @@ interface SideMenuItemProps {
 
 const SideMenuItem: React.FC<SideMenuItemProps> = ({ Icon, Text, Path }) => {
     return (
-        <Container>
-            <Link to={Path.toLowerCase()} style={{textDecoration: 'none'}}>
+        <Link to={Path.toLowerCase()} style={{ textDecoration: 'none' }}>
+            <Container>
                 <Icon />
                 {Text}
-            </Link>
-        </Container>
+            </Container>
+        </Link>
     )
 }
 

@@ -1,4 +1,4 @@
 export interface OrcamentoPecaRequestDTO {
-    pecaId: bigint;
+    pecaId: string;
     quantidade: number;
 }

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { AxiosError } from 'axios';
-import { Container, ContentColumn, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from '../../styles/global';
+import { Logo, Container, ContentColumn, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from '../../styles/global';
 import { useNavigate } from 'react-router-dom';
 import { useLogin } from '../../../hooks/authenticationHooks.ts';
+import logo from '../../../assets/logo.png';
 
-import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
 function LoginPage() {
@@ -64,11 +64,11 @@ function LoginPage() {
 
     return (
         <Container>
-            <Header />
             <ContentColumn>
                 <Form onSubmit={handleSubmit}>
                     {submitError && <ErrorMsg>{submitError}</ErrorMsg>}
-                <h1>Login</h1>
+                    <Logo src={logo} alt="Logo" />
+                <h2>Login</h2>
                     <FormField>
                         <FormLabel>Email Institucional</FormLabel>
                         <FormInput

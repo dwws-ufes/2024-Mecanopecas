@@ -11,7 +11,7 @@ export function getOrcamentos(): AxiosPromise<OrcamentoResponseDTO[]> {
 }
 
 export async function getOrcamento(id: bigint): AxiosPromise<OrcamentoDetailResponseDTO> {
-    return await api.post(`/api/orcamentos/${id}`);
+    return await api.get(`/api/orcamentos/${id}`);
 }
 
 export async function createOrcamento(orcamentoRequestDTO: OrcamentoRequestDTO): AxiosPromise<OrcamentoResponseDTO> {
@@ -30,6 +30,10 @@ export async function removePecaFromOrcamento(id: bigint, orcamentoPecaId: bigin
     return await api.delete(`/api/orcamentos/${id}/pecas/${orcamentoPecaId}`);
 }
 
-export async function applyDescontoToOrcamento(id: bigint, descontoPercentual: bigint): AxiosPromise<OrcamentoDetailResponseDTO> {
-    return await api.put(`/api/orcamentos/${id}/desconto`, { descontoPercentual });
+export async function applyDescontoToOrcamento(id: bigint, descontoPercentual: number): AxiosPromise<OrcamentoDetailResponseDTO> {
+    return await api.put(`/api/orcamentos/${id}/desconto`, null, {
+        params: {
+            descontoPercentual: descontoPercentual
+        }
+    });
 }

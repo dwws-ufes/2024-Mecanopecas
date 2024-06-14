@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  background-color: #171923;
+  background-color: #FFFFFF;
   position: fixed;
   height: 100%;
   top: 0px;
@@ -12,7 +12,7 @@ export const Container = styled.div`
 
   > svg {
     position: fixed;
-    color: white;
+    color: black;
     width: 30px;
     height: 30px;
     margin-top: 32px;

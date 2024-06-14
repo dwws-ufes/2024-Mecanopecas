@@ -14,7 +14,7 @@
     <groupId>br.com.mecanopecas</groupId>
     <artifactId>mecanopecas</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>mecanopecas</name>
     <description>Mecanopeças - Produtos e Engenhocas</description>
 
@@ -62,12 +62,12 @@
             <scope>runtime</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <version>3.3.0</version>
-            <scope>provided</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-tomcat</artifactId>-->
+<!--            <version>3.3.0</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -99,17 +99,17 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.4.0</version>
-                <configuration>
-                    <webResources>
-                        <resource>
-                            <directory>additional_resources</directory>
-                        </resource>
-                    </webResources>
-                </configuration>
-            </plugin>
+<!--            <plugin>-->
+<!--                <artifactId>maven-war-plugin</artifactId>-->
+<!--                <version>3.4.0</version>-->
+<!--                <configuration>-->
+<!--                    <webResources>-->
+<!--                        <resource>-->
+<!--                            <directory>additional_resources</directory>-->
+<!--                        </resource>-->
+<!--                    </webResources>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
 
         </plugins>
     </build>

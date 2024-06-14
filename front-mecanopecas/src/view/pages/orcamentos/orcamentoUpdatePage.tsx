@@ -1,60 +1,143 @@
 import React, { useEffect, useState } from 'react';
-import InputMask from 'react-input-mask';
+import { FaTrash, FaPlusCircle } from 'react-icons/fa';
 import { AxiosError } from 'axios';
-import ToggleSwitch from '../../components/ToogleSwitch';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Content, ContentColumn, Container, FormContainer, PanelContainer, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from '../../styles/global';;
-import OrcamentoListPanel from "../../components/OrcamentoListPanel/orcamentoListPanel";
-import { useCliente, useUpdateCliente } from '../../../hooks/clienteHooks';
+import { getRoleFromLocalStorage } from '../../../helpers/localStorage';
+import {
+    Container,
+    Content,
+    ContentColumn,
+    FormContainer,
+    PanelContainer,
+    Form,
+    FormField,
+    FormLabel,
+    FormInput,
+    FormButton,
+    ErrorMsg,
+    Card,
+    CardName,
+    CardInfo,
+    CardDetails,
+    CardActions
+} from '../../styles/global';
 
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
+
+import {
+    useOrcamento,
+    useCreateVendaForOrcamento,
+    useAddPecaToOrcamento,
+    useRemovePecaFromOrcamento,
+    useApplyDescontoToOrcamento,
+} from '../../../hooks/orcamentoHooks';
+
+import { usePecasAtivas } from '../../../hooks/pecaHooks';
 
 function OrcamentoUpdatePage() {
     const { id } = useParams<{ id: string }>();
-    const [nome, setNome] = useState('');
-    const [cpfCnpj, setCpfCnpj] = useState('');
-    const [isPessoaJuridica, setIsPessoaJuridica] = useState(cpfCnpj.length > 11);
-    const [dataNascimento, setDataNascimento] = useState<Date | null>(new Date());
-    const [ativo, setAtivo] = useState(true);
+    const navigate = useNavigate();
+
+    const { orcamentoData, orcamentoLoading, orcamentoError } = useOrcamento(id ?? '0');
+    const { pecasAtivasData, pecasAtivasLoading, pecasAtivasError } = usePecasAtivas();
+
+    const [clienteNome, setClienteNome] = useState('');
+    const [orcamentoCodigo, setOrcamentoCodigo] = useState('');
+    const [dataExpiracao, setDataExpiracao] = useState<Date | null>(null);
+    const [selectedPecaId, setSelectedPecaId] = useState<string>('');
+    const [quantidadePeca, setQuantidadePeca] = useState<number>(1);
+    const [descontoPercentual, setDescontoPercentual] = useState<number>(0);
     const [errors, setErrors] = useState<any>({});
     const [submitError, setSubmitError] = useState<string | null>(null);
-    const navigate = useNavigate();
-    const { clienteData, clienteLoading, clienteError } = useCliente(id ?? '0');
-    const updateCliente = useUpdateCliente();
+    const [submitPecaError, setSubmitPecaError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (clienteData) {
-            setNome(clienteData.nome);
-            setCpfCnpj(clienteData.cpfCnpj);
-            setIsPessoaJuridica(clienteData.cpfCnpj.length > 11);
-            setDataNascimento(new Date(clienteData.dataNascimento));
-            setAtivo(clienteData.ativo);
+        if (orcamentoData) {
+            setClienteNome(orcamentoData.clienteNome);
+            setOrcamentoCodigo(orcamentoData.codigo);
+            setDataExpiracao(orcamentoData.dataExpiracao);
         }
-    }, [clienteData]);
+    }, [orcamentoData]);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    useEffect(() => {
+        if (pecasAtivasData && pecasAtivasData.length > 0) {
+            setSelectedPecaId(pecasAtivasData[0].id.toString());
+        }
+    }, [pecasAtivasData]);
+
+    const createVendaMutation = useCreateVendaForOrcamento();
+    const addPecaMutation = useAddPecaToOrcamento();
+    const removePecaMutation = useRemovePecaFromOrcamento();
+    const applyDescontoMutation = useApplyDescontoToOrcamento();
+
+    const handleAddPeca = async () => {
 
         if (!validateForm()) {
             return;
         }
 
-        try {
-            await updateCliente.mutateAsync({
-                id: BigInt(id ?? '0'),
-                clienteRequestDTO: {
-                    nome: nome,
-                    cpfCnpj,
-                    dataNascimento: dataNascimento ?? new Date(),
-                    ativo: ativo
-                }
-            });
+        if (selectedPecaId) {
+            try {
+                await addPecaMutation.mutateAsync({
+                    id: id ?? '0',
+                    orcamentoPecaRequestDTO: {
+                        pecaId: selectedPecaId,
+                        quantidade: quantidadePeca,
+                    },
+                    valorPeca: pecasAtivasData?.find((peca) => peca.id.toString() === selectedPecaId)?.preco ?? 0,
+                });
+            } catch (error) {
+                const axiosError = error as AxiosError;
+                const errorMessage = axiosError.response?.data || 'Erro ao adicionar peça';
+                setSubmitPecaError(errorMessage as string);
+            }
+        }
+    };
 
-            navigate('/clientes');
+    const handleRemovePeca = async (orcamentoPecaId: string) => {
+        try {
+            await removePecaMutation.mutateAsync({
+                id: id ?? '0',
+                orcamentoPecaId,
+            });
         } catch (error) {
             const axiosError = error as AxiosError;
-            const errorMessage = axiosError.response?.data || 'Erro ao atualizar cliente';
+            const errorMessage = axiosError.response?.data || 'Erro ao remover peça';
+            setSubmitPecaError(errorMessage as string);
+        }
+    };
+
+    const handleApplyDesconto = async () => {
+        try {
+            await applyDescontoMutation.mutateAsync({
+                id: id ?? '0',
+                descontoPercentual,
+            });
+        } catch (error) {
+            const axiosError = error as AxiosError;
+            const errorMessage = axiosError.response?.data || 'Erro ao aplicar desconto';
+
+            if (axiosError.response?.status === 403) {
+                setSubmitError(errorMessage + ' Apenas gerentes podem aplicar desconto.');
+            } else {
+                setSubmitError(errorMessage as string);
+            }
+        }
+    };
+
+    const handleVenda = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        try {
+            await createVendaMutation.mutateAsync({
+                id: id ?? '0'
+            });
+
+            navigate('/orcamentos');
+        } catch (error) {
+            const axiosError = error as AxiosError;
+            const errorMessage = axiosError.response?.data || 'Erro ao gerar venda';
             setSubmitError(errorMessage as string);
         }
     };
@@ -63,55 +146,42 @@ function OrcamentoUpdatePage() {
         let valid = true;
         const newErrors: any = {};
 
-        if (!nome) {
-            newErrors.nome = 'Nome é obrigatório';
+        if (!selectedPecaId) {
+            newErrors.selectedPecaId = 'Peça é obrigatória';
             valid = false;
         }
 
-        if (!cpfCnpj) {
-            newErrors.cpfCnpj = 'CPF/CNPJ é obrigatório';
+        if (!quantidadePeca) {
+            newErrors.quantidadePeca = 'Quantidade é obrigatória';
             valid = false;
-        } else if (!isValidCpfCnpj(cpfCnpj)) {
-            newErrors.cpfCnpj = 'CPF/CNPJ no formato incorreto';
-            valid = false;
-        }
-
-        if (!dataNascimento) {
-            newErrors.dataNascimento = 'Data de Nascimento/Fundação é obrigatória';
-            valid = false;
-        } else if (new Date(dataNascimento) > new Date()) {
-            newErrors.dataNascimento = 'Data de Nascimento/Fundação não pode ser no futuro';
+        } else if (quantidadePeca < 1) {
+            newErrors.quantidadePeca = 'Quantidade deve ser maior que zero';
             valid = false;
         }
 
         setErrors(newErrors);
         return valid;
-    };
+    }
 
-    const isValidCpfCnpj = (cpfCnpj: string) => {
-        const cpfCnpjRegex = /^\d{11}|\d{14}$/;
-        return cpfCnpjRegex.test(cpfCnpj);
-    };
-
-    if (clienteLoading) {
+    if (orcamentoLoading || pecasAtivasLoading) {
         return (
             <Container>
                 <Header />
-                <Content>
+                <ContentColumn>
                     <h1>Carregando...</h1>
-                </Content>
+                </ContentColumn>
                 <Footer />
             </Container>
         );
     }
 
-    if (clienteError) {
+    if (orcamentoError || pecasAtivasError) {
         return (
             <Container>
                 <Header />
-                <Content>
-                    <h1>Erro ao carregar dados do cliente</h1>
-                </Content>
+                <ContentColumn>
+                    <h1>Erro ao carregar dados do orçamento</h1>
+                </ContentColumn>
                 <Footer />
             </Container>
         );
@@ -121,55 +191,87 @@ function OrcamentoUpdatePage() {
         <Container>
             <Header />
             <Content>
+                <PanelContainer>
+                    <Card isactive={true}>
+                        {submitPecaError && <ErrorMsg>{submitPecaError}</ErrorMsg>}
+                        <FormField>
+                            <FormLabel>Peça</FormLabel>
+                            <select value={selectedPecaId} onChange={(e) => setSelectedPecaId(e.target.value)} required>
+                                {pecasAtivasData?.map((peca) => (
+                                    <option key={peca.id} value={peca.id.toString()}>
+                                        {peca.nome} | Preço: {peca.preco} | Estoque: {peca.qtdEstoque}
+                                    </option>
+                                ))}
+                            </select>
+                            {errors.selectedPecaId && <ErrorMsg>{errors.selectedPecaId}</ErrorMsg>}
+                        </FormField>
+                        <FormField>
+                            <FormLabel>Quantidade</FormLabel>
+                            <FormInput
+                                type="number"
+                                value={quantidadePeca}
+                                onChange={(e) => setQuantidadePeca(parseInt(e.target.value))}
+                            />
+                            {errors.quantidadePeca && <ErrorMsg>{errors.quantidadePeca}</ErrorMsg>}
+                        </FormField>
+                        <hr />
+                        <FormButton type="button" onClick={handleAddPeca}>Adicionar Peça</FormButton>
+                    </Card>
+                    <hr />
+                    <h1>Peças do Orçamento</h1>
+                    <div>
+                        {orcamentoData?.pecas.map((peca) => (
+                            <Card key={peca.id} isactive={true}>
+                                <CardInfo>
+                                    <CardName>{peca.nome}</CardName>
+                                    <CardDetails><strong>Preço:</strong> {peca.preco}</CardDetails>
+                                    <CardDetails><strong>Quantidade:</strong> {peca.quantidade}</CardDetails>
+                                </CardInfo>
+                                <CardActions>
+                                    <button className="delete" onClick={() => handleRemovePeca(peca.id.toString())}> <FaTrash /> Deletar</button>
+                                </CardActions>
+                            </Card>
+                        ))}
+                    </div>
+                </PanelContainer>
                 <FormContainer>
-                    <h1>Atualizar Cliente</h1>
-                    <Form onSubmit={handleSubmit}>
+                    <Form onSubmit={handleVenda}>
                         {submitError && <ErrorMsg>{submitError}</ErrorMsg>}
+                        <h1>Detalhes do Orçamento</h1>
                         <FormField>
-                            <FormLabel>Nome</FormLabel>
-                            <FormInput
-                                type="text"
-                                value={nome}
-                                onChange={(e) => setNome(e.target.value)}
-                                required
-                            />
-                            {errors.nome && <ErrorMsg>{errors.nome}</ErrorMsg>}
+                            <FormLabel>Cliente</FormLabel>
+                            <FormInput type="text" value={clienteNome} readOnly readonlystyle />
                         </FormField>
                         <FormField>
-                            <FormLabel>{isPessoaJuridica ? 'CNPJ' : 'CPF'}</FormLabel>
-                            <InputMask
-                                mask={isPessoaJuridica ? '99.999.999/9999-99' : '999.999.999-99'}
-                                value={cpfCnpj}
-                                readOnly
-                                readonlystyle
-                            >
-                                {(inputProps: any) => <FormInput {...inputProps} />}
-                            </InputMask>
-                            {errors.cpf && <ErrorMsg>{errors.cpf}</ErrorMsg>}
+                            <FormLabel>Código do Orçamento</FormLabel>
+                            <FormInput type="text" value={orcamentoCodigo} readOnly readonlystyle />
                         </FormField>
                         <FormField>
-                            <FormLabel> {isPessoaJuridica ? 'Data de Fundação' : 'Data de Nascimento'}</FormLabel>
-                            <FormInput
-                                type="date"
-                                value={dataNascimento ? dataNascimento.toISOString().split('T')[0] : ''}
-                                onChange={(e) => setDataNascimento(new Date(e.target.value))}
-                                required
-                            />
-                            {errors.dataNascimento && <ErrorMsg>{errors.dataNascimento}</ErrorMsg>}
+                            <FormLabel>Data de Expiração</FormLabel>
+                            <FormInput type="datetime-local" value={dataExpiracao ? new Date(dataExpiracao).toISOString().slice(0, 16) : ''} readOnly readonlystyle />
                         </FormField>
                         <FormField>
-                            <FormLabel>Ativo</FormLabel>
-                            <ToggleSwitch
-                                checked={ativo}
-                                onChange={() => setAtivo(!ativo)}
-                            />
+                            <FormLabel>Valor Total</FormLabel>
+                            <FormInput type="text" value={orcamentoData?.valorTotal} readOnly readonlystyle />
                         </FormField>
-                        <FormButton type="submit">Salvar</FormButton>
+
+                        {getRoleFromLocalStorage() === 'GERENTE' && (
+                            <>
+                                <FormField>
+                                    <FormLabel>Desconto Percentual</FormLabel>
+                                    <FormInput
+                                        type="number"
+                                        value={descontoPercentual}
+                                        onChange={(e) => setDescontoPercentual(parseInt(e.target.value))}
+                                    />
+                                </FormField>
+                                <FormButton type="button" onClick={handleApplyDesconto} style={{ backgroundColor: 'blue' }}>Aplicar Desconto</FormButton>
+                            </>
+                        )}
+
+                        <FormButton type="submit">Gerar Venda</FormButton>
                     </Form>
                 </FormContainer>
-                <PanelContainer>
-                    <OrcamentoListPanel orcamentos={clienteData?.orcamentos ?? []} />
-                </PanelContainer>
             </Content>
             <Footer />
         </Container>
