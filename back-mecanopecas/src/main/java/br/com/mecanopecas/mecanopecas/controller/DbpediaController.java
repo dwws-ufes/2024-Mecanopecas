@@ -22,4 +22,9 @@ public class DbpediaController extends BaseController {
         return dbpediaService.constultaMarcas(marca);
     }
 
+    @GetMapping("/modelos/{modelo}")
+    public List<String> consultarModelos(@PathVariable String modelo){
+        return dbpediaService.consultarModelos(modelo);
+    }
+
 }

@@ -19,7 +19,7 @@ public class DbpediaService {
 
     private static final String SPARQL_URL = "https://dbpedia.org/sparql";
     public List<String> constultaMarcas(String marca){
-        List<String> partList = new ArrayList<>();
+        List<String> marcaList = new ArrayList<>();
         if (marca.length() >= 3){
             String query = "PREFIX dbo: <http://dbpedia.org/ontology/>\n" +
                     "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
@@ -33,20 +33,51 @@ public class DbpediaService {
                     "  FILTER (lang(?carLabel) = \"en\")\n" +
                     "  FILTER (lang(?manufacturerLabel) = \"en\")\n" +
                     "  FILTER (regex(?manufacturerLabel, \""+ marca + "\", \"i\"))" +
-                    "}\n" +
-                    "LIMIT 100\n";
+                    "}\n";
             try {
                 QueryExecution queryExecution = QueryExecution.service(SPARQL_URL).query(query).build();
                 ResultSet resultSet = queryExecution.execSelect();
                 while(resultSet.hasNext()){
                     QuerySolution querySolution = resultSet.next();
                     String literal = querySolution.getLiteral("manufacturerLabel").getString();
-                    partList.add(literal);
+                    marcaList.add(literal);
                 }
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
-        return partList;
+        return marcaList;
     }
+
+    public List<String> consultarModelos(String modelo){
+        List<String> modelList = new ArrayList<>();
+        if (modelo.length() >= 3){
+            String query = "PREFIX dbo: <http://dbpedia.org/ontology/>\n" +
+                    "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+                    "\n" +
+                    "SELECT DISTINCT ?carLabel\n" +
+                    "WHERE {\n" +
+                    "  ?car a dbo:Automobile ;\n" +
+                    "       rdfs:label ?carLabel ;\n" +
+                    "       dbo:manufacturer ?manufacturer .\n" +
+                    "  ?manufacturer rdfs:label ?manufacturerLabel .\n" +
+                    "  FILTER (lang(?carLabel) = \"en\")\n" +
+                    "  FILTER (lang(?manufacturerLabel) = \"en\")\n" +
+                    "  FILTER (regex(?carLabel, \"" + modelo + "\", \"i\"))"+
+                    "}\n";
+            try {
+                QueryExecution queryExecution = QueryExecution.service(SPARQL_URL).query(query).build();
+                ResultSet resultSet = queryExecution.execSelect();
+                while(resultSet.hasNext()){
+                    QuerySolution querySolution = resultSet.next();
+                    String literal = querySolution.getLiteral("carLabel").getString();
+                    modelList.add(literal);
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return modelList;
+    }
+
 }
