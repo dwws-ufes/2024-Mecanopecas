@@ -17,9 +17,9 @@ public class DbpediaController extends BaseController {
         this.dbpediaService = dbpediaService;
     }
 
-    @GetMapping("/marcas")
-    public List<String> consultarMarcas(){
-        return dbpediaService.constultaMarcas();
+    @GetMapping("/marcas/{marca}")
+    public List<String> consultarMarcas(@PathVariable String marca){
+        return dbpediaService.constultaMarcas(marca);
     }
 
 }
