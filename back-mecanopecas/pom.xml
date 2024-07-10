@@ -90,6 +90,13 @@
             <version>5.6.15.Final</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.apache.jena/apache-jena-libs -->
+        <dependency>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>apache-jena-libs</artifactId>
+            <version>5.0.0</version>
+            <type>pom</type>
+        </dependency>
     </dependencies>
 
     <build>
