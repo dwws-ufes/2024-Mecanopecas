@@ -18,8 +18,10 @@ import java.util.List;
 @WebServlet(urlPatterns = {"/mecanopecas/data/pecas"})
 public class ListPecasRdfServlet extends HttpServlet {
 
-    @Autowired
     private PecaRepository pecaRepository;
+    public ListPecasRdfServlet(PecaRepository pecaRepository) {
+        this.pecaRepository = pecaRepository;
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -47,14 +49,14 @@ public class ListPecasRdfServlet extends HttpServlet {
 
         // Produzir o modelo em memória
         for (Peca peca : pecas) {
-            model.createResource(myNs + "Peca_" + peca.getNome())
+            model.createResource(myNs + "Peca_" + removeSpace(peca.getNome()))
                     .addProperty(RDF.type, grProductOrService)
-                    .addProperty(grName, peca.getNome())
-                    .addProperty(grDescription, "Modelo: " + peca.getModelo() + ", Marca: " + peca.getMarca())
+                    .addProperty(grName, removeSpace(peca.getNome()))
+                    .addProperty(grDescription, "Modelo: " + removeSpace(peca.getModelo()) + ", Marca: " + removeSpace(peca.getMarca()))
                     .addLiteral(grInventoryLevel, peca.getQtdEstoque())
-                    .addLiteral(grCondition, peca.isAtivo() ? "Possui em estoque" : "Fora de estoque")
-                    .addProperty(grBrand, peca.getMarca())
-                    .addProperty(grModel, peca.getModelo())
+                    .addLiteral(grCondition, peca.isAtivo())
+                    .addProperty(grBrand, removeSpace(peca.getMarca()))
+                    .addProperty(grModel, removeSpace(peca.getModelo()))
                     .addProperty(grHasPriceSpecification, model.createResource()
                             .addProperty(RDF.type, grUnitPriceSpecification)
                             .addLiteral(grHasCurrencyValue, peca.getPreco())
@@ -63,6 +65,16 @@ public class ListPecasRdfServlet extends HttpServlet {
 
         try (PrintWriter out = resp.getWriter()) {
             model.write(out, "RDF/XML");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("OLHA O ERRO AQUI: " + e);
         }
+    }
+
+    private String removeSpace(String value){
+        if (value != null)
+            return value.replace(" ", "_");
+        else
+            return "Unknown";
     }
 }

@@ -3,7 +3,6 @@ import { AxiosResponse } from "axios";
 import { PecaResponseDTO } from "../dtos/response/pecaResponseDTO";
 import { PecaRequestDTO } from "../dtos/request/pecaRequestDTO";
 import { getPecas, getPeca, getPecasAtivas, createPeca, updatePeca, deletePeca } from "../repositories/pecaRepository";
-import { searchMarcas, searchModelosByMarca } from "../repositories/dbpediaRepository";
 
 export function usePecas() {
     const { data, isLoading, isError } = useQuery<AxiosResponse<PecaResponseDTO[]>>({
@@ -45,24 +44,6 @@ export function usePeca(id: string) {
         pecaLoading: isLoading,
         pecaError: isError,
     };
-}
-
-export function useSearchMarca(query: string) {
-    return useQuery({
-        queryKey: ['searchMarcas', query],
-        queryFn: () => searchMarcas(query),
-        enabled: query.length >= 3,
-        retry: 2,
-    });
-}
-
-export function useSearchModelo(marca: string, query: string) {
-    return useQuery({
-        queryKey: ['searchModelosByMarca', marca, query],
-        queryFn: () => searchModelosByMarca(marca, query),
-        enabled: marca.length > 0 && query.length >= 3,
-        retry: 2,
-    });
 }
 
 export function useCreatePeca(): UseMutationResult<AxiosResponse<PecaResponseDTO>, unknown, PecaRequestDTO> {

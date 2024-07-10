@@ -3,17 +3,14 @@ import { AxiosError } from 'axios';
 import { Container, ContentColumn, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from '../../styles/global';
 import { useCreatePeca } from '../../../hooks/pecaHooks';
 import { useNavigate } from 'react-router-dom';
+
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import SearchDropdown from '../../components/SearchDropdown/searchDropdown';
-import { useSearchMarca, useSearchModelo } from '../../../hooks/pecaHooks';
 
 function PecaCreatePage() {
     const [nome, setNome] = useState('');
     const [estoque, setEstoque] = useState('');
     const [preco, setPreco] = useState('');
-    const [marca, setMarca] = useState('');
-    const [modelo, setModelo] = useState('');
     const [errors, setErrors] = useState<any>({});
     const [submitError, setSubmitError] = useState<string | null>(null);
     const navigate = useNavigate();
@@ -31,8 +28,6 @@ function PecaCreatePage() {
                 nome: nome,
                 qtdEstoque: parseInt(estoque),
                 preco: parseFloat(preco),
-                marca : marca,
-                modelo: modelo,
                 ativo: true
             });
 
@@ -115,24 +110,6 @@ function PecaCreatePage() {
                             required
                         />
                         {errors.preco && <ErrorMsg>{errors.preco}</ErrorMsg>}
-                    </FormField>
-                    <FormField>
-                        <FormLabel>Marca</FormLabel>
-                        <SearchDropdown
-                            placeholder="Buscar marca"
-                            initialValue={marca}
-                            searchHook={useSearchMarca}
-                            onSelect={(selected: string) => setMarca(selected)}
-                        />
-                    </FormField>
-                    <FormField>
-                        <FormLabel>Modelo</FormLabel>
-                        <SearchDropdown
-                            placeholder="Buscar modelo"
-                            initialValue={modelo}
-                            searchHook={(query: string) => useSearchModelo(marca, query)}
-                            onSelect={(selected: string) => setModelo(selected)}
-                        />
                     </FormField>
                     <FormButton type="submit">Adicionar</FormButton>
                 </Form>

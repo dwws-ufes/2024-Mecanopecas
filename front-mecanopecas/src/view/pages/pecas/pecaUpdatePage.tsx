@@ -4,8 +4,6 @@ import { AxiosError } from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Container, ContentColumn, Form, FormField, FormLabel, FormInput, FormButton, ErrorMsg } from '../../styles/global';;
 import { usePeca, useUpdatePeca } from '../../../hooks/pecaHooks';
-import SearchDropdown from '../../components/SearchDropdown/searchDropdown';
-import { useSearchMarca, useSearchModelo } from '../../../hooks/pecaHooks';
 
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
@@ -16,8 +14,6 @@ function PecaUpdatePage() {
     const [nome, setNome] = useState('');
     const [estoque, setEstoque] = useState('');
     const [preco, setPreco] = useState('');
-    const [marca, setMarca] = useState('');
-    const [modelo, setModelo] = useState('');
     const [ativo, setAtivo] = useState(true);
     const [errors, setErrors] = useState<any>({});
     const [submitError, setSubmitError] = useState<string | null>(null);
@@ -30,8 +26,6 @@ function PecaUpdatePage() {
             setNome(pecaData.nome);
             setEstoque(pecaData.qtdEstoque.toString());
             setPreco(pecaData.preco.toString());
-            setMarca(pecaData.marca);
-            setModelo(pecaData.modelo);
             setAtivo(pecaData.ativo);
         }
     }, [pecaData]);
@@ -50,8 +44,6 @@ function PecaUpdatePage() {
                     nome: nome,
                     qtdEstoque: parseInt(estoque),
                     preco: parseFloat(preco),
-                    marca: marca,
-                    modelo: modelo,
                     ativo: ativo
                 }
             });
@@ -159,24 +151,6 @@ function PecaUpdatePage() {
                             required
                         />
                         {errors.preco && <ErrorMsg>{errors.preco}</ErrorMsg>}
-                    </FormField>
-                    <FormField>
-                        <FormLabel>Marca</FormLabel>
-                        <SearchDropdown
-                            placeholder="Buscar marca"
-                            initialValue={marca}
-                            searchHook={useSearchMarca}
-                            onSelect={(selected: string) => setMarca(selected)}
-                        />
-                    </FormField>
-                    <FormField>
-                        <FormLabel>Modelo</FormLabel>
-                        <SearchDropdown
-                            placeholder="Buscar modelo"
-                            initialValue={modelo}
-                            searchHook={(query: string) => useSearchModelo(marca, query)}
-                            onSelect={(selected: string) => setModelo(selected)}
-                        />
                     </FormField>
                     <FormField>
                         <FormLabel>Ativo</FormLabel>

@@ -25,21 +25,21 @@ public class AdminConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        // var basicAdmin = adminRepository.findByNome("admin");
-        // basicAdmin.ifPresentOrElse(
-        //         admin -> {
-        //             System.out.println("Admin: " + admin.getNome() + " já existente");
-        //         },
-        //         () -> {
-        //             Admin admin = new Admin();
-        //             admin.setNome("Admin");
-        //             admin.setCpf("12345678999");
-        //             admin.setEmailPessoal("admin@gmail.com");
-        //             admin.setTelefone("027999258452");
-        //             admin.setEmailInstitucional("admin@mecanopecas.com");
-        //             admin.setPassword(passwordEncoder.encode("admin"));
-        //             adminRepository.save(admin);
-        //         }
-        // );
+        var basicAdmin = adminRepository.findByNome("admin");
+        basicAdmin.ifPresentOrElse(
+                admin -> {
+                    System.out.println("Admin: " + admin.getNome() + " já existente");
+                },
+                () -> {
+                    Admin admin = new Admin();
+                    admin.setNome("Admin");
+                    admin.setCpf("12345678999");
+                    admin.setEmailPessoal("admin@gmail.com");
+                    admin.setTelefone("027999258452");
+                    admin.setEmailInstitucional("admin@mecanopecas.com");
+                    admin.setPassword(passwordEncoder.encode("admin"));
+                    adminRepository.save(admin);
+                }
+        );
     }
 }
