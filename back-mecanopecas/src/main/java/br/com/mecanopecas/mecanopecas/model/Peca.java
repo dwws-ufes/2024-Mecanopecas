@@ -16,10 +16,10 @@ public class Peca {
     @Column(name = "qtd_estoque")
     private int qtdEstoque;
 
-    private boolean ativo;
-
     private String marca;
     private String modelo;
+
+    private boolean ativo;
 
     public Long getId() { return id; }
 
@@ -32,22 +32,12 @@ public class Peca {
     public int getQtdEstoque() { return qtdEstoque; }
     public void setQtdEstoque(int qtdEstoque) { this.qtdEstoque = qtdEstoque; }
 
+    public String getMarca() { return marca; }
+    public void setMarca(String marca) { this.marca = marca; }
+
+    public String getModelo() { return modelo;}
+    public void setModelo(String modelo) { this.modelo = modelo; }
+
     public boolean isAtivo() { return ativo; }
     public void setAtivo(boolean ativo) { this.ativo = ativo; }
-
-    public String getMarca() {
-        return marca;
-    }
-
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
-
-    public String getModelo() {
-        return modelo;
-    }
-
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
-    }
 }

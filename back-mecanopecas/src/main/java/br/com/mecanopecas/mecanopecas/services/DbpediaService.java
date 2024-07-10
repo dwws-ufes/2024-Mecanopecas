@@ -18,9 +18,9 @@ import java.util.List;
 public class DbpediaService {
 
     private static final String SPARQL_URL = "https://dbpedia.org/sparql";
-    public List<String> constultaMarcas(String marca){
+
+    public List<String> searchMarcas(String marca) {
         List<String> marcaList = new ArrayList<>();
-        if (marca.length() >= 3){
             String query = "PREFIX dbo: <http://dbpedia.org/ontology/>\n" +
                     "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
                     "\n" +
@@ -32,12 +32,12 @@ public class DbpediaService {
                     "  ?manufacturer rdfs:label ?manufacturerLabel .\n" +
                     "  FILTER (lang(?carLabel) = \"en\")\n" +
                     "  FILTER (lang(?manufacturerLabel) = \"en\")\n" +
-                    "  FILTER (regex(?manufacturerLabel, \""+ marca + "\", \"i\"))" +
+                    "  FILTER (regex(?manufacturerLabel, \"" + marca + "\", \"i\"))\n" +
                     "}\n";
             try {
                 QueryExecution queryExecution = QueryExecution.service(SPARQL_URL).query(query).build();
                 ResultSet resultSet = queryExecution.execSelect();
-                while(resultSet.hasNext()){
+                while (resultSet.hasNext()) {
                     QuerySolution querySolution = resultSet.next();
                     String literal = querySolution.getLiteral("manufacturerLabel").getString();
                     marcaList.add(literal);
@@ -45,13 +45,11 @@ public class DbpediaService {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-        }
         return marcaList;
     }
 
-    public List<String> consultarModelos(String modelo){
+    public List<String> searchModelosByMarca(String marca, String modelo) {
         List<String> modelList = new ArrayList<>();
-        if (modelo.length() >= 3){
             String query = "PREFIX dbo: <http://dbpedia.org/ontology/>\n" +
                     "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
                     "\n" +
@@ -63,12 +61,13 @@ public class DbpediaService {
                     "  ?manufacturer rdfs:label ?manufacturerLabel .\n" +
                     "  FILTER (lang(?carLabel) = \"en\")\n" +
                     "  FILTER (lang(?manufacturerLabel) = \"en\")\n" +
-                    "  FILTER (regex(?carLabel, \"" + modelo + "\", \"i\"))"+
+                    "  FILTER (regex(?manufacturerLabel, \"" + marca + "\", \"i\"))\n" +
+                    "  FILTER (regex(?carLabel, \"" + modelo + "\", \"i\"))\n" +
                     "}\n";
             try {
                 QueryExecution queryExecution = QueryExecution.service(SPARQL_URL).query(query).build();
                 ResultSet resultSet = queryExecution.execSelect();
-                while(resultSet.hasNext()){
+                while (resultSet.hasNext()) {
                     QuerySolution querySolution = resultSet.next();
                     String literal = querySolution.getLiteral("carLabel").getString();
                     modelList.add(literal);
@@ -76,8 +75,6 @@ public class DbpediaService {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-        }
         return modelList;
     }
-
 }
