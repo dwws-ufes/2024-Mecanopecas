@@ -1,0 +1,68 @@
+package br.com.mecanopecas.mecanopecas.servlets;
+
+import br.com.mecanopecas.mecanopecas.model.Peca;
+import br.com.mecanopecas.mecanopecas.persistence.PecaRepository;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.apache.jena.rdf.model.*;
+import org.apache.jena.vocabulary.RDF;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
+@WebServlet(urlPatterns = {"/mecanopecas/data/pecas"})
+public class ListPecasRdfServlet extends HttpServlet {
+
+    @Autowired
+    private PecaRepository pecaRepository;
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/xml");
+        List<Peca> pecas = pecaRepository.findAll();
+
+        Model model = ModelFactory.createDefaultModel();
+        String myNs = "http://localhost:8081/mecanopecas/data/pecas";
+        String grNs = "http://purl.org/goodrelations/v1#";
+
+        // Classes do vocabulário
+        Resource grProductOrService = ResourceFactory.createResource(grNs + "ProductOrService");
+        Resource grUnitPriceSpecification = ResourceFactory.createResource(grNs + "UnitPriceSpecification");
+
+        // Propriedades (predicados) do vocabulário
+        Property grName = ResourceFactory.createProperty(grNs + "name");
+        Property grDescription = ResourceFactory.createProperty(grNs + "description");
+        Property grHasPriceSpecification = ResourceFactory.createProperty(grNs + "hasPriceSpecification");
+        Property grHasCurrencyValue = ResourceFactory.createProperty(grNs + "hasCurrencyValue");
+        Property grHasCurrency = ResourceFactory.createProperty(grNs + "hasCurrency");
+        Property grInventoryLevel = ResourceFactory.createProperty(grNs + "inventoryLevel");
+        Property grCondition = ResourceFactory.createProperty(grNs + "condition");
+        Property grBrand = ResourceFactory.createProperty(grNs + "brand");
+        Property grModel = ResourceFactory.createProperty(grNs + "model");
+
+        // Produzir o modelo em memória
+        for (Peca peca : pecas) {
+            model.createResource(myNs + "Peca_" + peca.getNome())
+                    .addProperty(RDF.type, grProductOrService)
+                    .addProperty(grName, peca.getNome())
+                    .addProperty(grDescription, "Modelo: " + peca.getModelo() + ", Marca: " + peca.getMarca())
+                    .addLiteral(grInventoryLevel, peca.getQtdEstoque())
+                    .addLiteral(grCondition, peca.isAtivo() ? "Possui em estoque" : "Fora de estoque")
+                    .addProperty(grBrand, peca.getMarca())
+                    .addProperty(grModel, peca.getModelo())
+                    .addProperty(grHasPriceSpecification, model.createResource()
+                            .addProperty(RDF.type, grUnitPriceSpecification)
+                            .addLiteral(grHasCurrencyValue, peca.getPreco())
+                            .addProperty(grHasCurrency, "BRL"));
+        }
+
+        try (PrintWriter out = resp.getWriter()) {
+            model.write(out, "RDF/XML");
+        }
+    }
+}

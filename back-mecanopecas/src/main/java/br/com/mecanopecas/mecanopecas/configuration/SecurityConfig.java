@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         auth -> auth
                                 .requestMatchers("/api/authentication/**").permitAll()
-                                .requestMatchers("/api/pecas").permitAll()
+                                .requestMatchers("/mecanopecas/data/pecas").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
