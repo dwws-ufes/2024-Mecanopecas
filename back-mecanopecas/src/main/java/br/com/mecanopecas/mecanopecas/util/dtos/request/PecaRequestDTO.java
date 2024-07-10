@@ -14,6 +14,7 @@ public record PecaRequestDTO(
 
         @Min(value = 0, message = "Quantidade em estoque deve ser maior ou igual a 0")
         int qtdEstoque,
-
+        String marca,
+        String modelo,
         boolean ativo
 ) {}
